@@ -13,7 +13,8 @@ export const LightTheme: DefaultTheme = {
 
 export const DarkTheme: DefaultTheme = {
   color_scheme: "dark",
-  primary_bgColor: "#292c2f",
+  // primary_bgColor: "#252525",
+  primary_bgColor: "#202124",
   primary_color: "#C6C6C6",
 
   search_gbColor: "#41413E",
