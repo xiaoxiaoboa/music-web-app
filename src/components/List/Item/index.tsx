@@ -1,6 +1,6 @@
 import { FC, ReactElement } from "react"
-import { ItemContainer } from "./index.styled"
-import { PlayOne } from '@icon-park/react'
+import { ItemContainer, Cover, Title } from "./index.styled"
+import { PlayOne } from "@icon-park/react"
 
 interface IProps {
   src: string
@@ -14,12 +14,14 @@ const Item: FC<IProps> = ({
   src
 }: IProps): ReactElement => {
   return (
-    <ItemContainer borderRadius={borderRadius} alignItems={alignItems}>
-      <img src={src} alt="" />
-      <span>SongListItem</span>
-      <div>
-        <PlayOne  size="1.625rem" theme="filled"/>
-      </div>
+    <ItemContainer alignItems={alignItems}>
+      <Cover borderRadius={borderRadius}>
+        <img src={src} alt="" />
+        <div>
+          <PlayOne size="1.625rem" theme="filled" />
+        </div>
+      </Cover>
+      <Title>SongListItem</Title>
     </ItemContainer>
   )
 }
