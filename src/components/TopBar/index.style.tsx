@@ -65,7 +65,7 @@ export const SearchBar = styled.div`
     width: 80%;
     display: flex;
     align-items: center;
-    background-color: ${props => props.theme.search_gbColor};
+    background-color: ${props => props.theme.search_bgColor};
     border-radius: 0.5rem;
     padding: 0.3125rem 0.5rem;
 
