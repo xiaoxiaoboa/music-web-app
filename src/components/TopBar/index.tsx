@@ -6,7 +6,8 @@ import {
   Nav,
   SearchBar,
   AvatarWrapper,
-  TopLogo
+  TopLogo,
+  ThemeButton
 } from "./index.style"
 import ToggleTheme from "../ToggleTheme"
 import { Search } from "@icon-park/react"
@@ -23,9 +24,6 @@ const TopBar: FC = (): ReactElement => {
             <li>新碟上架</li>
             <li>私人FM</li>
             <li>我的</li>
-            <li>
-              <ToggleTheme />
-            </li>
           </ul>
         </Nav>
         <SearchBar>
@@ -34,6 +32,9 @@ const TopBar: FC = (): ReactElement => {
             <input type="text" placeholder="搜索" />
           </div>
         </SearchBar>
+        <ThemeButton>
+          <ToggleTheme />
+        </ThemeButton>
         <AvatarWrapper>
           <Avatar size={48} />
         </AvatarWrapper>

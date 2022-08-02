@@ -9,11 +9,11 @@ export const ControllerBarContainer = styled.div`
   align-items: center;
   justify-content: center;
   border-top: 0.0625rem solid #9370db;
+
 `
 export const ControllerWrapper = styled.div`
   display: flex;
   width: 90%;
-  /* justify-content: space-between; */
 `
 
 export const SongCover = styled.div`
@@ -46,21 +46,18 @@ export const MiddleButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2.375rem;
+  gap: 15px;
 
-  & .FaStepBackward,
-  .FaStepForward {
-    font-size: 1.375rem;
+  & svg {
+    color: ${props => props.theme.controllerButton_color};
   }
 
   & .FaPlay {
-    font-size: 1.625rem;
+    font-size: 28px;
   }
-
   & .FaStepBackward,
-  .FaStepForward,
-  .FaPlay {
-    color: ${props => props.theme.controllerBtn_color};
+  .FaStepForward {
+    font-size: 20px;
   }
 `
 export const RightButton = styled.div`
@@ -68,7 +65,6 @@ export const RightButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: end;
-  gap: 1.25rem;
 
   & div {
     display: flex;
@@ -77,5 +73,18 @@ export const RightButton = styled.div`
 
   & svg{
     font-size: 20px;
+  }
+`
+export const Button = styled.button`
+  border: none;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  background-color: unset;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${props => props.theme.hover_BgColor};
   }
 `

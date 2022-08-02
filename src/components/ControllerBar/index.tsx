@@ -4,17 +4,10 @@ import {
   ControllerWrapper,
   MiddleButton,
   SongCover,
-  RightButton
+  RightButton,
+  Button
 } from "./index.style"
 import { Player } from "../../utils/Player"
-import {
-  GoEnd,
-  GoStart,
-  Like,
-  MusicList,
-  Play,
-  VolumeNotice
-} from "@icon-park/react"
 
 import { FaPlay, FaStepForward, FaStepBackward } from "react-icons/fa"
 
@@ -37,15 +30,27 @@ const ControllerBar: FC = (): ReactElement => {
           </div>
         </SongCover>
         <MiddleButton>
-          <FaStepBackward className="FaStepBackward" />
-          <FaPlay className="FaPlay" />
-          <FaStepForward className="FaStepForward" />
+          <Button>
+            <FaStepBackward className="FaStepBackward" />
+          </Button>
+          <Button>
+            <FaPlay className="FaPlay" />
+          </Button>
+          <Button>
+            <FaStepForward className="FaStepForward" />
+          </Button>
         </MiddleButton>
         <RightButton>
-          <RiHeart2Line />
-          <RiPlayListFill />
+          <Button>
+            <RiHeart2Line />
+          </Button>
+          <Button>
+            <RiPlayListFill />
+          </Button>
           <div>
-            <RiVolumeUpFill />
+            <Button>
+              <RiVolumeUpFill />
+            </Button>
             <span></span>
           </div>
         </RightButton>

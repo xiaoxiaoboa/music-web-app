@@ -1,18 +1,24 @@
-import 'styled-components'
+import "styled-components"
 
-declare module 'styled-components' {
+declare module "styled-components" {
   export interface DefaultTheme {
+    color_scheme: string
+
     primary_bgColor: string
     primary_color: string
+    secondary_color: string
 
     search_bgColor: string
     search_color: string
 
-    nav_hoverColor: string
+    hover_BgColor: string
+
     nav_boxShadow: string
 
-    color_scheme: string
-    
-    controllerBtn_color?: string
+    modeButton_BorderColor: string
+    modeButton_BgColor: string
+    modeButton_hover_BorderColor: string
+
+    controllerButton_color: string
   }
 }

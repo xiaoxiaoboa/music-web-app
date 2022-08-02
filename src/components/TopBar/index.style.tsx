@@ -9,7 +9,6 @@ export const TopBarContainer = styled.header`
   justify-content: center;
   text-align: center;
   background-color: ${props => props.theme.primary_bgColor};
-  
 `
 
 /* TopBar */
@@ -36,27 +35,26 @@ export const Nav = styled.div`
   & ul {
     list-style: none;
     display: flex;
-    gap: 25px;
-    font-size: 20px;
+    gap: 1.5625rem;
+    font-size: 1.25rem;
     color: ${props => props.theme.primary_color};
     justify-content: center;
 
     & li {
-      padding: 5px;
+      padding: .3125rem;
       user-select: none;
       cursor: pointer;
-      border-radius: 5px;
+      border-radius: .375rem;
     }
     & li:hover {
-      /* background-color: #d6eaf8; */
-      color: ${porps => porps.theme.nav_hoverColor};
+      background-color: ${porps => porps.theme.hover_BgColor};
     }
   }
 `
 
 /* 搜索框 */
 export const SearchBar = styled.div`
-  flex: 2;
+  flex: 2.5;
   display: flex;
   justify-content: center;
   color: ${props => props.theme.search_color};
@@ -107,4 +105,8 @@ export const AvatarWrapper = styled.div`
   & :hover {
     box-shadow: ${props => props.theme.nav_boxShadow};
   }
+`
+
+export const ThemeButton = styled.div`
+  flex:0.5;
 `

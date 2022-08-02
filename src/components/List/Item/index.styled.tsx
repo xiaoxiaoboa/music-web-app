@@ -48,7 +48,7 @@ export const Cover = styled.div<CoverProps>`
 
     &:hover {
       & span {
-        color: ${props => props.theme.nav_hoverColor};
+        color: ${props => props.theme.secondary_color};
       }
     }
 
