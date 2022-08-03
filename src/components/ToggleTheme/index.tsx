@@ -26,7 +26,6 @@ const ThemeButton = styled.button<BProps>`
   display: flex;
   width: 44px;
   height: 22px;
-  /* justify-content: ${props => (props.mode ? "flex-end" : "flex-start")}; */
   justify-content: flex-start;
   border-radius: 11px;
   align-items: center;

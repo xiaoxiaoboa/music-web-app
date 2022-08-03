@@ -7,7 +7,11 @@ import {
   SearchBar,
   AvatarWrapper,
   TopLogo,
-  ThemeButton
+  ThemeButton,
+  InputBox,
+  Input,
+  Ul,
+  Li
 } from "./index.style"
 import ToggleTheme from "../ToggleTheme"
 import { Search } from "@icon-park/react"
@@ -18,25 +22,25 @@ const TopBar: FC = (): ReactElement => {
       <TopbarWarpper>
         <TopLogo />
         <Nav>
-          <ul>
-            <li>首页</li>
-            <li>歌单</li>
-            <li>新碟上架</li>
-            <li>私人FM</li>
-            <li>我的</li>
-          </ul>
+          <Ul>
+            <Li>首页</Li>
+            <Li>歌单</Li>
+            <Li>新碟上架</Li>
+            <Li>私人FM</Li>
+            <Li>我的</Li>
+          </Ul>
         </Nav>
         <SearchBar>
-          <div>
-            <Search size="1.2rem" />
-            <input type="text" placeholder="搜索" />
-          </div>
+          <InputBox>
+            <Search className="searchIcon" />
+            <Input type="text" placeholder="搜索" />
+          </InputBox>
         </SearchBar>
         <ThemeButton>
           <ToggleTheme />
         </ThemeButton>
         <AvatarWrapper>
-          <Avatar size={48} />
+          <Avatar size={`3rem`} />
         </AvatarWrapper>
       </TopbarWarpper>
     </TopBarContainer>

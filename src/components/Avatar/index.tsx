@@ -3,29 +3,28 @@ import styled from "styled-components"
 import avatar from "../../assets/avatar2.jpg"
 
 interface IProps {
-  size: number
+  size: string
 }
 
-const Avatar: FC<IProps> = ({size}): ReactElement => {
+const Avatar: FC<IProps> = ({ size }): ReactElement => {
   return (
-    <AvatarContainer size={size}>
-      <img src={avatar}  />
+    <AvatarContainer>
+      <Img src={avatar} size={size} />
     </AvatarContainer>
   )
 }
 
 export default Avatar
 
-const AvatarContainer = styled.div<IProps>`
+const AvatarContainer = styled.div`
   display: flex;
   justify-content: center;
   cursor: pointer;
   border-radius: 50%;
-
-  & img {
-    border-radius: 50%;
-    object-fit: cover;
-    width: ${props => props.size / 16}rem;
-    height: ${props => props.size / 16}rem;
-  }
+`
+const Img = styled.img<IProps>`
+  border-radius: 50%;
+  object-fit: cover;
+  width: ${props => props.size};
+  height: ${props => props.size};
 `

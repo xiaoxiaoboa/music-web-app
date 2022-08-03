@@ -31,24 +31,23 @@ export const TopLogo = styled.div`
 /* 导航列表 */
 export const Nav = styled.div`
   flex: 4;
+`
+export const Ul = styled.ul`
+  list-style: none;
+  display: flex;
+  gap: 1.5625rem;
+  font-size: 1.25rem;
+  color: ${props => props.theme.primary_color};
+  justify-content: center;
+`
+export const Li = styled.li`
+  padding: 0.3125rem;
+  user-select: none;
+  cursor: pointer;
+  border-radius: 0.375rem;
 
-  & ul {
-    list-style: none;
-    display: flex;
-    gap: 1.5625rem;
-    font-size: 1.25rem;
-    color: ${props => props.theme.primary_color};
-    justify-content: center;
-
-    & li {
-      padding: .3125rem;
-      user-select: none;
-      cursor: pointer;
-      border-radius: .375rem;
-    }
-    & li:hover {
-      background-color: ${porps => porps.theme.hover_BgColor};
-    }
+  &:hover {
+    background-color: ${porps => porps.theme.hover_BgColor};
   }
 `
 
@@ -58,41 +57,38 @@ export const SearchBar = styled.div`
   display: flex;
   justify-content: center;
   color: ${props => props.theme.search_color};
+`
+export const InputBox = styled.div`
+  width: 80%;
+  display: flex;
+  align-items: center;
+  background-color: ${props => props.theme.search_bgColor};
+  border-radius: 0.5rem;
+  padding: 0.3125rem 0.5rem;
 
-  & div {
-    width: 80%;
+  .searchIcon {
     display: flex;
     align-items: center;
-    background-color: ${props => props.theme.search_bgColor};
-    border-radius: 0.5rem;
-    padding: 0.3125rem 0.5rem;
-
-    /* 搜索框图标 */
-    & span {
-      display: flex;
-      align-items: center;
-      color: inherit;
-    }
-
-    & input {
-      width: 85%;
-      background-color: inherit;
-      border: none;
-      outline: none;
-      margin-left: 0.5rem;
-      padding: 0.1875rem;
-      font-size: 0.875rem;
-      color: inherit;
-    }
+    color: inherit;
+    font-size: 1.2rem;
   }
 
-  /* 搜索框容器的伪类属性 */
-  & div:focus-within {
+  &:focus-within {
     box-shadow: ${props => props.theme.nav_boxShadow};
   }
-  & div:hover {
+  &:hover {
     box-shadow: ${props => props.theme.nav_boxShadow};
   }
+`
+export const Input = styled.input`
+  width: 85%;
+  background-color: inherit;
+  border: none;
+  outline: none;
+  margin-left: 0.5rem;
+  padding: 0.1875rem;
+  font-size: 0.875rem;
+  color: inherit;
 `
 
 /* 头像 */
@@ -102,11 +98,11 @@ export const AvatarWrapper = styled.div`
   align-items: center;
   justify-content: flex-end;
 
-  & :hover {
+  &:hover {
     box-shadow: ${props => props.theme.nav_boxShadow};
   }
 `
 
 export const ThemeButton = styled.div`
-  flex:0.5;
+  flex: 0.5;
 `

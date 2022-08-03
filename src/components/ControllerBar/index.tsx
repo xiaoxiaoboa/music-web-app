@@ -5,7 +5,12 @@ import {
   MiddleButton,
   SongCover,
   RightButton,
-  Button
+  Button,
+  SongCoverImg,
+  SongDetails,
+  SongTitle,
+  Artist,
+  VolumeButtonBox
 } from "./index.style"
 import { Player } from "../../utils/Player"
 
@@ -19,15 +24,15 @@ const ControllerBar: FC = (): ReactElement => {
       <Player />
       <ControllerWrapper>
         <SongCover>
-          <img
+          <SongCoverImg
             src="http://p1.music.126.net/KyBR4ZDYFlzQJE_uyvfjpA==/109951166118671647.jpg?param=130y130"
             alt=""
           />
 
-          <div>
-            <span>如果当时</span>
-            <span>许嵩</span>
-          </div>
+          <SongDetails>
+            <SongTitle>如果当时</SongTitle>
+            <Artist>许嵩</Artist>
+          </SongDetails>
         </SongCover>
         <MiddleButton>
           <Button>
@@ -42,17 +47,17 @@ const ControllerBar: FC = (): ReactElement => {
         </MiddleButton>
         <RightButton>
           <Button>
-            <RiHeart2Line />
+            <RiHeart2Line className="RiHeart2Line" />
           </Button>
           <Button>
-            <RiPlayListFill />
+            <RiPlayListFill className="RiPlayListFill" />
           </Button>
-          <div>
+          <VolumeButtonBox>
             <Button>
-              <RiVolumeUpFill />
+              <RiVolumeUpFill className="RiVolumeUpFill" />
             </Button>
             <span></span>
-          </div>
+          </VolumeButtonBox>
         </RightButton>
       </ControllerWrapper>
     </ControllerBarContainer>
