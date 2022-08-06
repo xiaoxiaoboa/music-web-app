@@ -17,7 +17,7 @@ export const ItemContainer = styled.div<ItemProps>`
 `
 
 /* 封面容器 */
-export const Cover = styled.div<CoverProps>`
+export const Cover = styled.div`
   display: flex;
 
   &:hover {
@@ -26,38 +26,38 @@ export const Cover = styled.div<CoverProps>`
       bottom: 2.5rem;
     }
   }
+`
+export const CoverImg = styled.img<CoverProps>`
+  width: 100%;
+  cursor: pointer;
+  border-radius: ${props => props.borderRadius};
+`
 
-  & img {
-    width: 100%;
-    cursor: pointer;
-    border-radius: ${props => props.borderRadius};
+export const PlayButton = styled.div`
+  opacity: 0;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 0.625rem;
+  bottom: 2.25rem;
+  border-radius: 50%;
+  background-color: #f9f3f3;
+  padding: 0.625rem;
+  cursor: pointer;
+  transition: all 0.2s linear;
+
+  &:hover {
+    .BsFillPlayFill {
+      color: ${props => props.theme.secondary_color};
+    }
   }
-
-  & div {
-    opacity: 0;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    right: 0.625rem;
-    bottom: 2.25rem;
-    border-radius: 50%;
-    background-color: #f9f3f3;
-    padding: 0.625rem;
-    cursor: pointer;
-    transition: all 0.2s linear;
-
-    &:hover {
-      & span {
-        color: ${props => props.theme.secondary_color};
-      }
-    }
-
-    & span {
-      display: flex;
-      color: black;
-    }
+  .BsFillPlayFill {
+    display: flex;
+    color: black;
+    font-size: 1.625rem;
   }
 `
+
 export const Title = styled.span`
   &:hover {
     text-decoration: underline #9370db;

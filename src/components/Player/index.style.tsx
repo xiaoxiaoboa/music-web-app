@@ -65,12 +65,14 @@ export const Button = styled.button`
   cursor: pointer;
 
   .FaPlay,
+  .FaPause,
   .FaStepBackward,
   .FaStepForward {
     color: ${props => props.theme.controllerButton_color};
   }
 
-  .FaPlay {
+  .FaPlay,
+  .FaPause {
     font-size: 1.75rem;
   }
 

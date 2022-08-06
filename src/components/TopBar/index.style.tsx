@@ -70,7 +70,7 @@ export const InputBox = styled.div`
     display: flex;
     align-items: center;
     color: inherit;
-    font-size: 1.2rem;
+    font-size: 1.25rem;
   }
 
   &:focus-within {
@@ -85,7 +85,7 @@ export const Input = styled.input`
   background-color: inherit;
   border: none;
   outline: none;
-  margin-left: 0.5rem;
+  margin-left: .3125rem;
   padding: 0.1875rem;
   font-size: 0.875rem;
   color: inherit;

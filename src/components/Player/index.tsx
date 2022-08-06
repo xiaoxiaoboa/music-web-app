@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react"
+import { FC, ReactElement, useEffect, useState, useRef } from "react"
 import {
   ControllerBarContainer,
   ControllerWrapper,
@@ -12,16 +12,37 @@ import {
   Artist,
   VolumeButtonBox
 } from "./index.style"
-import { Player } from "../../utils/Player"
 
-import { FaPlay, FaStepForward, FaStepBackward } from "react-icons/fa"
+import { FaPlay, FaPause, FaStepForward, FaStepBackward } from "react-icons/fa"
 
 import { RiVolumeUpFill, RiPlayListFill, RiHeart2Line } from "react-icons/ri"
 
-const ControllerBar: FC = (): ReactElement => {
+import audio from "../../utils/audio"
+
+const Player: FC = (): ReactElement => {
+  const [playing, setPlay] = useState<Boolean>(false)
+  const AudioRef = useRef(
+    new audio(
+      "https://storage.googleapis.com/media-session/elephants-dream/the-wires.mp3"
+    )
+  )
+
+
+  const handlePlayClick = (): void => {
+    AudioRef.current.play((rel: Boolean) =>
+      rel ? setPlay(() => !playing) : console.log("播放失败")
+    )
+  }
+  const handlePauseClick = (): void => {
+    AudioRef.current.pause()
+    setPlay(() => !playing)
+  }
+
+  const handleTest = (): void => {
+  }
+
   return (
     <ControllerBarContainer>
-      <Player />
       <ControllerWrapper>
         <SongCover>
           <SongCoverImg
@@ -38,10 +59,15 @@ const ControllerBar: FC = (): ReactElement => {
           <Button>
             <FaStepBackward className="FaStepBackward" />
           </Button>
-          <Button>
-            <FaPlay className="FaPlay" />
+          <Button
+            onClick={() => (playing ? handlePauseClick() : handlePlayClick())}>
+            {playing ? (
+              <FaPause className="FaPause" />
+            ) : (
+              <FaPlay className="FaPlay" />
+            )}
           </Button>
-          <Button>
+          <Button onClick={handleTest}>
             <FaStepForward className="FaStepForward" />
           </Button>
         </MiddleButton>
@@ -63,5 +89,4 @@ const ControllerBar: FC = (): ReactElement => {
     </ControllerBarContainer>
   )
 }
-
-export default ControllerBar
+export default Player

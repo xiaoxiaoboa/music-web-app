@@ -1,7 +1,7 @@
 import React, { FC, ReactElement, useState } from "react"
 import { ThemeProvider } from "styled-components"
 import { LightTheme, DarkTheme, GlobalStyle } from "../styles/theme"
-import {useRecoilValue} from 'recoil'
+import {RecoilState, RecoilValue, useRecoilValue} from 'recoil'
 import {state} from '../recoil'
 
 interface IProps {
@@ -10,6 +10,7 @@ interface IProps {
 
 const MyThemeProvider: FC<IProps> = ({ children }): ReactElement => {
   const themeMode= useRecoilValue(state)
+  
 
   
   return (

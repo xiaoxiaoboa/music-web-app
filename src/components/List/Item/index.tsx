@@ -1,6 +1,12 @@
 import { FC, ReactElement } from "react"
-import { ItemContainer, Cover, Title } from "./index.styled"
-import { PlayOne } from "@icon-park/react"
+import {
+  ItemContainer,
+  Cover,
+  Title,
+  PlayButton,
+  CoverImg
+} from "./index.styled"
+import { BsFillPlayFill } from "react-icons/bs"
 
 interface IProps {
   src: string
@@ -15,11 +21,11 @@ const Item: FC<IProps> = ({
 }: IProps): ReactElement => {
   return (
     <ItemContainer alignItems={alignItems}>
-      <Cover borderRadius={borderRadius}>
-        <img src={src} alt="" />
-        <div>
-          <PlayOne size="1.625rem" theme="filled" />
-        </div>
+      <Cover>
+        <CoverImg src={src} alt="" borderRadius={borderRadius} />
+        <PlayButton>
+          <BsFillPlayFill className="BsFillPlayFill" />
+        </PlayButton>
       </Cover>
       <Title>SongListItem</Title>
     </ItemContainer>

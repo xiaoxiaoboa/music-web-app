@@ -1,6 +1,6 @@
 import { FC, ReactElement, useState } from "react"
 import styled from "styled-components"
-import ControllerBar from "./components/ControllerBar"
+import Player from "./components/Player"
 import TopBar from "./components/TopBar"
 import Home from "./pages/Home"
 
@@ -9,7 +9,7 @@ const App: FC = (): ReactElement => {
     <AppContainer>
       <TopBar />
       <Home />
-      <ControllerBar />
+      <Player />
     </AppContainer>
   )
 }

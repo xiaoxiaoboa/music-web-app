@@ -14,7 +14,8 @@ import {
   Li
 } from "./index.style"
 import ToggleTheme from "../ToggleTheme"
-import { Search } from "@icon-park/react"
+import { BiSearchAlt } from "react-icons/bi"
+
 
 const TopBar: FC = (): ReactElement => {
   return (
@@ -32,7 +33,7 @@ const TopBar: FC = (): ReactElement => {
         </Nav>
         <SearchBar>
           <InputBox>
-            <Search className="searchIcon" />
+            <BiSearchAlt className="searchIcon" />
             <Input type="text" placeholder="搜索" />
           </InputBox>
         </SearchBar>
