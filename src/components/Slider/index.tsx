@@ -1,25 +1,24 @@
-import React, {
-  FC,
-  MouseEventHandler,
-  ReactElement,
-  useEffect,
-  useRef,
-  useState
-} from "react"
+import React, { FC, ReactElement, useRef } from "react"
 import styled from "styled-components"
 import useDrag from "./Hooks/useDrag"
+import { AudioElementState } from "../../recoil"
+import { useRecoilValue } from "recoil"
+import {SliderProps} from '../../types'
 
-const Slider: FC = (): ReactElement => {
+
+const Slider: FC<SliderProps> = (props): ReactElement => {
   const SlideColorRef = useRef<HTMLSpanElement>(null)
   const ThumbRef = useRef<HTMLSpanElement>(null)
   const TrackRef = useRef<HTMLDivElement>(null)
+  const AudioElement = useRecoilValue(AudioElementState)
   const [mouseOffsetX, handleMouseDown, handleMouseDrag, percentCalculate] =
     useDrag({
       trackElement: TrackRef.current as HTMLDivElement
     })
 
   return (
-    <SliderContainer onMouseDown={handleMouseDown}>
+    <SliderContainer onMouseDown={handleMouseDown} co={props}>
+      {/* <StartTime>0:00</StartTime> */}
       <SliderTrack id="track" ref={TrackRef}>
         <SlideColor
           ref={SlideColorRef}
@@ -41,20 +40,26 @@ const Slider: FC = (): ReactElement => {
           TrackElement={TrackRef.current as HTMLDivElement}
         />
       </SliderTrack>
+      {/* <EndTime>1:15</EndTime> */}
     </SliderContainer>
   )
 }
 
 export default Slider
 
-const SliderContainer = styled.div`
+interface SliderContainerProps {
+  co: SliderProps
+}
+const SliderContainer = styled.div<SliderContainerProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
+  width: ${props => props.co.sWidth};
   position: relative;
-  padding: 8px 0;
+  padding: ${props => props.co.sPadding};
+  gap: 11px;
   cursor: pointer;
+  transition: all 1s linear;
 
   &:hover {
     span[id="thumb"] {
@@ -62,6 +67,7 @@ const SliderContainer = styled.div`
     }
   }
 `
+
 const SliderTrack = styled.div`
   width: inherit;
   height: 4px;
@@ -101,3 +107,7 @@ const SlideColor = styled.span.attrs<SlideColorProps>(props => ({
   height: 4px;
   border-radius: 10px;
 `
+const StartTime = styled.span`
+  font-size: 12px;
+`
+const EndTime = styled(StartTime)``

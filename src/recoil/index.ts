@@ -8,7 +8,7 @@ export const ThemeState = atom<boolean>({
 })
 
 /* 音频DOM元素state */
-export const AudioElementState = atom<audio>({
+export const AudioElementState = atom<audio | null>({
   key: "AudioElement",
-  default: new audio("")
+  default: null
 })

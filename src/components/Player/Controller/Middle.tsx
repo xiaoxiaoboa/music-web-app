@@ -31,8 +31,7 @@ const Middle: FC<IProps> = (props): ReactElement => {
           <FaStepForward className="FaStepForward" />
         </Button>
       </ButtonBox>
-      <Slider />
-
+      {/* <Slider sWidth={`100%`} sPadding={`.4375rem 0`} /> */}
     </MiddleButton>
   )
 }
@@ -40,7 +39,7 @@ const Middle: FC<IProps> = (props): ReactElement => {
 export default Middle
 
 const MiddleButton = styled.div`
-  flex: 1;
+  flex: 1.25;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -50,5 +49,5 @@ const ButtonBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: .9375rem;
 `

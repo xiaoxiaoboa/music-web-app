@@ -10,8 +10,9 @@ export default function useDrag({
 
   const [mouseOffsetX, setMouseOffsetX] = useState<number>(0)
   const [mouseX, setMouseX] = useState<number>(0)
-  const offSetLeft = (trackElement?.offsetParent as HTMLDivElement)?.offsetLeft
+  const offSetLeft = (trackElement?.offsetParent as HTMLDivElement)?.offsetLeft + trackElement?.offsetLeft
 
+  console.log(trackElement?.offsetLeft)
   useEffect(() => {
     if (offSetLeft === undefined || mouseX === 0) return
     setMouseOffsetX(() => mouseX - offSetLeft)

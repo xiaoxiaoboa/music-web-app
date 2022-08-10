@@ -32,20 +32,20 @@ const Player: FC = (): ReactElement => {
   /* 播放控制 */
   const handlePlayClick = (): void => {
     audioElement
-      .play()
+      ?.play()
       .then(res => setPlay(() => !playing))
       .catch(err => console.log(err))
   }
 
   /* 暂停控制 */
   const handlePauseClick = (): void => {
-    audioElement.pause()
+    audioElement?.pause()
     setPlay(() => !playing)
   }
 
   /* 静音控制 */
   const handleMutedClick = (): void => {
-    audioElement.muted(!isMuted)
+    audioElement?.muted(!isMuted)
     setIsMuted(() => !isMuted)
   }
 

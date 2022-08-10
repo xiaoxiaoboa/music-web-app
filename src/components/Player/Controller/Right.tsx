@@ -7,14 +7,15 @@ import {
   RiHeart2Line,
   RiVolumeMuteFill
 } from "react-icons/ri"
+import Slider from "../../Slider"
 
 interface IProps {
   isMuted: boolean
   handleMutedClick: () => void
 }
 
-const Right:FC<IProps> = (props):ReactElement => {
-  const {isMuted, handleMutedClick} = props
+const Right: FC<IProps> = (props): ReactElement => {
+  const { isMuted, handleMutedClick } = props
   return (
     <RightButton>
       <Button>
@@ -31,7 +32,7 @@ const Right:FC<IProps> = (props):ReactElement => {
             <RiVolumeUpFill className="RiVolumeMute" />
           )}
         </Button>
-        <span></span>
+        <Slider sWidth={`6.25rem`} sPadding={`.5rem 0`} />
       </VolumeButtonBox>
     </RightButton>
   )
@@ -48,4 +49,5 @@ const RightButton = styled.div`
 const VolumeButtonBox = styled.div`
   display: flex;
   align-items: center;
+  gap: .3125rem;
 `
