@@ -9,6 +9,7 @@ export const ControllerBarContainer = styled.div`
   align-items: center;
   justify-content: center;
   border-top: 0.0625rem solid #9370db;
+  user-select: none;
 `
 export const ControllerWrapper = styled.div`
   display: flex;
@@ -37,23 +38,24 @@ export const Artist = styled.span`
   font-size: 0.875rem;
 `
 
-export const MiddleButton = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-`
-export const RightButton = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: end;
-`
-export const VolumeButtonBox = styled.div`
-  display: flex;
-  align-items: center;
-`
+// export const MiddleButton = styled.div`
+//   flex: 1;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   gap: 15px;
+// `
+
+// export const RightButton = styled.div`
+//   flex: 1;
+//   display: flex;
+//   align-items: center;
+//   justify-content: end;
+// `
+// export const VolumeButtonBox = styled.div`
+//   display: flex;
+//   align-items: center;
+// `
 
 export const Button = styled.button`
   border: none;
@@ -78,7 +80,7 @@ export const Button = styled.button`
 
   .FaStepBackward,
   .FaStepForward,
-  .RiVolumeUpFill,
+  .RiVolumeMute,
   .RiHeart2Line,
   .RiPlayListFill {
     font-size: 1.25rem;

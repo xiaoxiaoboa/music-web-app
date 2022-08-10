@@ -1,11 +1,11 @@
 import { FC, ReactElement, useEffect } from "react"
 import { useRecoilState } from "recoil"
-import { state } from "../../recoil"
+import { ThemeState } from "../../recoil"
 import { RiMoonClearLine, RiSunLine } from "react-icons/ri"
 import styled from "styled-components"
 
 const ToggleTheme: FC = (): ReactElement => {
-  const [mode, setMode] = useRecoilState(state)
+  const [mode, setMode] = useRecoilState(ThemeState)
 
   const handleClick = () => {
     setMode(() => !mode)

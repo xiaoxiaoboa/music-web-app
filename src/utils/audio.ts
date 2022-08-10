@@ -1,10 +1,6 @@
-import {useRecoilState} from 'recoil'
-import {state} from '../recoil'
-
 interface Audio {
   audioElement: HTMLAudioElement
 }
-
 
 export default class audio implements Audio {
   audioElement: HTMLAudioElement
@@ -13,22 +9,22 @@ export default class audio implements Audio {
     this.audioElement = new Audio(src)
   }
 
-  get element(): HTMLAudioElement {
-    return this.audioElement
+  /* 播放 */
+  play(): Promise<void> {
+    return this.audioElement.play()
   }
 
-  play(F: Function): void {
-    this.audioElement
-      .play()
-      .then(res => F(true))
-      .catch(err => F(false))
-  }
-
+  /* 暂停 */
   pause(): void {
     this.audioElement.pause()
   }
 
+  /* 静音 */
+  muted(isMuted: boolean): void {
+    this.audioElement.muted = isMuted
+  }
+
   test(): void {
-    this.audioElement.src = ''
+    this.audioElement.src = ""
   }
 }
