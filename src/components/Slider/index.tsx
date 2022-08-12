@@ -16,7 +16,7 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
 
   return (
     <SliderContainer onMouseDown={handleMouseDown} co={props}>
-      {/* <StartTime>0:00</StartTime> */}
+      <StartTime>0:00</StartTime>
       <SliderTrack id="track" ref={TrackRef}>
         <SlideColor ref={SlideColorRef} slideColorWidth={mouseOffsetX} />
         <SliderThumb
@@ -27,7 +27,7 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
           TrackElement={TrackRef.current as HTMLDivElement}
         />
       </SliderTrack>
-      {/* <EndTime>1:15</EndTime> */}
+      <EndTime>1:15</EndTime>
     </SliderContainer>
   )
 }
