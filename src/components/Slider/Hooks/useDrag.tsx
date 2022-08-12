@@ -6,19 +6,25 @@ interface IProps {
 
 export default function useDrag({
   trackElement
-}: IProps): [number, MouseEventHandler, MouseEventHandler, Function] {
-
+}: IProps): [number, MouseEventHandler, MouseEventHandler] {
   const [mouseOffsetX, setMouseOffsetX] = useState<number>(0)
   const [mouseX, setMouseX] = useState<number>(0)
-  const offSetLeft = (trackElement?.offsetParent as HTMLDivElement)?.offsetLeft + trackElement?.offsetLeft
+  const offSetLeft = (trackElement?.offsetParent as HTMLDivElement)?.offsetLeft
 
-  console.log(trackElement?.offsetLeft)
   useEffect(() => {
     if (offSetLeft === undefined || mouseX === 0) return
-    setMouseOffsetX(() => mouseX - offSetLeft)
+    setMouseOffsetX(() => percentCalculate(mouseX - offSetLeft, trackElement))
   }, [mouseX])
 
-  /* 鼠标单机落下时 */
+  useEffect(
+    () => () => {
+      document.onmouseup = null
+      document.onmousemove = null
+    },
+    []
+  )
+
+  /* 鼠标单击落下时 */
   const handleMouseDown: MouseEventHandler = (e): void => {
     e.preventDefault()
     setMouseX(() => e.clientX)
@@ -39,21 +45,12 @@ export default function useDrag({
   /* 百分比计算 */
   const percentCalculate = (
     processValue: number,
-    htmlElement: HTMLDivElement,
-    type: string
+    htmlElement: HTMLDivElement
   ): number => {
     const rel = Math.round((processValue / htmlElement?.clientWidth) * 100)
 
-    switch (type) {
-      case "slideColor":
-        return rel > 100 ? 100 : rel
-
-      case "thumb":
-        return rel > 100 ? 100 : rel < 0 ? 0 : rel
-      default:
-        return 0
-    }
+    return rel > 100 ? 100 : rel < 0 ? 0 : rel
   }
 
-  return [mouseOffsetX, handleMouseDown, handleMouseDrag, percentCalculate]
+  return [mouseOffsetX, handleMouseDown, handleMouseDrag]
 }

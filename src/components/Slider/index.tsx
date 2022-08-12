@@ -3,39 +3,26 @@ import styled from "styled-components"
 import useDrag from "./Hooks/useDrag"
 import { AudioElementState } from "../../recoil"
 import { useRecoilValue } from "recoil"
-import {SliderProps} from '../../types'
-
+import { SliderProps } from "../../types"
 
 const Slider: FC<SliderProps> = (props): ReactElement => {
   const SlideColorRef = useRef<HTMLSpanElement>(null)
   const ThumbRef = useRef<HTMLSpanElement>(null)
   const TrackRef = useRef<HTMLDivElement>(null)
   const AudioElement = useRecoilValue(AudioElementState)
-  const [mouseOffsetX, handleMouseDown, handleMouseDrag, percentCalculate] =
-    useDrag({
-      trackElement: TrackRef.current as HTMLDivElement
-    })
+  const [mouseOffsetX, handleMouseDown, handleMouseDrag] = useDrag({
+    trackElement: TrackRef.current as HTMLDivElement
+  })
 
   return (
     <SliderContainer onMouseDown={handleMouseDown} co={props}>
       {/* <StartTime>0:00</StartTime> */}
       <SliderTrack id="track" ref={TrackRef}>
-        <SlideColor
-          ref={SlideColorRef}
-          slideColorWidth={percentCalculate(
-            mouseOffsetX,
-            TrackRef.current!,
-            "slideColor"
-          )}
-        />
+        <SlideColor ref={SlideColorRef} slideColorWidth={mouseOffsetX} />
         <SliderThumb
           id="thumb"
           ref={ThumbRef}
-          SliderThumbLeft={percentCalculate(
-            mouseOffsetX,
-            TrackRef.current!,
-            "thumb"
-          )}
+          SliderThumbLeft={mouseOffsetX}
           onMouseDown={handleMouseDrag}
           TrackElement={TrackRef.current as HTMLDivElement}
         />
@@ -85,7 +72,7 @@ interface SliderThumbProps {
 
 const SliderThumb = styled.span.attrs<SliderThumbProps>(props => ({
   style: {
-    left: `calc(${props.SliderThumbLeft}% - 8px)`
+    left: `calc(${props.SliderThumbLeft}% - 7px)`
   }
 }))<SliderThumbProps>`
   width: 14px;

@@ -31,7 +31,7 @@ const Middle: FC<IProps> = (props): ReactElement => {
           <FaStepForward className="FaStepForward" />
         </Button>
       </ButtonBox>
-      {/* <Slider sWidth={`100%`} sPadding={`.4375rem 0`} /> */}
+      <Slider sWidth={`100%`} sPadding={`.4375rem 0`} />
     </MiddleButton>
   )
 }
