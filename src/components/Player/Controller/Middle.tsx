@@ -6,12 +6,12 @@ import Slider from "../../Slider"
 
 interface IProps {
   playing: boolean
-  handlePlayClick: () => void
-  handlePauseClick: () => void
+  handlePlay: () => void
+  handlePause: () => void
 }
 
 const Middle: FC<IProps> = (props): ReactElement => {
-  const { playing, handlePlayClick, handlePauseClick } = props
+  const { playing, handlePlay, handlePause } = props
 
   return (
     <MiddleButton>
@@ -20,7 +20,7 @@ const Middle: FC<IProps> = (props): ReactElement => {
           <FaStepBackward className="FaStepBackward" />
         </Button>
         <Button
-          onClick={() => (playing ? handlePauseClick() : handlePlayClick())}>
+          onClick={() => (playing ? handlePause() : handlePlay())}>
           {playing ? (
             <FaPause className="FaPause" />
           ) : (
@@ -31,7 +31,7 @@ const Middle: FC<IProps> = (props): ReactElement => {
           <FaStepForward className="FaStepForward" />
         </Button>
       </ButtonBox>
-      <Slider sWidth={`100%`} sPadding={`.4375rem 0`} />
+      <Slider sWidth={`100%`} sPadding={`8px 0`} getSliderValue={() => {}} />
     </MiddleButton>
   )
 }
@@ -39,7 +39,7 @@ const Middle: FC<IProps> = (props): ReactElement => {
 export default Middle
 
 const MiddleButton = styled.div`
-  flex: 1.25;
+  flex: 1.1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,5 +49,5 @@ const ButtonBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: .9375rem;
+  gap: 0.9375rem;
 `

@@ -1,4 +1,4 @@
-import React, { FC, ReactElement } from "react"
+import React, { FC, ReactElement, useState } from "react"
 import styled from "styled-components"
 import { Button } from "../index.style"
 import {
@@ -11,11 +11,12 @@ import Slider from "../../Slider"
 
 interface IProps {
   isMuted: boolean
-  handleMutedClick: () => void
+  handleMuted: () => void
+  handleVolume: (value: number) => void
 }
 
 const Right: FC<IProps> = (props): ReactElement => {
-  const { isMuted, handleMutedClick } = props
+  const { isMuted, handleMuted, handleVolume } = props
   return (
     <RightButton>
       <Button>
@@ -25,14 +26,19 @@ const Right: FC<IProps> = (props): ReactElement => {
         <RiPlayListFill className="RiPlayListFill" />
       </Button>
       <VolumeButtonBox>
-        <Button onClick={handleMutedClick}>
+        <Button onClick={handleMuted}>
           {isMuted ? (
             <RiVolumeMuteFill className="RiVolumeMute" />
           ) : (
             <RiVolumeUpFill className="RiVolumeMute" />
           )}
         </Button>
-        <Slider sWidth={`6.25rem`} sPadding={`.5rem 0`} />
+        <Slider
+          sWidth={`6.25rem`}
+          sPadding={`.5rem 0`}
+          getSliderValue={handleVolume}
+          isMuted={isMuted}
+        />
       </VolumeButtonBox>
     </RightButton>
   )

@@ -1,33 +1,49 @@
-import React, { FC, ReactElement, useRef } from "react"
+import { FC, ReactElement, useEffect, useRef } from "react"
 import styled from "styled-components"
 import useDrag from "./Hooks/useDrag"
-import { AudioElementState } from "../../recoil"
-import { useRecoilValue } from "recoil"
 import { SliderProps } from "../../types"
 
 const Slider: FC<SliderProps> = (props): ReactElement => {
   const SlideColorRef = useRef<HTMLSpanElement>(null)
   const ThumbRef = useRef<HTMLSpanElement>(null)
   const TrackRef = useRef<HTMLDivElement>(null)
-  const AudioElement = useRecoilValue(AudioElementState)
-  const [mouseOffsetX, handleMouseDown, handleMouseDrag] = useDrag({
-    trackElement: TrackRef.current as HTMLDivElement
-  })
+  const [sliderValue, setSliderValue, handleMouseDown, handleMouseDrag] =
+    useDrag({
+      trackElement: TrackRef.current as HTMLDivElement
+    })
+
+  /* 控制音量 | 歌曲 | mv 进度条的值 */
+  useEffect(() => {
+    props.getSliderValue(sliderValue)
+  }, [sliderValue])
+
+  useEffect(() => {
+    /* 当静音时，音量条应该为0 */
+    if (props.isMuted) setSliderValue(0)
+
+    return () => {
+      /*
+        当取消静音时，音量条应该恢复静音前的值
+        但是当之前的值为0时，则不需要恢复 
+       */
+      if (props.isMuted && sliderValue !== 0) setSliderValue(sliderValue)
+    }
+  }, [props.isMuted])
 
   return (
     <SliderContainer onMouseDown={handleMouseDown} co={props}>
-      <StartTime>0:00</StartTime>
+      {/* {props.getSliderValue ? <></> : <StartTime>0:00</StartTime>} */}
       <SliderTrack id="track" ref={TrackRef}>
-        <SlideColor ref={SlideColorRef} slideColorWidth={mouseOffsetX} />
+        <SlideColor ref={SlideColorRef} slideColorWidth={sliderValue} />
         <SliderThumb
           id="thumb"
           ref={ThumbRef}
-          SliderThumbLeft={mouseOffsetX}
+          SliderThumbLeft={sliderValue}
           onMouseDown={handleMouseDrag}
           TrackElement={TrackRef.current as HTMLDivElement}
         />
       </SliderTrack>
-      <EndTime>1:15</EndTime>
+      {/* {props.getSliderValue ? <></> : <EndTime>1:15</EndTime>} */}
     </SliderContainer>
   )
 }

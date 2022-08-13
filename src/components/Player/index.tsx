@@ -10,27 +10,17 @@ import {
 } from "./index.style"
 
 import audio from "../../utils/audio"
-import { useRecoilState } from "recoil"
-import { AudioElementState } from "../../recoil"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
+import src from "../../assets/Free Loop-口琴演奏.mp3"
 
 const Player: FC = (): ReactElement => {
-  const [audioElement, setAudioElement] = useRecoilState(AudioElementState)
+  const [audioElement, setAudioElement] = useState(new audio(src))
   const [playing, setPlay] = useState<boolean>(false)
   const [isMuted, setIsMuted] = useState<boolean>(false)
 
-  useEffect(() => {
-    setAudioElement(
-      () =>
-        new audio(
-          "https://storage.googleapis.com/media-session/elephants-dream/the-wires.mp3"
-        )
-    )
-  }, [])
-
   /* 播放控制 */
-  const handlePlayClick = (): void => {
+  const handlePlay = (): void => {
     audioElement
       ?.play()
       .then(res => setPlay(() => !playing))
@@ -38,15 +28,25 @@ const Player: FC = (): ReactElement => {
   }
 
   /* 暂停控制 */
-  const handlePauseClick = (): void => {
+  const handlePause = (): void => {
     audioElement?.pause()
     setPlay(() => !playing)
   }
 
   /* 静音控制 */
-  const handleMutedClick = (): void => {
+  const handleMuted = (): void => {
     audioElement?.muted(!isMuted)
     setIsMuted(() => !isMuted)
+  }
+
+  /* 音量控制 */
+  const handleVolume = (value: number): void => {
+    audioElement?.volume(value)
+    if (value === 0 && isMuted === false) {
+      handleMuted()
+    } else if (value > 0 && isMuted === true) {
+      handleMuted()
+    }
   }
 
   /* 测试 */
@@ -67,10 +67,14 @@ const Player: FC = (): ReactElement => {
         </SongCover>
         <Middle
           playing={playing}
-          handlePlayClick={handlePlayClick}
-          handlePauseClick={handlePauseClick}
+          handlePlay={handlePlay}
+          handlePause={handlePause}
         />
-        <Right isMuted={isMuted} handleMutedClick={handleMutedClick} />
+        <Right
+          isMuted={isMuted}
+          handleMuted={handleMuted}
+          handleVolume={handleVolume}
+        />
       </ControllerWrapper>
     </ControllerBarContainer>
   )

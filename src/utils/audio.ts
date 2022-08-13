@@ -1,12 +1,12 @@
-interface Audio {
-  audioElement: HTMLAudioElement
-}
-
-export default class audio implements Audio {
-  audioElement: HTMLAudioElement
+export default class audio {
+  private audioElement: HTMLAudioElement
 
   constructor(src: string) {
     this.audioElement = new Audio(src)
+  }
+
+  get value(): HTMLAudioElement {
+    return this.audioElement as HTMLAudioElement
   }
 
   /* 播放 */
@@ -22,6 +22,11 @@ export default class audio implements Audio {
   /* 静音 */
   muted(isMuted: boolean): void {
     this.audioElement.muted = isMuted
+  }
+
+  /* 音量 */
+  volume(value: number): void {
+    this.audioElement.volume = value / 100
   }
 
   test(): void {

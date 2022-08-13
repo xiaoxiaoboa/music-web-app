@@ -6,8 +6,8 @@ interface IProps {
 
 export default function useDrag({
   trackElement
-}: IProps): [number, MouseEventHandler, MouseEventHandler] {
-  const [mouseOffsetX, setMouseOffsetX] = useState<number>(0)
+}: IProps): [number,React.Dispatch<React.SetStateAction<number>>, MouseEventHandler, MouseEventHandler] {
+  const [sliderValue, setSliderValue] = useState<number>(0)
   const [mouseX, setMouseX] = useState<number>(0)
   const offSetLeft =
     (trackElement?.offsetParent as HTMLDivElement)?.offsetLeft +
@@ -15,7 +15,7 @@ export default function useDrag({
 
   useEffect(() => {
     if (offSetLeft === undefined || mouseX === 0) return
-    setMouseOffsetX(() => percentCalculate(mouseX - offSetLeft, trackElement))
+    setSliderValue(() => percentCalculate(mouseX - offSetLeft, trackElement))
   }, [mouseX])
 
   useEffect(
@@ -54,5 +54,5 @@ export default function useDrag({
     return rel > 100 ? 100 : rel < 0 ? 0 : rel
   }
 
-  return [mouseOffsetX, handleMouseDown, handleMouseDrag]
+  return [sliderValue,setSliderValue, handleMouseDown, handleMouseDrag]
 }
