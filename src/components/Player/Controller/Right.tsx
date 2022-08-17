@@ -1,22 +1,17 @@
-import React, { FC, ReactElement, useState } from "react"
+import React, { FC, ReactElement, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Button } from "../index.style"
-import {
-  RiVolumeUpFill,
-  RiPlayListFill,
-  RiHeart2Line,
-  RiVolumeMuteFill
-} from "react-icons/ri"
-import Slider from "../../Slider"
+import { RiPlayListFill, RiHeart2Line } from "react-icons/ri"
+import Media from "../../../utils/Media"
+import Volume from "../../Volume"
 
 interface IProps {
-  isMuted: boolean
-  handleMuted: () => void
-  handleVolume: (value: number) => void
+  mediaObject: Media
 }
 
 const Right: FC<IProps> = (props): ReactElement => {
-  const { isMuted, handleMuted, handleVolume } = props
+  const { mediaObject } = props
+
   return (
     <RightButton>
       <Button>
@@ -26,19 +21,7 @@ const Right: FC<IProps> = (props): ReactElement => {
         <RiPlayListFill className="RiPlayListFill" />
       </Button>
       <VolumeButtonBox>
-        <Button onClick={handleMuted}>
-          {isMuted ? (
-            <RiVolumeMuteFill className="RiVolumeMute" />
-          ) : (
-            <RiVolumeUpFill className="RiVolumeMute" />
-          )}
-        </Button>
-        <Slider
-          sWidth={`6.25rem`}
-          sPadding={`.5rem 0`}
-          getSliderValue={handleVolume}
-          isMuted={isMuted}
-        />
+        <Volume mediaObject={mediaObject} Button={Button}/>
       </VolumeButtonBox>
     </RightButton>
   )
@@ -55,5 +38,5 @@ const RightButton = styled.div`
 const VolumeButtonBox = styled.div`
   display: flex;
   align-items: center;
-  gap: .3125rem;
+  gap: 0.3125rem;
 `

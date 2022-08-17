@@ -1,16 +1,41 @@
-import { FC, ReactElement, useEffect, useRef } from "react"
+import {
+  FC,
+  ReactElement,
+  ReactEventHandler,
+  useEffect,
+  useRef,
+  useState
+} from "react"
 import styled from "styled-components"
+import Media from "../../utils/Media"
+import useAnimationOfSlide from "./Hooks/useAnimationOfSlide"
+import useCurrentTime from "./Hooks/useCurrentTime"
 import useDrag from "./Hooks/useDrag"
-import { SliderProps } from "../../types"
+import useDuration from "./Hooks/useDuration"
+
+export interface SliderProps {
+  type?: Media
+  volume?: "volume"
+  sWidth?: string
+  sPadding?: string
+  isMuted?: boolean
+  getSliderValue: (value: number) => void
+}
 
 const Slider: FC<SliderProps> = (props): ReactElement => {
-  const SlideColorRef = useRef<HTMLSpanElement>(null)
-  const ThumbRef = useRef<HTMLSpanElement>(null)
   const TrackRef = useRef<HTMLDivElement>(null)
   const [sliderValue, setSliderValue, handleMouseDown, handleMouseDrag] =
     useDrag({
       trackElement: TrackRef.current as HTMLDivElement
     })
+  const duration = useDuration({ mediaObject: props.type as Media })
+  const currentTime = useCurrentTime({
+    mediaObject: props.type as Media
+  })
+  // const test = useAnimationOfSlide({
+  //   mediaObject: props.type as media,
+  //   setSlideValue: setSliderValue
+  // })
 
   /* 控制音量 | 歌曲 | mv 进度条的值 */
   useEffect(() => {
@@ -19,31 +44,33 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
 
   useEffect(() => {
     /* 当静音时，音量条应该为0 */
-    if (props.isMuted) setSliderValue(0)
-
+    if (props.isMuted) {
+      setSliderValue(0)
+    }
     return () => {
       /*
         当取消静音时，音量条应该恢复静音前的值
         但是当之前的值为0时，则不需要恢复 
        */
-      if (props.isMuted && sliderValue !== 0) setSliderValue(sliderValue)
+      if (props.isMuted && sliderValue !== 0) {
+        setSliderValue(sliderValue)
+      }
     }
   }, [props.isMuted])
 
   return (
-    <SliderContainer onMouseDown={handleMouseDown} co={props}>
-      {/* {props.getSliderValue ? <></> : <StartTime>0:00</StartTime>} */}
+    <SliderContainer co={props} onMouseDown={handleMouseDown}>
+      {props.volume ? <></> : <StartTime>{currentTime}</StartTime>}
       <SliderTrack id="track" ref={TrackRef}>
-        <SlideColor ref={SlideColorRef} slideColorWidth={sliderValue} />
+        <SlideColor slideColorWidth={sliderValue} />
         <SliderThumb
           id="thumb"
-          ref={ThumbRef}
           SliderThumbLeft={sliderValue}
           onMouseDown={handleMouseDrag}
           TrackElement={TrackRef.current as HTMLDivElement}
         />
       </SliderTrack>
-      {/* {props.getSliderValue ? <></> : <EndTime>1:15</EndTime>} */}
+      {props.volume ? <></> : <EndTime>{duration}</EndTime>}
     </SliderContainer>
   )
 }
@@ -60,7 +87,7 @@ const SliderContainer = styled.div<SliderContainerProps>`
   width: ${props => props.co.sWidth};
   position: relative;
   padding: ${props => props.co.sPadding};
-  gap: 11px;
+  gap: 8px;
   cursor: pointer;
   transition: all 1s linear;
 
@@ -88,11 +115,11 @@ interface SliderThumbProps {
 
 const SliderThumb = styled.span.attrs<SliderThumbProps>(props => ({
   style: {
-    left: `calc(${props.SliderThumbLeft}% - 7px)`
+    left: `calc(${props.SliderThumbLeft}% - 6px)`
   }
 }))<SliderThumbProps>`
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   position: absolute;
 `
@@ -111,6 +138,6 @@ const SlideColor = styled.span.attrs<SlideColorProps>(props => ({
   border-radius: 10px;
 `
 const StartTime = styled.span`
-  font-size: 12px;
+  font-size: 10px;
 `
 const EndTime = styled(StartTime)``

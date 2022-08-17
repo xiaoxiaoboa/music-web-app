@@ -9,48 +9,13 @@ import {
   Artist
 } from "./index.style"
 
-import audio from "../../utils/audio"
+import Audio from "../../utils/Audio"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
-import src from "../../assets/Free Loop-口琴演奏.mp3"
+import src from "../../assets/郑中基 - 答应不爱你.flac"
 
 const Player: FC = (): ReactElement => {
-  const [audioElement, setAudioElement] = useState(new audio(src))
-  const [playing, setPlay] = useState<boolean>(false)
-  const [isMuted, setIsMuted] = useState<boolean>(false)
-
-  /* 播放控制 */
-  const handlePlay = (): void => {
-    audioElement
-      ?.play()
-      .then(res => setPlay(() => !playing))
-      .catch(err => console.log(err))
-  }
-
-  /* 暂停控制 */
-  const handlePause = (): void => {
-    audioElement?.pause()
-    setPlay(() => !playing)
-  }
-
-  /* 静音控制 */
-  const handleMuted = (): void => {
-    audioElement?.muted(!isMuted)
-    setIsMuted(() => !isMuted)
-  }
-
-  /* 音量控制 */
-  const handleVolume = (value: number): void => {
-    audioElement?.volume(value)
-    if (value === 0 && isMuted === false) {
-      handleMuted()
-    } else if (value > 0 && isMuted === true) {
-      handleMuted()
-    }
-  }
-
-  /* 测试 */
-  const handleTest = (): void => {}
+  const [audioElement, setAudioElement] = useState<Audio>(new Audio(src))
 
   return (
     <ControllerBarContainer>
@@ -65,16 +30,8 @@ const Player: FC = (): ReactElement => {
             <Artist>许嵩</Artist>
           </SongDetails>
         </SongCover>
-        <Middle
-          playing={playing}
-          handlePlay={handlePlay}
-          handlePause={handlePause}
-        />
-        <Right
-          isMuted={isMuted}
-          handleMuted={handleMuted}
-          handleVolume={handleVolume}
-        />
+        <Middle audioObject={audioElement!} />
+        <Right mediaObject={audioElement!} />
       </ControllerWrapper>
     </ControllerBarContainer>
   )

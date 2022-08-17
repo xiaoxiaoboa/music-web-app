@@ -1,17 +1,32 @@
-import React, { FC, ReactElement } from "react"
+import React, { FC, ReactElement, useState } from "react"
 import styled from "styled-components"
 import { FaPlay, FaPause, FaStepForward, FaStepBackward } from "react-icons/fa"
 import { Button } from "../index.style"
 import Slider from "../../Slider"
+import audio from "../../../utils/Media"
+import useDuration from "../../Slider/Hooks/useDuration"
+import useCurrentTime from "../../Slider/Hooks/useCurrentTime"
 
 interface IProps {
-  playing: boolean
-  handlePlay: () => void
-  handlePause: () => void
+  audioObject: audio
 }
 
-const Middle: FC<IProps> = (props): ReactElement => {
-  const { playing, handlePlay, handlePause } = props
+const Middle: FC<IProps> = ({ audioObject }): ReactElement => {
+  const [isPlaying, setIsPlay] = useState<boolean>(false)
+
+  /* 播放控制 */
+  const handlePlay = (): void => {
+    audioObject
+      .play()
+      .then(res => setIsPlay(() => !isPlaying))
+      .catch(err => console.log(err))
+  }
+
+  /* 暂停控制 */
+  const handlePause = (): void => {
+    audioObject.pause()
+    setIsPlay(() => !isPlaying)
+  }
 
   return (
     <MiddleButton>
@@ -19,9 +34,8 @@ const Middle: FC<IProps> = (props): ReactElement => {
         <Button>
           <FaStepBackward className="FaStepBackward" />
         </Button>
-        <Button
-          onClick={() => (playing ? handlePause() : handlePlay())}>
-          {playing ? (
+        <Button onClick={() => (isPlaying ? handlePause() : handlePlay())}>
+          {isPlaying ? (
             <FaPause className="FaPause" />
           ) : (
             <FaPlay className="FaPlay" />
@@ -31,7 +45,12 @@ const Middle: FC<IProps> = (props): ReactElement => {
           <FaStepForward className="FaStepForward" />
         </Button>
       </ButtonBox>
-      <Slider sWidth={`100%`} sPadding={`8px 0`} getSliderValue={() => {}} />
+      <Slider
+        type={audioObject}
+        sWidth={`100%`}
+        sPadding={`4px 0`}
+        getSliderValue={() => {}}
+      />
     </MiddleButton>
   )
 }
