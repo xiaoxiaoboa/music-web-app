@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect, useState } from "react"
+import { FC, ReactElement, useEffect, useRef, useState } from "react"
 import {
   ControllerBarContainer,
   ControllerWrapper,
@@ -12,10 +12,21 @@ import {
 import Audio from "../../utils/Audio"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
-import src from "../../assets/郑中基 - 答应不爱你.flac"
+// import src from "../../assets/郑中基 - 答应不爱你.flac"
 
-const Player: FC = (): ReactElement => {
-  const [audioElement, setAudioElement] = useState<Audio>(new Audio(src))
+interface IProps {
+  src: string
+  handleNext: () => void
+}
+
+const Player: FC<IProps> = ({ src, handleNext }): ReactElement => {
+  // const [audioElement, setAudioElement] = useState<string>('')
+  const audioElement = useRef(new Audio(src))
+
+  useEffect(() => {
+    audioElement.current.value.src = src
+  }, [src])
+  console.log(audioElement.current)
 
   return (
     <ControllerBarContainer>
@@ -30,8 +41,8 @@ const Player: FC = (): ReactElement => {
             <Artist>许嵩</Artist>
           </SongDetails>
         </SongCover>
-        <Middle audioObject={audioElement!} />
-        <Right mediaObject={audioElement!} />
+        <Middle audioObject={audioElement.current!} handleNext={handleNext} />
+        <Right mediaObject={audioElement.current!} />
       </ControllerWrapper>
     </ControllerBarContainer>
   )

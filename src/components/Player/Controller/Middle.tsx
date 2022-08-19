@@ -4,14 +4,13 @@ import { FaPlay, FaPause, FaStepForward, FaStepBackward } from "react-icons/fa"
 import { Button } from "../index.style"
 import Slider from "../../Slider"
 import audio from "../../../utils/Media"
-import useDuration from "../../Slider/Hooks/useDuration"
-import useCurrentTime from "../../Slider/Hooks/useCurrentTime"
 
 interface IProps {
   audioObject: audio
+  handleNext: () => void
 }
 
-const Middle: FC<IProps> = ({ audioObject }): ReactElement => {
+const Middle: FC<IProps> = ({ audioObject,handleNext }): ReactElement => {
   const [isPlaying, setIsPlay] = useState<boolean>(false)
 
   /* 播放控制 */
@@ -42,7 +41,7 @@ const Middle: FC<IProps> = ({ audioObject }): ReactElement => {
           )}
         </Button>
         <Button>
-          <FaStepForward className="FaStepForward" />
+          <FaStepForward className="FaStepForward" onClick={handleNext} />
         </Button>
       </ButtonBox>
       <Slider

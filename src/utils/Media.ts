@@ -4,6 +4,7 @@ export default class Media {
   protected constructor(arg: string | HTMLVideoElement) {
     if (typeof arg === "string") {
       this._mediaElement = new Audio(arg)
+      // this._mediaElement.autoplay = true
     } else {
       this._mediaElement = arg
     }

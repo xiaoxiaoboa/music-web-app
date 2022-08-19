@@ -1,17 +1,36 @@
-import { MouseEventHandler, useEffect, useState } from "react"
+import { MouseEventHandler, useEffect, useRef, useState } from "react"
+import Media from "../../../utils/Media"
+import useDuration from "./useDuration"
 
 interface IProps {
   trackElement: HTMLDivElement
+  mediaObject?: Media
+  currentTime?: number
 }
 
 export default function useDrag({
-  trackElement
-}: IProps): [number,React.Dispatch<React.SetStateAction<number>>, MouseEventHandler, MouseEventHandler] {
+  trackElement,
+  mediaObject,
+  currentTime
+}: IProps): [
+  number,
+  React.Dispatch<React.SetStateAction<number>>,
+  MouseEventHandler,
+  MouseEventHandler
+] {
   const [sliderValue, setSliderValue] = useState<number>(0)
   const [mouseX, setMouseX] = useState<number>(0)
+  const [strDuration, duration] = useDuration({ mediaObject: mediaObject! })
   const offSetLeft =
     (trackElement?.offsetParent as HTMLDivElement)?.offsetLeft +
     trackElement?.offsetLeft
+
+  useEffect(() => {
+    if(!currentTime) return 
+    const onePercent = Math.floor(duration) / 100
+    setSliderValue(() => parseFloat((currentTime! / onePercent).toFixed(1)))
+    console.log(parseFloat((currentTime! / onePercent).toFixed(1)))
+  }, [currentTime])
 
   useEffect(() => {
     if (offSetLeft === undefined || mouseX === 0) return
@@ -46,13 +65,13 @@ export default function useDrag({
 
   /* 百分比计算 */
   const percentCalculate = (
-    processValue: number,
+    progressValue: number,
     htmlElement: HTMLDivElement
   ): number => {
-    const rel = Math.round((processValue / htmlElement?.clientWidth) * 100)
+    const rel = Math.round((progressValue / htmlElement?.clientWidth) * 100)
 
     return rel > 100 ? 100 : rel < 0 ? 0 : rel
   }
 
-  return [sliderValue,setSliderValue, handleMouseDown, handleMouseDrag]
+  return [sliderValue, setSliderValue, handleMouseDown, handleMouseDrag]
 }

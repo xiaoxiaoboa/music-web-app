@@ -1,17 +1,10 @@
-import {
-  FC,
-  ReactElement,
-  ReactEventHandler,
-  useEffect,
-  useRef,
-  useState
-} from "react"
+import { FC, ReactElement, useEffect, useRef } from "react"
 import styled from "styled-components"
 import Media from "../../utils/Media"
-import useAnimationOfSlide from "./Hooks/useAnimationOfSlide"
 import useCurrentTime from "./Hooks/useCurrentTime"
 import useDrag from "./Hooks/useDrag"
 import useDuration from "./Hooks/useDuration"
+import useProgressBar from "./Hooks/useProgressBar"
 
 export interface SliderProps {
   type?: Media
@@ -24,18 +17,20 @@ export interface SliderProps {
 
 const Slider: FC<SliderProps> = (props): ReactElement => {
   const TrackRef = useRef<HTMLDivElement>(null)
-  const [sliderValue, setSliderValue, handleMouseDown, handleMouseDrag] =
-    useDrag({
-      trackElement: TrackRef.current as HTMLDivElement
-    })
-  const duration = useDuration({ mediaObject: props.type as Media })
-  const currentTime = useCurrentTime({
+  const [strCurrentTime, currentTime] = useCurrentTime({
     mediaObject: props.type as Media
   })
-  // const test = useAnimationOfSlide({
-  //   mediaObject: props.type as media,
-  //   setSlideValue: setSliderValue
-  // })
+  const [sliderValue, setSliderValue, handleMouseDown, handleMouseDrag] =
+    useDrag({
+      trackElement: TrackRef.current as HTMLDivElement,
+      mediaObject: props.type as Media,
+      currentTime
+    })
+  const [strDuration, duration] = useDuration({
+    mediaObject: props.type as Media
+  })
+
+  // const test = useProgressBar({ mediaObject: props.type as Media, sliderValue })
 
   /* 控制音量 | 歌曲 | mv 进度条的值 */
   useEffect(() => {
@@ -60,7 +55,7 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
 
   return (
     <SliderContainer co={props} onMouseDown={handleMouseDown}>
-      {props.volume ? <></> : <StartTime>{currentTime}</StartTime>}
+      {props.volume ? <></> : <StartTime>{strCurrentTime}</StartTime>}
       <SliderTrack id="track" ref={TrackRef}>
         <SlideColor slideColorWidth={sliderValue} />
         <SliderThumb
@@ -70,7 +65,7 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
           TrackElement={TrackRef.current as HTMLDivElement}
         />
       </SliderTrack>
-      {props.volume ? <></> : <EndTime>{duration}</EndTime>}
+      {props.volume ? <></> : <EndTime>{strDuration}</EndTime>}
     </SliderContainer>
   )
 }
