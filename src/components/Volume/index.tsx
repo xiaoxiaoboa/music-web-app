@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react"
+import React, { FC, useCallback, useMemo, useState } from "react"
 import Slider from "../Slider"
 import { RiVolumeUpFill, RiVolumeMuteFill } from "react-icons/ri"
 // import { Button } from "../Player/index.style"
@@ -12,23 +12,27 @@ interface IProps {
 
 const Volume: FC<IProps> = ({ mediaObject, Button }) => {
   const [isMuted, setIsMuted] = useState<boolean>(false)
-
   /* 处理静音 */
   const handleMuted = () => {
     setIsMuted(() => !isMuted)
     mediaObject.muted = !isMuted
   }
 
-  /* 修改音量 */
-  const handleVolume = (value: number): void => {
-    mediaObject.volume = value
 
-    if (value === 0 && isMuted === false) {
-      handleMuted()
-    } else if (value > 0 && isMuted === true) {
-      handleMuted()
-    }
-  }
+  /* 修改音量 */
+  const handleVolume = useMemo(
+    () =>
+      (value: number): void => {
+        mediaObject.volume = value
+
+        if (value === 0 && isMuted === false) {
+          handleMuted()
+        } else if (value > 0 && isMuted === true) {
+          handleMuted()
+        }
+      },
+    []
+  )
   return (
     <>
       <Button onClick={handleMuted}>

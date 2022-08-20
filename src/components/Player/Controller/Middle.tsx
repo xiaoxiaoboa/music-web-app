@@ -10,7 +10,7 @@ interface IProps {
   handleNext: () => void
 }
 
-const Middle: FC<IProps> = ({ audioObject,handleNext }): ReactElement => {
+const Middle: FC<IProps> = ({ audioObject, handleNext }): ReactElement => {
   const [isPlaying, setIsPlay] = useState<boolean>(false)
 
   /* 播放控制 */
@@ -44,12 +44,7 @@ const Middle: FC<IProps> = ({ audioObject,handleNext }): ReactElement => {
           <FaStepForward className="FaStepForward" onClick={handleNext} />
         </Button>
       </ButtonBox>
-      <Slider
-        type={audioObject}
-        sWidth={`100%`}
-        sPadding={`4px 0`}
-        getSliderValue={() => {}}
-      />
+      <Slider type={audioObject} sWidth={`100%`} sPadding={`4px 0`} />
     </MiddleButton>
   )
 }

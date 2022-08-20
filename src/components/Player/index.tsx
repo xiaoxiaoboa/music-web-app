@@ -26,8 +26,6 @@ const Player: FC<IProps> = ({ src, handleNext }): ReactElement => {
   useEffect(() => {
     audioElement.current.value.src = src
   }, [src])
-  console.log(audioElement.current)
-
   return (
     <ControllerBarContainer>
       <ControllerWrapper>

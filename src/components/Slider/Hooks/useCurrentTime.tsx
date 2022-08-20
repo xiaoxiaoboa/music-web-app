@@ -6,7 +6,9 @@ interface IProps {
 }
 
 /* 获取媒体的currentTime，无设置功能 */
-export default function useCurrentTime({ mediaObject }: IProps): [string, number] {
+export default function useCurrentTime({
+  mediaObject
+}: IProps): [string, number] {
   const [currentTime, setCurrentTime] = useState<number>(0)
 
   useEffect(() => {
@@ -22,6 +24,7 @@ export default function useCurrentTime({ mediaObject }: IProps): [string, number
     }
   }, [mediaObject?.paused])
 
+
   const toMinute = () => {
     return (
       ("" + (Math.floor(currentTime / 60) % 60)).slice(-2) +
@@ -29,7 +32,6 @@ export default function useCurrentTime({ mediaObject }: IProps): [string, number
       ("0" + (currentTime % 60)).slice(-2)
     )
   }
-
 
   return [toMinute(), currentTime]
 }

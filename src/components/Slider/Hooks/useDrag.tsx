@@ -1,35 +1,49 @@
-import { MouseEventHandler, useEffect, useRef, useState } from "react"
+import {
+  MouseEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react"
 import Media from "../../../utils/Media"
-import useDuration from "./useDuration"
 
 interface IProps {
   trackElement: HTMLDivElement
-  mediaObject?: Media
-  currentTime?: number
+  mediaObject: Media
+  currentTime: number
+  duration: number
 }
 
 export default function useDrag({
   trackElement,
   mediaObject,
-  currentTime
+  currentTime,
+  duration
 }: IProps): [
   number,
   React.Dispatch<React.SetStateAction<number>>,
   MouseEventHandler,
   MouseEventHandler
 ] {
+  /* Slider的值 */
   const [sliderValue, setSliderValue] = useState<number>(0)
+  /* 鼠标距文档左侧X轴额距离 */
   const [mouseX, setMouseX] = useState<number>(0)
-  const [strDuration, duration] = useDuration({ mediaObject: mediaObject! })
-  const offSetLeft =
-    (trackElement?.offsetParent as HTMLDivElement)?.offsetLeft +
-    trackElement?.offsetLeft
+  /* 代表Slider的值是否根据currentTime的值变化而变化 */
+  const [isMove, setIsMove] = useState<boolean>(true)
+  const offSetLeft: number = useMemo(
+    () =>
+      (trackElement?.offsetParent as HTMLDivElement)?.offsetLeft +
+      trackElement?.offsetLeft,
+    [trackElement]
+  )
 
+  /* 媒体的currentTime变化是，就改变Slider的值，进度条就会根据媒体的播放移动 */
   useEffect(() => {
-    if(!currentTime) return 
-    const onePercent = Math.floor(duration) / 100
+    if (!currentTime || !isMove) return
+    const onePercent: number = Math.floor(duration!) / 100
     setSliderValue(() => parseFloat((currentTime! / onePercent).toFixed(1)))
-    console.log(parseFloat((currentTime! / onePercent).toFixed(1)))
   }, [currentTime])
 
   useEffect(() => {
@@ -46,20 +60,24 @@ export default function useDrag({
   )
 
   /* 鼠标单击落下时 */
-  const handleMouseDown: MouseEventHandler = (e): void => {
+  const handleMouseDown: MouseEventHandler = useCallback((e): void => {
     e.preventDefault()
+    setIsMove(false)
     setMouseX(() => e.clientX)
     handleMouseDrag(e)
-  }
+  }, [])
   /* 拖拽鼠标时 */
-  const handleMouseDrag: MouseEventHandler = (e): void => {
+  const handleMouseDrag: MouseEventHandler = useCallback((e): void => {
     e.preventDefault()
     document.onmousemove = e => {
+      setIsMove(false)
       setMouseX(() => e.clientX)
     }
-  }
-  /* 结束鼠标拖拽时，清除监听 */
+  }, [])
+  /* 结束鼠标按键时，清除监听 */
   document.onmouseup = () => {
+    setIsMove(true)
+    fastForward()
     document.onmousemove = null
   }
 
@@ -71,6 +89,13 @@ export default function useDrag({
     const rel = Math.round((progressValue / htmlElement?.clientWidth) * 100)
 
     return rel > 100 ? 100 : rel < 0 ? 0 : rel
+  }
+
+  /* 点击Slider轨道实现快进 */
+  const fastForward = () => {
+    const toFixed = Math.floor(duration!) / 100
+
+    if (mediaObject) mediaObject.currentTime = Math.floor(sliderValue * toFixed)
   }
 
   return [sliderValue, setSliderValue, handleMouseDown, handleMouseDrag]

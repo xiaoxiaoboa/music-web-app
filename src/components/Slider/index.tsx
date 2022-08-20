@@ -1,10 +1,9 @@
-import { FC, ReactElement, useEffect, useRef } from "react"
+import React, { FC, ReactElement, useEffect, useRef } from "react"
 import styled from "styled-components"
 import Media from "../../utils/Media"
 import useCurrentTime from "./Hooks/useCurrentTime"
 import useDrag from "./Hooks/useDrag"
 import useDuration from "./Hooks/useDuration"
-import useProgressBar from "./Hooks/useProgressBar"
 
 export interface SliderProps {
   type?: Media
@@ -12,7 +11,7 @@ export interface SliderProps {
   sWidth?: string
   sPadding?: string
   isMuted?: boolean
-  getSliderValue: (value: number) => void
+  getSliderValue?: (value: number) => void
 }
 
 const Slider: FC<SliderProps> = (props): ReactElement => {
@@ -20,21 +19,21 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
   const [strCurrentTime, currentTime] = useCurrentTime({
     mediaObject: props.type as Media
   })
+  const [strDuration, duration] = useDuration({
+    mediaObject: props.type as Media
+  })
   const [sliderValue, setSliderValue, handleMouseDown, handleMouseDrag] =
     useDrag({
       trackElement: TrackRef.current as HTMLDivElement,
       mediaObject: props.type as Media,
-      currentTime
+      currentTime,
+      duration
     })
-  const [strDuration, duration] = useDuration({
-    mediaObject: props.type as Media
-  })
 
-  // const test = useProgressBar({ mediaObject: props.type as Media, sliderValue })
 
-  /* 控制音量 | 歌曲 | mv 进度条的值 */
+  /* 修改音量 */
   useEffect(() => {
-    props.getSliderValue(sliderValue)
+    if (props.getSliderValue) props.getSliderValue(sliderValue)
   }, [sliderValue])
 
   useEffect(() => {
@@ -54,9 +53,9 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
   }, [props.isMuted])
 
   return (
-    <SliderContainer co={props} onMouseDown={handleMouseDown}>
+    <SliderContainer co={props}>
       {props.volume ? <></> : <StartTime>{strCurrentTime}</StartTime>}
-      <SliderTrack id="track" ref={TrackRef}>
+      <SliderTrack id="track" ref={TrackRef} onMouseDown={handleMouseDown}>
         <SlideColor slideColorWidth={sliderValue} />
         <SliderThumb
           id="thumb"
@@ -83,7 +82,6 @@ const SliderContainer = styled.div<SliderContainerProps>`
   position: relative;
   padding: ${props => props.co.sPadding};
   gap: 8px;
-  cursor: pointer;
   transition: all 1s linear;
 
   &:hover {
@@ -101,6 +99,7 @@ const SliderTrack = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `
 
 interface SliderThumbProps {

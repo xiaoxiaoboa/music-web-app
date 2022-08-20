@@ -11,7 +11,6 @@ interface IProps {
 
 const Right: FC<IProps> = (props): ReactElement => {
   const { mediaObject } = props
-
   return (
     <RightButton>
       <Button>

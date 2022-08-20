@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useCallback, useMemo, useState } from "react"
 import Media from "../../../utils/Media"
 
 interface IProps {
@@ -18,12 +18,12 @@ export default function useDuration({ mediaObject }: IProps): [string, number] {
   })
 
   /* 转换格式 */
-  const format = (): string => {
+  const format = useMemo((): string => {
     if (duration === 0) return "0:00"
     const minute = Math.floor(duration / 60)
     const second = Math.floor(duration - minute * 60)
     return minute + ":" + second
-  }
+  }, [duration])
 
-  return [format(), duration]
+  return [format, duration]
 }
