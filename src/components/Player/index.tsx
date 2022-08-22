@@ -12,7 +12,6 @@ import {
 import Audio from "../../utils/Audio"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
-// import src from "../../assets/郑中基 - 答应不爱你.flac"
 
 interface IProps {
   src: string

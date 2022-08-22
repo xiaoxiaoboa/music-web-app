@@ -10,11 +10,7 @@ export default function useDuration({ mediaObject }: IProps): [string, number] {
 
   /* canplaythrough事件触发后，可以准确的获得到媒体的duration */
   mediaObject?.value.addEventListener("canplay", () => {
-    const duration: number =
-      mediaObject?.duration === 0
-        ? mediaObject?.duration
-        : mediaObject?.duration + 1
-    setDuration(() => duration)
+    setDuration(() => mediaObject?.duration)
   })
 
   /* 转换格式 */

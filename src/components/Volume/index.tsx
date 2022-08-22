@@ -18,21 +18,17 @@ const Volume: FC<IProps> = ({ mediaObject, Button }) => {
     mediaObject.muted = !isMuted
   }
 
-
   /* 修改音量 */
-  const handleVolume = useMemo(
-    () =>
-      (value: number): void => {
-        mediaObject.volume = value
+  const handleVolume = (value: number): void => {
+    mediaObject.volume = value
 
-        if (value === 0 && isMuted === false) {
-          handleMuted()
-        } else if (value > 0 && isMuted === true) {
-          handleMuted()
-        }
-      },
-    []
-  )
+    if (value === 0 && isMuted === false) {
+      handleMuted()
+    } else if (value > 0 && isMuted === true) {
+      handleMuted()
+    }
+  }
+
   return (
     <>
       <Button onClick={handleMuted}>

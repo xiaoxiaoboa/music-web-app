@@ -3,7 +3,7 @@ import styled from "styled-components"
 import Player from "./components/Player"
 import TopBar from "./components/TopBar"
 import Home from "./pages/Home"
-import src from "./assets/多远都要在一起 - G.E.M.邓紫棋.flac"
+import src from "./assets/如果当时 - 许嵩.flac"
 
 const App: FC = (): ReactElement => {
   const [mySrc, setMySrc] = useState<string>(src)

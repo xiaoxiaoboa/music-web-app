@@ -30,7 +30,6 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
       duration
     })
 
-
   /* 修改音量 */
   useEffect(() => {
     if (props.getSliderValue) props.getSliderValue(sliderValue)
@@ -82,7 +81,6 @@ const SliderContainer = styled.div<SliderContainerProps>`
   position: relative;
   padding: ${props => props.co.sPadding};
   gap: 8px;
-  transition: all 1s linear;
 
   &:hover {
     span[id="thumb"] {
