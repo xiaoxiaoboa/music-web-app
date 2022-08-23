@@ -41,7 +41,8 @@ export const PlayButton = styled.div`
   right: 0.625rem;
   bottom: 2.25rem;
   border-radius: 50%;
-  background-color: #f9f3f3;
+  /* background-color: #f9f3f3; */
+  background-color: rgb(174 189 198 / 50%);
   padding: 0.625rem;
   cursor: pointer;
   transition: all 0.2s linear;
@@ -53,7 +54,7 @@ export const PlayButton = styled.div`
   }
   .BsFillPlayFill {
     display: flex;
-    color: black;
+    color: #ffffffcc;
     font-size: 1.625rem;
   }
 `

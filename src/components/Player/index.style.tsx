@@ -38,24 +38,6 @@ export const Artist = styled.span`
   font-size: 0.875rem;
 `
 
-// export const MiddleButton = styled.div`
-//   flex: 1;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   gap: 15px;
-// `
-
-// export const RightButton = styled.div`
-//   flex: 1;
-//   display: flex;
-//   align-items: center;
-//   justify-content: end;
-// `
-// export const VolumeButtonBox = styled.div`
-//   display: flex;
-//   align-items: center;
-// `
 
 export const Button = styled.button`
   border: none;
@@ -89,4 +71,6 @@ export const Button = styled.button`
   &:hover {
     background-color: ${props => props.theme.hover_BgColor};
   }
+
+  
 `

@@ -20,10 +20,10 @@ interface IProps {
 
 const Player: FC<IProps> = ({ src, handleNext }): ReactElement => {
   const audioElement = useRef(new MyAudio(src))
-
   useEffect(() => {
     audioElement.current.value.src = src
   }, [src])
+
   return (
     <ControllerBarContainer>
       <ControllerWrapper>

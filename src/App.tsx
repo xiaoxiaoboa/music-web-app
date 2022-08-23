@@ -11,7 +11,7 @@ const App: FC = (): ReactElement => {
   const handleNext = () => {
 
     setMySrc(
-      "https://music-web-app-iota.vercel.app/assets/Free%20Loop-%E5%8F%A3%E7%90%B4%E6%BC%94%E5%A5%8F.b696a464.mp3"
+      "https://storage.googleapis.com/media-session/elephants-dream/the-wires.mp3"
     )
   }
   

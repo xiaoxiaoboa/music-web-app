@@ -45,6 +45,9 @@ export const GlobalStyle = createGlobalStyle`
     color-scheme: ${props => props.theme.color_scheme};
   }
 
+  button:focus{
+    outline: none;
+  }
 
   
 `
