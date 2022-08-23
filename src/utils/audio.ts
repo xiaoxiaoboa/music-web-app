@@ -1,6 +1,6 @@
 import Media from "./Media"
 
-export default class audio extends Media {
+export default class Audio extends Media {
   constructor(arg: string) {
     super(arg)
   }
