@@ -1,9 +1,4 @@
-interface MProps {
-  play: () => Promise<unknown>
-  pause: () => void
-}
-
-export default class Media implements MProps {
+export default class Media {
   protected readonly _mediaElement: HTMLMediaElement
 
   protected constructor(arg: string | HTMLVideoElement) {

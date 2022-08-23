@@ -44,7 +44,6 @@ export default function useDrag({
   /* 媒体的currentTime变化时，就改变Slider的值，进度条就会根据媒体的播放移动 */
   useEffect(() => {
     if (currentTime > 0 && isInterActive === false) {
-      console.log(currentTime)
       setSliderValue(() => parseFloat((currentTime! / toFixed).toFixed(1)))
     }
   }, [currentTime, isInterActive])

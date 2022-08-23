@@ -9,7 +9,7 @@ import {
   Artist
 } from "./index.style"
 
-import Audio from "../../utils/Audio"
+import MyAudio from "../../utils/MyAudio"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
 
@@ -19,7 +19,7 @@ interface IProps {
 }
 
 const Player: FC<IProps> = ({ src, handleNext }): ReactElement => {
-  const audioElement = useRef(new Audio(src))
+  const audioElement = useRef(new MyAudio(src))
 
   useEffect(() => {
     audioElement.current.value.src = src
