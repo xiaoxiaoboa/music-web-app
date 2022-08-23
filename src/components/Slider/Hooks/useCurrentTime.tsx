@@ -3,26 +3,20 @@ import Media from "../../../utils/Media"
 
 interface IProps {
   mediaObject: Media
+  isInterActive: boolean
 }
 
 /* 获取媒体的currentTime，无设置功能 */
 export default function useCurrentTime({
-  mediaObject
-}: IProps): [string, number] {
+  mediaObject,
+  isInterActive
+}: IProps): [string, number, React.Dispatch<React.SetStateAction<number>>] {
   const [currentTime, setCurrentTime] = useState<number>(0)
 
-  // useEffect(() => {
-  //   console.log(mediaObject?.paused)
-  //   if(mediaObject?.paused) {
-  //     setCurrentTime(() => mediaObject?.currentTime)
-  //   }
-  // },[mediaObject?.currentTime])
-
   /* 改变媒体播放轨道的值时，控制currentTime这个state，把改变后的state赋值给媒体元素的currentTime */
-
   useEffect(() => {
     let timer: number = -1
-    if (!mediaObject?.paused) {
+    if (mediaObject?.paused === false && isInterActive === false) {
       timer = setInterval(() => {
         setCurrentTime(() => Math.floor(mediaObject?.currentTime))
       }, 1000)
@@ -31,7 +25,7 @@ export default function useCurrentTime({
     return () => {
       clearInterval(timer)
     }
-  }, [mediaObject?.paused])
+  }, [mediaObject?.paused, isInterActive])
 
   const toMinute = useMemo(() => {
     return (
@@ -41,5 +35,5 @@ export default function useCurrentTime({
     )
   }, [currentTime])
 
-  return [toMinute, currentTime]
+  return [toMinute, currentTime, setCurrentTime]
 }

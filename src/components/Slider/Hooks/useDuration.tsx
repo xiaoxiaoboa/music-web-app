@@ -5,8 +5,12 @@ interface IProps {
   mediaObject: Media
 }
 
-export default function useDuration({ mediaObject }: IProps): [string, number] {
+export default function useDuration({
+  mediaObject
+}: IProps): [string, number, number] {
   const [duration, setDuration] = useState<number>(0)
+  const toFixed = useMemo(() => Math.floor(duration!) / 100, [duration!])
+
 
   /* canplaythrough事件触发后，可以准确的获得到媒体的duration */
   mediaObject?.value.addEventListener("canplay", () => {
@@ -21,5 +25,5 @@ export default function useDuration({ mediaObject }: IProps): [string, number] {
     return minute + ":" + second
   }, [duration])
 
-  return [format, duration]
+  return [format, duration, toFixed]
 }

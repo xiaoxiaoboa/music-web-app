@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect, useRef } from "react"
+import React, { FC, ReactElement, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import Media from "../../utils/Media"
 import useCurrentTime from "./Hooks/useCurrentTime"
@@ -15,24 +15,36 @@ export interface SliderProps {
 }
 
 const Slider: FC<SliderProps> = (props): ReactElement => {
+  /* Slider的值 */
+  const [sliderValue, setSliderValue] = useState<number>(0)
   const TrackRef = useRef<HTMLDivElement>(null)
-  const [strCurrentTime, currentTime] = useCurrentTime({
+  const [isInterActive, setIsInterActive] = useState<boolean>(false)
+
+  const [strDuration, duration, toFixed] = useDuration({
     mediaObject: props.type as Media
   })
-  const [strDuration, duration] = useDuration({
-    mediaObject: props.type as Media
+  const [strCurrentTime, currentTime, setCurrentTime] = useCurrentTime({
+    mediaObject: props.type as Media,
+    isInterActive
   })
-  const [sliderValue, setSliderValue, handleMouseDown, handleMouseDrag] =
-    useDrag({
-      trackElement: TrackRef.current as HTMLDivElement,
-      mediaObject: props.type as Media,
-      currentTime,
-      duration
-    })
+
+  const [handleMouseDown, handleMouseDrag] = useDrag({
+    trackElement: TrackRef.current as HTMLDivElement,
+    mediaObject: props.type as Media,
+    duration,
+    currentTime,
+    isInterActive,
+    setIsInterActive,
+    setSliderValue
+  })
 
   /* 修改音量 */
   useEffect(() => {
-    if (props.getSliderValue) props.getSliderValue(sliderValue)
+    if (props.getSliderValue) {
+      props.getSliderValue(sliderValue)
+    } else if (isInterActive) {
+      setCurrentTime(() => Math.floor(sliderValue * toFixed))
+    }
   }, [sliderValue])
 
   useEffect(() => {
