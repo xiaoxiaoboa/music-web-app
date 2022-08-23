@@ -19,7 +19,6 @@ interface IProps {
 }
 
 const Player: FC<IProps> = ({ src, handleNext }): ReactElement => {
-  // const [audioElement, setAudioElement] = useState<string>('')
   const audioElement = useRef(new Audio(src))
 
   useEffect(() => {
