@@ -15,10 +15,9 @@ import Right from "./Controller/Right"
 
 interface IProps {
   src: string
-  handleNext: () => void
 }
 
-const Player: FC<IProps> = ({ src, handleNext }): ReactElement => {
+const Player: FC<IProps> = ({ src }): ReactElement => {
   const audioElement = useRef(new MyAudio(src))
   useEffect(() => {
     audioElement.current.value.src = src
@@ -37,7 +36,7 @@ const Player: FC<IProps> = ({ src, handleNext }): ReactElement => {
             <Artist>许嵩</Artist>
           </SongDetails>
         </SongCover>
-        <Middle audioObject={audioElement.current!} handleNext={handleNext} />
+        <Middle audioObject={audioElement.current!} />
         <Right mediaObject={audioElement.current!} />
       </ControllerWrapper>
     </ControllerBarContainer>

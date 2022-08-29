@@ -98,9 +98,7 @@ export const AvatarWrapper = styled.div`
   align-items: center;
   justify-content: flex-end;
 
-  &:hover {
-    box-shadow: ${props => props.theme.nav_boxShadow};
-  }
+  
 `
 
 export const ThemeButton = styled.div`

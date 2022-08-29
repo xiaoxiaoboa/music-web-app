@@ -7,10 +7,9 @@ import audio from "../../../utils/Media"
 
 interface IProps {
   audioObject: audio
-  handleNext: () => void
 }
 
-const Middle: FC<IProps> = ({ audioObject, handleNext }): ReactElement => {
+const Middle: FC<IProps> = ({ audioObject }): ReactElement => {
   const [isPlaying, setIsPlay] = useState<boolean>(false)
 
   /* 播放控制 */
@@ -41,7 +40,7 @@ const Middle: FC<IProps> = ({ audioObject, handleNext }): ReactElement => {
           )}
         </Button>
         <Button>
-          <FaStepForward className="FaStepForward" onClick={handleNext} />
+          <FaStepForward className="FaStepForward" />
         </Button>
       </ButtonBox>
       <Slider type={audioObject} sWidth={`100%`} sPadding={`4px 0`} />

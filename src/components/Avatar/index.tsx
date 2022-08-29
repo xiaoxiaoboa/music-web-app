@@ -21,6 +21,10 @@ const AvatarContainer = styled.div`
   justify-content: center;
   cursor: pointer;
   border-radius: 50%;
+  
+  &:hover {
+    box-shadow: ${props => props.theme.nav_boxShadow};
+  }
 `
 const Img = styled.img<IProps>`
   border-radius: 50%;

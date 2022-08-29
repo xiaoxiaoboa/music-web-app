@@ -1,8 +1,17 @@
-import { FC, ReactElement } from "react"
+import { FC, ReactElement, useEffect } from "react"
 import List from "../../components/List"
 import styled from "styled-components"
+import {get} from '../../utils/request'
+
 
 const Home: FC = (): ReactElement => {
+
+  // useEffect(() => {
+  //   const res = get("top/song?type=7")
+  //   res.then(res => console.log(res))
+  // },[])
+
+
   const artist =
     "https://p2.music.126.net/ATZ8-mOxophKXrLC0iXMZw==/109951163536269820.jpg?param=512y512"
 
@@ -45,14 +54,7 @@ export default Home
 
 /* style */
 export const HomeContainer = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow-y: scroll;
-  background-color: ${props => props.theme.primary_bgColor};
-  color: ${props => props.theme.primary_color};
   padding: 0 calc(10% - 17px) 1.25rem 10%;
-  user-select: none;
 `
 export const ListWrapper = styled.div`
   display: flex;

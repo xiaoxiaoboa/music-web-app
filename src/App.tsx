@@ -2,24 +2,19 @@ import { FC, ReactElement, useState } from "react"
 import styled from "styled-components"
 import Player from "./components/Player"
 import TopBar from "./components/TopBar"
-import Home from "./pages/Home"
+import Routes from "./routes"
 import src from "./assets/如果当时 - 许嵩.flac"
 
 const App: FC = (): ReactElement => {
   const [mySrc, setMySrc] = useState<string>(src)
 
-  const handleNext = () => {
-
-    setMySrc(
-      "https://storage.googleapis.com/media-session/elephants-dream/the-wires.mp3"
-    )
-  }
-  
   return (
     <AppContainer>
       <TopBar />
-      <Home />
-      <Player src={mySrc} handleNext={handleNext} />
+      <MainContainer>
+        <Routes />
+      </MainContainer>
+      <Player src={mySrc} />
     </AppContainer>
   )
 }
@@ -27,7 +22,16 @@ const App: FC = (): ReactElement => {
 export default App
 
 const AppContainer = styled.div`
-  display:flex;
+  display: flex;
   flex-direction: column;
   height: 100%;
+`
+const MainContainer = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  background-color: ${props => props.theme.primary_bgColor};
+  color: ${props => props.theme.primary_color};
+  user-select: none;
 `

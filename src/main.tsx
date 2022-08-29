@@ -2,15 +2,17 @@ import React from "react"
 import ReactDOM from "react-dom/client"
 import App from "./App"
 import "./index.css"
-import MyThemeProvider from "./utils/MyThemeProvider"
+import MyThemeProvider from "./styles/theme/MyThemeProvider"
 import { RecoilRoot } from "recoil"
-
+import { BrowserRouter } from "react-router-dom"
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <RecoilRoot>
       <MyThemeProvider>
+        <BrowserRouter>
           <App />
+        </BrowserRouter>
       </MyThemeProvider>
     </RecoilRoot>
   </React.StrictMode>
