@@ -5,7 +5,8 @@ import {
   qrCodeKey,
   qrCodeImg,
   qrCodeCheck,
-  getLoginStatus
+  getLoginStatus,
+  getUserInfo
 } from "../../utils/request"
 import { QRCodeState, qrCodeType, qrCodeAction } from "../../types"
 
@@ -30,33 +31,49 @@ const initialState: QRCodeState = { key: "", base64: "", isLoading: false }
 const Login = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
 
-  // useEffect(() => {
-  //   /* 加载中 */
-  //   dispatch({ type: qrCodeType.IS_LOADING, payload: true })
+  useEffect(() => {
+    /* 加载中 */
+    dispatch({ type: qrCodeType.IS_LOADING, payload: true })
 
-  //   /* 获取二维码key */
-  //   qrCodeKey("login/qr/key")
-  //     .then(res => {
-  //       dispatch({ type: qrCodeType.KEY, payload: res.data.unikey })
+    /* 获取二维码key */
+    qrCodeKey("login/qr/key")
+      .then(res => {
+        dispatch({ type: qrCodeType.KEY, payload: res.data.unikey })
 
-  //       /* 获取二维码 */
-  //       return qrCodeImg("login/qr/create", res.data.unikey)
-  //     })
-  //     .then(res => {
-  //       dispatch({ type: qrCodeType.IS_LOADING, payload: false })
+        /* 获取二维码 */
+        return qrCodeImg("login/qr/create", res.data.unikey)
+      })
+      .then(res => {
+        dispatch({ type: qrCodeType.IS_LOADING, payload: false })
 
-  //       dispatch({ type: qrCodeType.BASE64, payload: res.data.qrimg })
+        dispatch({ type: qrCodeType.BASE64, payload: res.data.qrimg })
+      })
+  }, [])
 
-  //     })
-  // }, [])
+  useEffect(() => {
+    if (state.base64.length > 0) {
+      const timer = setInterval( () => {
+        qrCodeCheck("login/qr/check", state.key)
+        .then(async res => {
+          if (res.code === 800) {
+            console.log(res.message)
+            clearInterval(timer)
+          } else if (res.code === 802) {
+            console.log(res.message)
+          } else if (res.code === 803) {
+            console.log('获取登录状态...')
+            // await getLoginStatus(res.cookie).then(res => console.log(res))
+            // localStorage.setItem('uerCookie', res.cookie)
+            clearInterval(timer)
+          }
+        })
+      }, 3000)
+    }
+  }, [state.base64])
 
-  // useEffect(() => {
-  //   if (state.base64.length > 0) {
-  //     qrCodeCheck("login/qr/check", state.key)
-  //     .then(res => console.log(res))
-  //     .catch(err => console.log(err))
-  //   }
-  // }, [state.base64])
+  const handleClick = () => {
+    getUserInfo().then(res => console.log(res))
+  }
 
   return (
     <LoginContainer>
@@ -72,6 +89,7 @@ const Login = () => {
             </NoticeMask> */}
           </ImgWrapper>
           <span>网易云音乐APP扫码</span>
+          <button onClick={handleClick}>点我</button>
         </LoginWrapper>
       )}
     </LoginContainer>

@@ -1,33 +1,20 @@
-import { FC, ReactElement, useEffect } from "react"
+import { FC, ReactElement, useEffect, useState } from "react"
 import List from "../../components/List"
 import styled from "styled-components"
-import {get} from '../../utils/request'
-
+import useSongLists from "./Hooks/useSongLists"
 
 const Home: FC = (): ReactElement => {
-
-  // useEffect(() => {
-  //   const res = get("top/song?type=7")
-  //   res.then(res => console.log(res))
-  // },[])
+  const songLists = useSongLists()
+  
 
 
-  const artist =
-    "https://p2.music.126.net/ATZ8-mOxophKXrLC0iXMZw==/109951163536269820.jpg?param=512y512"
-
-    const songList =
-      "https://p2.music.126.net/_ybcEpYdUVxuCct1yQwpyg==/109951163093420045.jpg?param=512y512"
-
-    const mvCover =
-      "https://p1.music.126.net/KM6GD1xo8pU1KLzFDgktnw==/109951167666163933.jpg?param=464y260"
-      
   return (
     <HomeContainer>
       <ListWrapper>
-        <h2>收藏的歌单</h2>
-        <List amount={5} src={songList} />
+        <h2>推荐歌单</h2>
+        <List amount={5} lists={songLists} />
       </ListWrapper>
-      <ListWrapper>
+      {/* <ListWrapper>
         <h2>推荐歌手</h2>
         <List
           amount={6}
@@ -44,13 +31,12 @@ const Home: FC = (): ReactElement => {
           alignItems={`center`}
           src={mvCover}
         />
-      </ListWrapper>
+      </ListWrapper> */}
     </HomeContainer>
   )
 }
 
 export default Home
-
 
 /* style */
 export const HomeContainer = styled.div`

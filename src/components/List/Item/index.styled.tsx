@@ -23,7 +23,7 @@ export const Cover = styled.div`
   &:hover {
     & div {
       opacity: 1;
-      bottom: 2.5rem;
+      bottom:60px;
     }
   }
 `
@@ -39,10 +39,11 @@ export const PlayButton = styled.div`
   align-items: center;
   position: absolute;
   right: 0.625rem;
-  bottom: 2.25rem;
+  bottom: 50px;
   border-radius: 50%;
   /* background-color: #f9f3f3; */
   background-color: rgb(174 189 198 / 50%);
+  backdrop-filter: blur(2px);
   padding: 0.625rem;
   cursor: pointer;
   transition: all 0.2s linear;

@@ -1,31 +1,30 @@
 import { FC, ReactElement } from "react"
-import { ListContainer } from "./index.seyle"
-
+import { ListContainer } from "./index.style"
+import { ListTpye } from "../../types"
 import Item from "./Item"
 
 interface IProps {
-  src: string
+  lists: ListTpye[]
   amount: number
   borderRadius?: string
   alignItems?: string
 }
 
 const List: FC<IProps> = ({
-  src,
+  lists,
   amount,
   borderRadius = `.625rem`,
   alignItems = `stretch`
 }: IProps): ReactElement => {
   return (
     <ListContainer amount={amount}>
-      <Item borderRadius={borderRadius} alignItems={alignItems} src={src} />
-      <Item borderRadius={borderRadius} alignItems={alignItems} src={src} />
-      <Item borderRadius={borderRadius} alignItems={alignItems} src={src} />
-      <Item borderRadius={borderRadius} alignItems={alignItems} src={src} />
-      <Item borderRadius={borderRadius} alignItems={alignItems} src={src} />
+      {lists.map(obj => {
+        return (
+          <Item borderRadius={borderRadius} alignItems={alignItems} songList={obj} />
+        )
+      })}
     </ListContainer>
   )
 }
 
 export default List
-

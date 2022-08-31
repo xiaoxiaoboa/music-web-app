@@ -7,9 +7,10 @@ import {
   CoverImg
 } from "./index.styled"
 import { BsFillPlayFill } from "react-icons/bs"
+import { ListTpye } from "../../../types"
 
 interface IProps {
-  src: string
+  songList: ListTpye
   borderRadius?: string
   alignItems?: string
 }
@@ -17,17 +18,17 @@ interface IProps {
 const Item: FC<IProps> = ({
   borderRadius,
   alignItems,
-  src
+  songList
 }: IProps): ReactElement => {
   return (
     <ItemContainer alignItems={alignItems}>
       <Cover>
-        <CoverImg src={src} alt="" borderRadius={borderRadius} />
+        <CoverImg src={songList.picUrl} alt="" borderRadius={borderRadius} />
         <PlayButton>
           <BsFillPlayFill className="BsFillPlayFill" />
         </PlayButton>
       </Cover>
-      <Title>SongListItem</Title>
+      <Title>{songList.name}</Title>
     </ItemContainer>
   )
 }
