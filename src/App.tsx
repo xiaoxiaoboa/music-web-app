@@ -29,7 +29,7 @@ const AppContainer = styled.div`
 const MainContainer = styled.div`
   flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction:column;
   overflow-y: auto;
   background-color: ${props => props.theme.primary_bgColor};
   color: ${props => props.theme.primary_color};

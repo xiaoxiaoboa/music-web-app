@@ -1,26 +1,30 @@
 import { FC, ReactElement } from "react"
 import { ListContainer } from "./index.style"
-import { ListTpye } from "../../types"
 import Item from "./Item"
+import { SongListType, MvType, ArtistType } from "../../types"
 
 interface IProps {
-  lists: ListTpye[]
+  datas: SongListType[] | MvType[] | ArtistType[]
   amount: number
   borderRadius?: string
   alignItems?: string
+  w?: number
+  h?: number
 }
 
 const List: FC<IProps> = ({
-  lists,
+  datas,
   amount,
   borderRadius = `.625rem`,
-  alignItems = `stretch`
+  alignItems = `stretch`,
+  w,
+  h
 }: IProps): ReactElement => {
   return (
     <ListContainer amount={amount}>
-      {lists.map(obj => {
+      {datas.map((obj:any) => {
         return (
-          <Item borderRadius={borderRadius} alignItems={alignItems} songList={obj} />
+          <Item key={obj.id} borderRadius={borderRadius} alignItems={alignItems} data={obj} w={w} h={h} />
         )
       })}
     </ListContainer>

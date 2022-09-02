@@ -7,28 +7,41 @@ import {
   CoverImg
 } from "./index.styled"
 import { BsFillPlayFill } from "react-icons/bs"
-import { ListTpye } from "../../../types"
+import { imgSize } from "../../../utils/imgSize"
+import { SongListType, MvType, ArtistType } from "../../../types"
 
 interface IProps {
-  songList: ListTpye
+  data: SongListType | MvType | ArtistType
   borderRadius?: string
   alignItems?: string
+  w?: number
+  h?: number
 }
 
 const Item: FC<IProps> = ({
   borderRadius,
   alignItems,
-  songList
+  data,
+  w,
+  h
 }: IProps): ReactElement => {
   return (
     <ItemContainer alignItems={alignItems}>
       <Cover>
-        <CoverImg src={songList.picUrl} alt="" borderRadius={borderRadius} />
+        <CoverImg
+          src={imgSize(
+            (data as SongListType).picUrl || (data as MvType).cover,
+            w,
+            h
+          )}
+          alt=""
+          borderRadius={borderRadius}
+        />
         <PlayButton>
           <BsFillPlayFill className="BsFillPlayFill" />
         </PlayButton>
       </Cover>
-      <Title>{songList.name}</Title>
+      <Title>{data.name}</Title>
     </ItemContainer>
   )
 }

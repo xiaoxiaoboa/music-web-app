@@ -8,18 +8,18 @@ import {
   getLoginStatus,
   getUserInfo
 } from "../../utils/request"
-import { QRCodeState, qrCodeType, qrCodeAction } from "../../types"
+import { QRCodeState, QrCodeType, QrCodeAction } from "../../types"
 
-const reducer = (state: QRCodeState, action: qrCodeAction): QRCodeState => {
+const reducer = (state: QRCodeState, action: QrCodeAction): QRCodeState => {
   const { type, payload } = action
   switch (type) {
-    case qrCodeType.KEY:
+    case QrCodeType.KEY:
       return { ...state, ...{ key: payload as string } }
 
-    case qrCodeType.BASE64:
+    case QrCodeType.BASE64:
       return { ...state, ...{ base64: payload as string } }
 
-    case qrCodeType.IS_LOADING:
+    case QrCodeType.IS_LOADING:
       return { ...state, ...{ isLoading: payload as boolean } }
 
     default:
@@ -33,20 +33,20 @@ const Login = () => {
 
   useEffect(() => {
     /* 加载中 */
-    dispatch({ type: qrCodeType.IS_LOADING, payload: true })
+    dispatch({ type: QrCodeType.IS_LOADING, payload: true })
 
     /* 获取二维码key */
     qrCodeKey("login/qr/key")
       .then(res => {
-        dispatch({ type: qrCodeType.KEY, payload: res.data.unikey })
+        dispatch({ type: QrCodeType.KEY, payload: res.data.unikey })
 
         /* 获取二维码 */
         return qrCodeImg("login/qr/create", res.data.unikey)
       })
       .then(res => {
-        dispatch({ type: qrCodeType.IS_LOADING, payload: false })
+        dispatch({ type: QrCodeType.IS_LOADING, payload: false })
 
-        dispatch({ type: qrCodeType.BASE64, payload: res.data.qrimg })
+        dispatch({ type: QrCodeType.BASE64, payload: res.data.qrimg })
       })
   }, [])
 

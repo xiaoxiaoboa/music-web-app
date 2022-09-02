@@ -9,7 +9,7 @@ interface CoverProps {
 
 /* Item组件 > div */
 export const ItemContainer = styled.div<ItemProps>`
-  position: relative;
+  
   display: flex;
   flex-direction: column;
   gap: 0.625rem;
@@ -19,11 +19,12 @@ export const ItemContainer = styled.div<ItemProps>`
 /* 封面容器 */
 export const Cover = styled.div`
   display: flex;
+  position: relative;
 
   &:hover {
     & div {
       opacity: 1;
-      bottom:60px;
+      bottom: .625rem;
     }
   }
 `
@@ -39,11 +40,10 @@ export const PlayButton = styled.div`
   align-items: center;
   position: absolute;
   right: 0.625rem;
-  bottom: 50px;
+  bottom: .25rem;
   border-radius: 50%;
-  /* background-color: #f9f3f3; */
-  background-color: rgb(174 189 198 / 50%);
-  backdrop-filter: blur(2px);
+  background-color: rgb(238 233 233 / 30%);
+  backdrop-filter: blur(10px);
   padding: 0.625rem;
   cursor: pointer;
   transition: all 0.2s linear;

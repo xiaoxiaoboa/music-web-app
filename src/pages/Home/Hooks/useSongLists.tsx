@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { recommendedList } from "../../../utils/request"
-import { ListTpye } from "../../../types"
+import { SongListType, SongListsType } from "../../../types"
 
-const useSongLists = (): ListTpye[] => {
-  const [songLists, setSongList] = useState<ListTpye[]>([])
+const useSongLists = (): SongListType[] => {
+  const [songLists, setSongList] = useState<SongListType[]>([])
 
   useEffect(() => {
-    recommendedList("personalized", 5).then(res =>
+    recommendedList("personalized", 10).then((res: SongListsType) =>
       setSongList(() => res.result)
     )
   }, [])

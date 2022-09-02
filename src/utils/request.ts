@@ -104,7 +104,7 @@ export const recommendedList = async (path: string, limit: number) => {
 
 /* 首页推荐歌手 */
 export const recommendedArtist = async (path: string, type: number) => {
-  const totalUrl = url + path + `toplist/artist?type=${type}`
+  const totalUrl = url + path + `?type=${type}&timerstamp=${Date.now()}`
 
   try {
     const res = await fetch(totalUrl, {
@@ -115,4 +115,17 @@ export const recommendedArtist = async (path: string, type: number) => {
   } catch (err) {
     console.log(err)
   }
+}
+
+/* 首页推荐MV */
+export const recommendedMv = async (path: string) => {
+  const totalUrl = url + path + `?&timerstamp=${Date.now()}`
+
+  try{
+    const res = await fetch(totalUrl, {
+      method:"GET"
+    })
+
+    return await res.json()
+  }catch(err){ console.log(err)}
 }
