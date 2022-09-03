@@ -20,5 +20,7 @@ declare module "styled-components" {
     modeButton_hover_BorderColor: string
 
     controllerButton_color: string
+
+    light_color: string
   }
 }

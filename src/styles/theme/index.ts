@@ -16,7 +16,9 @@ export const LightTheme: DefaultTheme = {
   modeButton_BgColor: "#f1f1f1",
   modeButton_hover_BorderColor: "#4a4a4a",
 
-  controllerButton_color: "#937dc2"
+  controllerButton_color: "#937dc2",
+
+  light_color: "#2f2f2f87"
 }
 
 export const DarkTheme: DefaultTheme = {
@@ -37,7 +39,9 @@ export const DarkTheme: DefaultTheme = {
   modeButton_BgColor: "#f5f5f521",
   modeButton_hover_BorderColor: "#919191",
 
-  controllerButton_color: "inherit"
+  controllerButton_color: "inherit",
+
+  light_color: "#b0b0b0a3"
 }
 
 export const GlobalStyle = createGlobalStyle`

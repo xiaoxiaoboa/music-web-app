@@ -13,15 +13,13 @@ import MyAudio from "../../utils/MyAudio"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
 
-interface IProps {
-  src: string
-}
 
-const Player: FC<IProps> = ({ src }): ReactElement => {
-  const audioElement = useRef(new MyAudio(src))
-  useEffect(() => {
-    audioElement.current.value.src = src
-  }, [src])
+
+const Player: FC = (): ReactElement => {
+  const audioElement = useRef(new MyAudio(''))
+  // useEffect(() => {
+  //   audioElement.current.value.src = src
+  // }, [src])
 
   return (
     <ControllerBarContainer>

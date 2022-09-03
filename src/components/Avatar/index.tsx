@@ -3,13 +3,14 @@ import styled from "styled-components"
 import avatar from "../../assets/avatar2.jpg"
 
 interface IProps {
+  src?: string
   size: string
 }
 
-const Avatar: FC<IProps> = ({ size }): ReactElement => {
+const Avatar: FC<IProps> = ({ size,src=avatar }): ReactElement => {
   return (
     <AvatarContainer>
-      <Img src={avatar} size={size} />
+      <Img src={src} size={size} />
     </AvatarContainer>
   )
 }

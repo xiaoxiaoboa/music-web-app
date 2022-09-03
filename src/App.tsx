@@ -3,10 +3,8 @@ import styled from "styled-components"
 import Player from "./components/Player"
 import TopBar from "./components/TopBar"
 import Routes from "./routes"
-import src from "./assets/如果当时 - 许嵩.flac"
 
 const App: FC = (): ReactElement => {
-  const [mySrc, setMySrc] = useState<string>(src)
 
   return (
     <AppContainer>
@@ -14,7 +12,7 @@ const App: FC = (): ReactElement => {
       <MainContainer>
         <Routes />
       </MainContainer>
-      <Player src={mySrc} />
+      <Player  />
     </AppContainer>
   )
 }
