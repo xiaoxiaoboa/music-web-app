@@ -18,7 +18,8 @@ export const LightTheme: DefaultTheme = {
 
   controllerButton_color: "#937dc2",
 
-  light_color: "#2f2f2f87"
+  light_color: "#000000ad",
+  song_hover_BgColor: "#0000000f"
 }
 
 export const DarkTheme: DefaultTheme = {
@@ -41,7 +42,8 @@ export const DarkTheme: DefaultTheme = {
 
   controllerButton_color: "inherit",
 
-  light_color: "#b0b0b0a3"
+  light_color: "#ffffff7a",
+  song_hover_BgColor: "#3836367d"
 }
 
 export const GlobalStyle = createGlobalStyle`

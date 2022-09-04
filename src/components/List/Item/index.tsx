@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react"
+import { FC, MouseEventHandler, ReactElement, useRef } from "react"
 import {
   ItemContainer,
   Cover,
@@ -16,6 +16,11 @@ interface IProps {
   alignItems?: string
   w?: number
   h?: number
+  toSongListDetail: (
+    e: React.MouseEvent<Element, MouseEvent>,
+    id: number,
+    element: HTMLImageElement | HTMLSpanElement
+  ) => void
 }
 
 const Item: FC<IProps> = ({
@@ -23,8 +28,15 @@ const Item: FC<IProps> = ({
   alignItems,
   data,
   w,
-  h
+  h,
+  toSongListDetail
 }: IProps): ReactElement => {
+  const ItemRef = useRef<HTMLDivElement>(null)
+  const CoverRef = useRef<HTMLImageElement>(null)
+  const TitleRef = useRef<HTMLSpanElement>(null)
+  const handleClick: MouseEventHandler = e => {
+    if (e.target !== ItemRef.current) return
+  }
   return (
     <ItemContainer alignItems={alignItems}>
       <Cover>
@@ -34,14 +46,19 @@ const Item: FC<IProps> = ({
             w,
             h
           )}
-          alt=""
           borderRadius={borderRadius}
+          onClick={e => toSongListDetail(e, data.id, CoverRef.current!)}
+          ref={CoverRef}
         />
-        <PlayButton>
+        <PlayButton onClick={handleClick} ref={ItemRef}>
           <BsFillPlayFill className="BsFillPlayFill" />
         </PlayButton>
       </Cover>
-      <Title>{data.name}</Title>
+      <Title
+        onClick={e => toSongListDetail(e, data.id, TitleRef.current!)}
+        ref={TitleRef}>
+        {data.name}
+      </Title>
     </ItemContainer>
   )
 }

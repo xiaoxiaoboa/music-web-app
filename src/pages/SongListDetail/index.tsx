@@ -1,73 +1,130 @@
-import React,{useState} from "react"
-import { FaPlay } from "react-icons/fa"
+import React, { useState, useEffect } from "react"
 import styled from "styled-components"
 import Avatar from "../../components/Avatar"
+import { FaPlay } from "react-icons/fa"
+import { RiHeart2Fill, RiHeart2Line } from "react-icons/ri"
+import { BsFolderCheck, BsFolderPlus } from "react-icons/bs"
+import { useLocation } from "react-router-dom"
+import { songListsDetail } from "../../utils/request"
+import { SongListsDetailType } from "../../types"
+import { useRecoilState } from "recoil"
+import { SongListDetailState } from "../../recoil"
+import Loading from "../../components/Loading"
+
+interface LocationProps {
+  hash: string
+  key: string
+  pathname: string
+  search: string
+  state: { id: number }
+}
 
 const SongListDetail = () => {
-
   const [state, setState] = useState<boolean>(false)
+  const [loaded, setLoaded] = useState<boolean>(false)
+  const location = useLocation() as LocationProps
+  const [detail, setDetail] = useRecoilState(SongListDetailState)
+
+  useEffect(() => {
+    if (location.state.id === detail?.id) return setLoaded(true)
+    
+    songListsDetail("playlist/detail", location.state.id).then(
+      (res: SongListsDetailType) =>
+        setDetail(() => {
+          setLoaded(() => true)
+          return res.playlist
+        })
+    )
+
+  }, [location])
 
   return (
     <Container>
-      <SongListInfo>
-        <CoverImg>
-          <img
-            src="https://p1.music.126.net/sk3LdkrtlSV2c582A2FWpw==/109951166319907830.jpg?param=1024y1024"
-            alt=""
-          />
-        </CoverImg>
-        <Desc>
-          <div className="title">想和你在一起很久很久</div>
-          <Creator>
-            <Avatar
-              src="https://p2.music.126.net/RTB72JJJapo01l4XfVDAWQ==/109951166349819975.jpg?param=224y224"
-              size={`2rem`}
-            />
-            <LinkFont>野原新之助</LinkFont>
-            <LightFont>2022-09-02 创建</LightFont>
-          </Creator>
-          <Tag>
-            <label>标签：</label>
-            <LinkFont>流行</LinkFont>
-            <LinkFont>华语</LinkFont>
-          </Tag>
-          <Count>
-            <SongsCount>
-              <label>歌曲：</label>
-              <LightFont>255</LightFont>
-            </SongsCount>
-            <PlayCount>
-              <label>播放：</label>
-              <LightFont>5000万</LightFont>
-            </PlayCount>
-            <CollectCount>
-              <label>收藏：</label>
-              <LightFont>100万</LightFont>
-            </CollectCount>
-            <ShareCount>
-              <label>分享：</label>
-              <LightFont>1000万</LightFont>
-            </ShareCount>
-          </Count>
-          <PlayButton>
-            <Button>
-              <FaPlay />
-              播放全部
-            </Button>
-          </PlayButton>
-          <Intro height={state ? '100%': '52px'} onClick={() => setState(!state)}>
-            <IntroLightFont as="div">
-              <label>简介：</label>
-              “古风”是一类新型的文化。“古风”以中国的传统文化为基调，结合中国传统的文学、琴棋书画、诗词歌赋等，经过不断的发展磨合，形成了比较完备的音乐、文学、绘画等艺术形式。
-              戏曲唱腔
-              戏曲音乐是中国汉族戏曲中的音乐部分,包括声乐部分的唱腔、韵白和器乐部分的伴奏、开场及过场音乐。其中以唱腔为主，有独唱、对唱、齐唱和帮腔等演唱形式，是发展剧情、刻画人物性格的主要表现手段。唱腔的伴奏、过门和行弦起托腔保调、衬托表演的作用。开场、过场和武场所用的打击乐等则是喧染气氛、调节舞台节奏与戏曲结构的重要因素。
-            </IntroLightFont>
-          </Intro>
-        </Desc>
-      </SongListInfo>
-      <Songs>
-        <Song></Song>
-      </Songs>
+      {loaded ? (
+        <>
+          <SongListInfo>
+            <CoverImg>
+              <img src={detail?.coverImgUrl} />
+            </CoverImg>
+            <Desc>
+              <div className="title">{detail?.name}</div>
+              <Creator>
+                <Avatar src={detail?.creator.avatarUrl} size={`2rem`} />
+                <LinkFont>{detail?.creator.nickname}</LinkFont>
+                <LightFont fontsize={`14px`}>
+                  {detail?.trackUpdateTime} 创建
+                </LightFont>
+              </Creator>
+              <Tag>
+                <label>标签：</label>
+                {detail?.tags.map(tag => (
+                  <LinkFont key={detail.tags.indexOf(tag)}>{tag}</LinkFont>
+                ))}
+              </Tag>
+              <Count>
+                <span>
+                  <label>歌曲：</label>
+                  <LightFont fontsize={`14px`}>{detail?.trackCount}</LightFont>
+                </span>
+                <span>
+                  <label>播放：</label>
+                  <LightFont fontsize={`14px`}>{detail?.playCount}</LightFont>
+                </span>
+                <span>
+                  <label>收藏：</label>
+                  <LightFont fontsize={`14px`}>
+                    {detail?.subscribedCount}
+                  </LightFont>
+                </span>
+                <span>
+                  <label>分享：</label>
+                  <LightFont fontsize={`14px`}>{detail?.shareCount}</LightFont>
+                </span>
+              </Count>
+              <PlayButton>
+                <Button>
+                  <FaPlay size={`18px`} />
+                  播放全部
+                </Button>
+                <Button>
+                  <BsFolderPlus size={`18px`} />
+                  收藏歌单
+                </Button>
+              </PlayButton>
+              <Intro
+                height={state ? "100%" : "52px"}
+                onClick={() => setState(!state)}>
+                <IntroLightFont as="div" fontsize={`14px`}>
+                  <label>简介：</label>
+                  {detail?.description}
+                </IntroLightFont>
+              </Intro>
+            </Desc>
+          </SongListInfo>
+          <Songs>
+            <Song>
+              <div className="sn">
+                <LightFont fontsize={`20px`}>1</LightFont>
+              </div>
+              <div className="like">
+                <RiHeart2Line className="RiHeart2Line" />
+              </div>
+              <div className="name">如果当时</div>
+              <div className="artist">
+                <LightFont fontsize={`20px`}>许嵩</LightFont>
+              </div>
+              <div className="album">
+                <LightFont fontsize={`20px`}>自定义</LightFont>
+              </div>
+              <div className="duration">
+                <LightFont fontsize={`20px`}>5:16</LightFont>
+              </div>
+            </Song>
+          </Songs>
+        </>
+      ) : (
+        <Loading />
+      )}
     </Container>
   )
 }
@@ -82,8 +139,11 @@ const LinkFont = styled.span`
     text-decoration: underline;
   }
 `
-const LightFont = styled.span`
-  font-size: 14px;
+interface LightFontProps {
+  fontsize: string
+}
+const LightFont = styled.span<LightFontProps>`
+  font-size: ${props => props.fontsize};
   color: ${props => props.theme.light_color};
 `
 
@@ -93,6 +153,9 @@ const Container = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 50px;
+  flex-direction: column;
+  justify-content: center;
 `
 
 const SongListInfo = styled.div`
@@ -100,10 +163,9 @@ const SongListInfo = styled.div`
   display: flex;
 `
 const CoverImg = styled.div`
-  flex: 1;
+  flex: 0.8;
   display: flex;
   justify-content: center;
-  /* align-items: center; */
 
   & img {
     margin-top: 8px;
@@ -137,14 +199,11 @@ const Count = styled.div`
   display: flex;
   gap: 18px;
 `
-const SongsCount = styled.span``
-const PlayCount = styled.span``
-const CollectCount = styled.span``
-const ShareCount = styled.span``
 
 const PlayButton = styled.div`
   display: flex;
   padding: 4px 0;
+  gap: 20px;
 `
 const Button = styled.button`
   display: flex;
@@ -177,9 +236,70 @@ const IntroLightFont = styled(LightFont)`
   }
 `
 
-
 const Songs = styled.div`
   flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  &::after {
+    content: "";
+    height: 30px;
+  }
 `
 
-const Song = styled.div``
+const Song = styled.div`
+  width: 100%;
+  display: flex;
+  font-size: 18px;
+  padding: 14px 0;
+  border-radius: 8px;
+
+  &:hover {
+    background-color: ${props => props.theme.song_hover_BgColor};
+  }
+
+  .sn {
+    flex: 0.2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .like {
+    flex: 0.2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .RiHeart2Line {
+      width: 20px;
+      height: 20px;
+      color: ${props => props.theme.secondary_color};
+    }
+  }
+  .name {
+    flex: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+  .artist {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .album {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .duration {
+    flex: 0.3;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+  }
+`

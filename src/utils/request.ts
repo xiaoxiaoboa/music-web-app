@@ -129,3 +129,17 @@ export const recommendedMv = async (path: string) => {
     return await res.json()
   }catch(err){ console.log(err)}
 }
+
+/* 歌单详情页 */
+export const songListsDetail = async (path: string, id:number) => {
+  const totalUrl = url + path + `?id=${id}&timerstamp=${Date.now()}`
+
+  try{
+    const res = await fetch(totalUrl, {
+      method:"GET"
+    })
+
+    return await res.json()
+  }catch(err){}
+
+}

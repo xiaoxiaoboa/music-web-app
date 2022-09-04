@@ -22,5 +22,6 @@ declare module "styled-components" {
     controllerButton_color: string
 
     light_color: string
+    song_hover_BgColor:string
   }
 }

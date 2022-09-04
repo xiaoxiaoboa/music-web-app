@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react"
 import { recommendedArtist } from "../../../utils/request"
 import random from "../../../utils/random"
 import { ArtistsType, ArtistType } from "../../../types"
+import { useRecoilState } from "recoil"
+import { HomeArtistsState } from "../../../recoil"
 
 const useArtists = (): ArtistType[] => {
-  const [artists, setArtists] = useState<ArtistType[]>([])
+  const [artists, setArtists] = useRecoilState(HomeArtistsState)
 
   useEffect(() => {
+    if(artists.length > 0) return
     const getArtists = async (min: number, max: number, amount: number) => {
       await recommendedArtist(
         "toplist/artist",
