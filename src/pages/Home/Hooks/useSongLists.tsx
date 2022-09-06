@@ -3,17 +3,20 @@ import { recommendedList } from "../../../utils/request"
 import { SongListType, SongListsType } from "../../../types"
 import { useRecoilState } from "recoil"
 import { HomeSongListsState } from "../../../recoil"
+import { useSongListsType } from "../../../types"
 
-const useSongLists = (): SongListType[] => {
-  const [songLists, setSongList] = useRecoilState(HomeSongListsState)
+
+const useSongLists = (): useSongListsType => {
+  const [list, setList] = useRecoilState(HomeSongListsState)
 
   useEffect(() => {
-    if(songLists.length > 0) return
+    if (list.length > 0) return
     recommendedList("personalized", 10).then((res: SongListsType) =>
-      setSongList(() => res.result)
+      setList(() => res.result)
     )
   }, [])
-  return songLists
+
+  return { type: "songlistdetail", list }
 }
 
 export default useSongLists

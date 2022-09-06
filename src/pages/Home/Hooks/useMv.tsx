@@ -4,12 +4,14 @@ import random from "../../../utils/random"
 import { MvsType, MvType } from "../../../types"
 import { useRecoilState } from "recoil"
 import { HomeMvsState } from "../../../recoil"
+import { useMvType } from "../../../types"
 
-const useMv = (): MvType[] => {
-  const [mvs, setMvs] = useRecoilState(HomeMvsState)
+
+const useMv = (): useMvType => {
+  const [list, setList] = useRecoilState(HomeMvsState)
 
   useEffect(() => {
-    if(mvs.length > 0) return
+    if (list.length > 0) return
     recommendedMv("mv/first").then((res: MvsType) => {
       const randomNumber: number[] = random(
         0,
@@ -20,13 +22,13 @@ const useMv = (): MvType[] => {
       for (let i = 0; i < randomNumber.length; i++) {
         newArr.push(res.data[randomNumber[i]])
       }
-      setMvs(() => newArr)
+      setList(() => newArr)
     })
   }, [])
 
-  // useEffect(() => {console.log(mvs)},[mvs])
+  // useEffect(() => {console.log(list)},[list])
 
-  return mvs
+  return { type: "mvdetail", list }
 }
 
 export default useMv

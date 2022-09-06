@@ -4,12 +4,14 @@ import random from "../../../utils/random"
 import { ArtistsType, ArtistType } from "../../../types"
 import { useRecoilState } from "recoil"
 import { HomeArtistsState } from "../../../recoil"
+import { useArtistsType } from "../../../types"
 
-const useArtists = (): ArtistType[] => {
-  const [artists, setArtists] = useRecoilState(HomeArtistsState)
+
+const useArtists = (): useArtistsType => {
+  const [list, setList] = useRecoilState(HomeArtistsState)
 
   useEffect(() => {
-    if(artists.length > 0) return
+    if (list.length > 0) return
     const getArtists = async (min: number, max: number, amount: number) => {
       await recommendedArtist(
         "toplist/artist",
@@ -25,14 +27,14 @@ const useArtists = (): ArtistType[] => {
           newArr.push(res.list.artists[randomNumber[i]])
         }
         // console.log(newArr)
-        setArtists((prev: any) => [...prev, ...newArr])
+        setList((prev: any) => [...prev, ...newArr])
       })
     }
 
     getArtists(1, 1, 4).then(() => getArtists(2, 4, 2))
   }, [])
 
-  return artists
+  return { type: "artistdetail", list }
 }
 
 export default useArtists

@@ -26,8 +26,9 @@ const SongListDetail = () => {
   const [detail, setDetail] = useRecoilState(SongListDetailState)
 
   useEffect(() => {
+    /* 如果点击的歌单和之前state中的歌单相同，直接显示，不再请求 */
     if (location.state.id === detail?.id) return setLoaded(true)
-    
+
     songListsDetail("playlist/detail", location.state.id).then(
       (res: SongListsDetailType) =>
         setDetail(() => {
@@ -35,8 +36,24 @@ const SongListDetail = () => {
           return res.playlist
         })
     )
-
   }, [location])
+
+  /* 格式化音乐时间 */
+  const getMinute = (value: number): string => {
+    return (
+      ("" + (Math.floor(value / 60000) % 60)).slice(-2) +
+      ":" +
+      ("0" + (Math.floor(value / 1000) % 60)).slice(-2)
+    )
+  }
+
+  /* 格式化创建时间 */
+  const getUpdateTime = (value: number): string => {
+    const re = /\//gi
+    const str = new Date(value).toLocaleDateString()
+    const newStr = str.replace(re, "-")
+    return newStr
+  }
 
   return (
     <Container>
@@ -52,34 +69,40 @@ const SongListDetail = () => {
                 <Avatar src={detail?.creator.avatarUrl} size={`2rem`} />
                 <LinkFont>{detail?.creator.nickname}</LinkFont>
                 <LightFont fontsize={`14px`}>
-                  {detail?.trackUpdateTime} 创建
+                  {getUpdateTime(detail.createTime)} 创建
                 </LightFont>
               </Creator>
               <Tag>
-                <label>标签：</label>
+                <div>标签：</div>
                 {detail?.tags.map(tag => (
                   <LinkFont key={detail.tags.indexOf(tag)}>{tag}</LinkFont>
                 ))}
               </Tag>
               <Count>
-                <span>
-                  <label>歌曲：</label>
-                  <LightFont fontsize={`14px`}>{detail?.trackCount}</LightFont>
-                </span>
-                <span>
-                  <label>播放：</label>
-                  <LightFont fontsize={`14px`}>{detail?.playCount}</LightFont>
-                </span>
-                <span>
-                  <label>收藏：</label>
+                <CountItem>
+                  <div>歌曲：</div>
                   <LightFont fontsize={`14px`}>
-                    {detail?.subscribedCount}
+                    {detail?.trackCount.toLocaleString()}
                   </LightFont>
-                </span>
-                <span>
-                  <label>分享：</label>
-                  <LightFont fontsize={`14px`}>{detail?.shareCount}</LightFont>
-                </span>
+                </CountItem>
+                <CountItem>
+                  <div>播放：</div>
+                  <LightFont fontsize={`14px`}>
+                    {detail?.playCount.toLocaleString()}
+                  </LightFont>
+                </CountItem>
+                <CountItem>
+                  <div>收藏：</div>
+                  <LightFont fontsize={`14px`}>
+                    {detail?.subscribedCount.toLocaleString()}
+                  </LightFont>
+                </CountItem>
+                <CountItem>
+                  <div>分享：</div>
+                  <LightFont fontsize={`14px`}>
+                    {detail?.shareCount.toLocaleString()}
+                  </LightFont>
+                </CountItem>
               </Count>
               <PlayButton>
                 <Button>
@@ -102,24 +125,36 @@ const SongListDetail = () => {
             </Desc>
           </SongListInfo>
           <Songs>
-            <Song>
-              <div className="sn">
-                <LightFont fontsize={`20px`}>1</LightFont>
-              </div>
-              <div className="like">
-                <RiHeart2Line className="RiHeart2Line" />
-              </div>
-              <div className="name">如果当时</div>
-              <div className="artist">
-                <LightFont fontsize={`20px`}>许嵩</LightFont>
-              </div>
-              <div className="album">
-                <LightFont fontsize={`20px`}>自定义</LightFont>
-              </div>
-              <div className="duration">
-                <LightFont fontsize={`20px`}>5:16</LightFont>
-              </div>
-            </Song>
+            {detail?.tracks.map(track => {
+              return (
+                <Song key={track.id}>
+                  <div className="sn">
+                    <SongLightFont fontsize={`20px`}>{detail.tracks.indexOf(track) + 1}</SongLightFont>
+                  </div>
+                  <div className="like">
+                    <RiHeart2Line className="RiHeart2Line" />
+                  </div>
+                  <div className="name" title={track.al.name}>
+                    {track.name}
+                  </div>
+                  <div className="artist" title={track.al.name}>
+                    <SongLightFont fontsize={`20px`}>
+                      <SongLinkFont>{track.ar[0].name}</SongLinkFont>
+                    </SongLightFont>
+                  </div>
+                  <div className="album" title={track.al.name}>
+                    <SongLightFont fontsize={`20px`}>
+                      <SongLinkFont>{track.al.name}</SongLinkFont>
+                    </SongLightFont>
+                  </div>
+                  <div className="duration">
+                    <SongLightFont fontsize={`20px`}>
+                      {getMinute(track.dt)}
+                    </SongLightFont>
+                  </div>
+                </Song>
+              )
+            })}
           </Songs>
         </>
       ) : (
@@ -131,6 +166,7 @@ const SongListDetail = () => {
 
 export default SongListDetail
 
+/* 加链接的文字 */
 const LinkFont = styled.span`
   cursor: pointer;
   color: ${props => props.theme.secondary_color};
@@ -139,17 +175,18 @@ const LinkFont = styled.span`
     text-decoration: underline;
   }
 `
+
+/* 浅颜色文字 */
 interface LightFontProps {
   fontsize: string
 }
-const LightFont = styled.span<LightFontProps>`
+const LightFont = styled.div<LightFontProps>`
   font-size: ${props => props.fontsize};
   color: ${props => props.theme.light_color};
 `
 
 const Container = styled.div`
-  /* padding: 0 calc(10% - 17px) 1.25rem 10%; */
-  padding: 0 10% 1.25rem 10%;
+  padding: 0 calc(10% - 17px) 1.25rem 10%;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -161,6 +198,7 @@ const Container = styled.div`
 const SongListInfo = styled.div`
   flex: 1;
   display: flex;
+  gap: 20px;
 `
 const CoverImg = styled.div`
   flex: 0.8;
@@ -198,6 +236,10 @@ const Tag = styled.div`
 const Count = styled.div`
   display: flex;
   gap: 18px;
+`
+const CountItem = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 const PlayButton = styled.div`
@@ -278,7 +320,7 @@ const Song = styled.div`
     }
   }
   .name {
-    flex: 3;
+    flex: 2.5;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -295,11 +337,25 @@ const Song = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
   }
   .duration {
-    flex: 0.3;
+    flex: 1;
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: center;
   }
+`
+const SongLinkFont = styled(LinkFont)`
+  color: inherit;
+
+  &:hover {
+    color: ${props => props.theme.primary_color};
+  }
+`
+
+const SongLightFont = styled(LightFont)`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `

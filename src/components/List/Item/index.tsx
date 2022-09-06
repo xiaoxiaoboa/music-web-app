@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, ReactElement, useRef } from "react"
+import { FC, MouseEventHandler, ReactElement, useRef, useEffect } from "react"
 import {
   ItemContainer,
   Cover,
@@ -11,6 +11,7 @@ import { imgSize } from "../../../utils/imgSize"
 import { SongListType, MvType, ArtistType } from "../../../types"
 
 interface IProps {
+  type: string
   data: SongListType | MvType | ArtistType
   borderRadius?: string
   alignItems?: string
@@ -19,11 +20,13 @@ interface IProps {
   toSongListDetail: (
     e: React.MouseEvent<Element, MouseEvent>,
     id: number,
-    element: HTMLImageElement | HTMLSpanElement
+    element: HTMLImageElement | HTMLSpanElement,
+    type: string
   ) => void
 }
 
 const Item: FC<IProps> = ({
+  type,
   borderRadius,
   alignItems,
   data,
@@ -34,9 +37,11 @@ const Item: FC<IProps> = ({
   const ItemRef = useRef<HTMLDivElement>(null)
   const CoverRef = useRef<HTMLImageElement>(null)
   const TitleRef = useRef<HTMLSpanElement>(null)
+
   const handleClick: MouseEventHandler = e => {
     if (e.target !== ItemRef.current) return
   }
+
   return (
     <ItemContainer alignItems={alignItems}>
       <Cover>
@@ -47,7 +52,7 @@ const Item: FC<IProps> = ({
             h
           )}
           borderRadius={borderRadius}
-          onClick={e => toSongListDetail(e, data.id, CoverRef.current!)}
+          onClick={e => toSongListDetail(e, data.id, CoverRef.current!, type)}
           ref={CoverRef}
         />
         <PlayButton onClick={handleClick} ref={ItemRef}>
@@ -55,7 +60,7 @@ const Item: FC<IProps> = ({
         </PlayButton>
       </Cover>
       <Title
-        onClick={e => toSongListDetail(e, data.id, TitleRef.current!)}
+        onClick={e => toSongListDetail(e, data.id, TitleRef.current!, type)}
         ref={TitleRef}>
         {data.name}
       </Title>

@@ -262,7 +262,7 @@ export interface PlayList {
       tns: string[]
       v: number
       version: number
-    }
+    }[]
     updateFrequency: null
     updateTime: number
     userId: number
@@ -317,4 +317,17 @@ export interface SongListsDetailType {
   resEntrance: null
   sharedPrivilege: null
   urls: null
+}
+
+interface HomeHooksType {
+  type: string
+}
+export interface useSongListsType extends HomeHooksType {
+  list: SongListType[]
+}
+export interface useMvType extends HomeHooksType {
+  list: MvType[]
+}
+export interface useArtistsType extends HomeHooksType {
+  list: ArtistType[]
 }
