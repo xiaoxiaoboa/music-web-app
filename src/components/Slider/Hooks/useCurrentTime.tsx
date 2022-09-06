@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import Media from "../../../utils/Media"
+import {useRecoilValue} from 'recoil'
+import { PlayListState } from "../../../recoil"
 
 interface IProps {
   mediaObject: Media
@@ -13,7 +15,9 @@ export default function useCurrentTime({
 }: IProps): [string, number, React.Dispatch<React.SetStateAction<number>>] {
   const [currentTime, setCurrentTime] = useState<number>(0)
 
-  /* 改变媒体播放轨道的值时，控制currentTime这个state，把改变后的state赋值给媒体元素的currentTime */
+
+
+  /* 播放媒体时如果未拖拽滑块，则通过定时器改变进度条左侧的currentTime */
   useEffect(() => {
     let timer: number = -1
     if (mediaObject?.paused === false && isInterActive === false) {

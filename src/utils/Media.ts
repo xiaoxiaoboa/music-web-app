@@ -1,17 +1,17 @@
 export default class Media {
-  protected readonly _mediaElement: HTMLMediaElement
+  readonly _mediaElement: HTMLMediaElement
 
   protected constructor(arg: string | HTMLVideoElement) {
     if (typeof arg === "string") {
       this._mediaElement = new Audio(arg)
-      // this._mediaElement.autoplay = true
+      this._mediaElement.autoplay = true
     } else {
       this._mediaElement = arg
     }
   }
 
   /* 获取media元素 */
-  get value() {
+  get element() {
     return this._mediaElement
   }
 
@@ -30,7 +30,7 @@ export default class Media {
     return this._mediaElement.paused
   }
 
-  get muted() {
+  get muted(): boolean {
     return this._mediaElement.muted
   }
   /* 静音 */

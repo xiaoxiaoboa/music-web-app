@@ -89,186 +89,187 @@ export interface ArtistsType {
 }
 
 /* 歌单详情 */
-export interface PlayList {
-    adType: number
-    algTags: null
-    backgroundCoverId: number
-    backgroundCoverUrl: null
-    cloudTrackCount: number
-    commentCount: number
-    commentThreadId: string
-    copied: boolean
-    coverImgId: number
-    coverImgId_str: null
-    coverImgUrl: string
-    createTime: number
-    creator: {
-      accountStatus: number
-      anchor: boolean
-      authStatus: number
-      authenticationTypes: number
-      authority: number
-      avatarDetail: {
-        identityIconUrl: string
-        identityLevel: number
-        userType: number
-      }
-      avatarImgId: number
-      avatarImgIdStr: string
-      avatarUrl: string
-      backgroundImgId: number
-      backgroundImgIdStr: number
-      backgroundUrl: string
-      birthday: number
-      city: number
-      defaultAvatar: boolean
-      description: string
-      detailDescription: string
-      djStatus: number
-      expertTags: string[]
-      experts: null
-      followed: boolean
-      gender: number
-      mutual: boolean
-      nickname: string
-      province: number
-      remarkName: null
-      signature: string
-      userId: number
-      userType: number
-      vipType: number
-    }
-    description: string
-    englishTitle: null
-    gradeStatus: string
-    highQuality: boolean
-    historySharedUsers: null
+export interface Track {
+  a: null
+  al: {
     id: number
     name: string
-    newImported: boolean
-    officialPlaylistType: null
-    opRecommend: boolean
-    ordered: boolean
-    playCount: number
-    privacy: number
-    remixVideo: null
-    score: null
-    shareCount: number
-    sharedUsers: null
-    specialType: number
-    status: number
-    subscribed: null
-    subscribedCount: number
-    subscribers: {
-      accountStatus: number
-      anchor: boolean
-      authStatus: number
-      authenticationTypes: number
-      authority: number
-      avatarDetail: null
-      avatarImgId: number
-      avatarImgIdStr: string
-      avatarImgId_str: string
-      avatarUrl: string
-      backgroundImgId: number
-      backgroundImgIdStr: string
-      backgroundUrl: string
-      birthday: number
-      city: number
-      defaultAvatar: boolean
-      description: string
-      detailDescription: string
-      djStatus: number
-      expertTags: null
-      experts: null
-      followed: boolean
-      gender: number
-      mutual: boolean
-      nickname: string
-      province: number
-      remarkName: null
-      signature: string
-      userId: number
-      userType: number
-      vipType: number
-    }[]
-    tags: string[]
-    titleImage: number
-    titleImageUrl: null
-    trackCount: number
-    trackIds: {
-      alg: null
-      at: number
-      id: number
-      rcmdReason: string
-      sc: null
-      t: number
-      uid: number
-      v: number
-    }[]
-    trackNumberUpdateTime: number
-    trackUpdateTime: number
-    tracks: {
-      a: null
-      al: {
-        id: number
-        name: string
-        pic: number
-        picUrl: string
-        pic_str: string
-        tns: string[]
-      }
-      alia: []
-      ar: { alias: []; id: number; name: string; tns: [] }[]
-      cd: string
-      cf: string
-      copyright: number
-      cp: number
-      crbt: null
-      djId: number
-      dt: number
-      entertainmentTags: null
-      fee: number
-      ftype: number
-      h: { br: number; fid: number; size: number; vd: number; sr: number }
-      hr: null
-      id: number
-      l: { br: number; fid: number; size: number; vd: number; sr: number }
-      m: { br: number; fid: number; size: number; vd: number; sr: number }
-      mark: number
-      mst: number
-      mv: number
-      name: string
-      no: number
-      noCopyrightRcmd: null
-      originCoverType: number
-      originSongSimpleData: null
-      pop: number
-      pst: number
-      publishTime: number
-      resourceState: boolean
-      rt: string
-      rtUrl: null
-      rtUrls: []
-      rtype: number
-      rurl: null
-      s_id: number
-      single: number
-      songJumpInfo: null
-      sq: { br: number; fid: number; size: number; vd: number; sr: number }
-      st: number
-      t: number
-      tagPicList: null
-      tns: string[]
-      v: number
-      version: number
-    }[]
-    updateFrequency: null
-    updateTime: number
-    userId: number
-    videoIds: null
-    videos: null
+    pic: number
+    picUrl: string
+    pic_str: string
+    tns: string[]
   }
+  alia: []
+  ar: { alias: []; id: number; name: string; tns: [] }[]
+  cd: string
+  cf: string
+  copyright: number
+  cp: number
+  crbt: null
+  djId: number
+  dt: number
+  entertainmentTags: null
+  fee: number
+  ftype: number
+  h: { br: number; fid: number; size: number; vd: number; sr: number }
+  hr: null
+  id: number
+  l: { br: number; fid: number; size: number; vd: number; sr: number }
+  m: { br: number; fid: number; size: number; vd: number; sr: number }
+  mark: number
+  mst: number
+  mv: number
+  name: string
+  no: number
+  noCopyrightRcmd: null
+  originCoverType: number
+  originSongSimpleData: null
+  pop: number
+  pst: number
+  publishTime: number
+  resourceState: boolean
+  rt: string
+  rtUrl: null
+  rtUrls: []
+  rtype: number
+  rurl: null
+  s_id: number
+  single: number
+  songJumpInfo: null
+  sq: { br: number; fid: number; size: number; vd: number; sr: number }
+  st: number
+  t: number
+  tagPicList: null
+  tns: string[]
+  v: number
+  version: number
+}
+export interface SongList {
+  adType: number
+  algTags: null
+  backgroundCoverId: number
+  backgroundCoverUrl: null
+  cloudTrackCount: number
+  commentCount: number
+  commentThreadId: string
+  copied: boolean
+  coverImgId: number
+  coverImgId_str: null
+  coverImgUrl: string
+  createTime: number
+  creator: {
+    accountStatus: number
+    anchor: boolean
+    authStatus: number
+    authenticationTypes: number
+    authority: number
+    avatarDetail: {
+      identityIconUrl: string
+      identityLevel: number
+      userType: number
+    }
+    avatarImgId: number
+    avatarImgIdStr: string
+    avatarUrl: string
+    backgroundImgId: number
+    backgroundImgIdStr: number
+    backgroundUrl: string
+    birthday: number
+    city: number
+    defaultAvatar: boolean
+    description: string
+    detailDescription: string
+    djStatus: number
+    expertTags: string[]
+    experts: null
+    followed: boolean
+    gender: number
+    mutual: boolean
+    nickname: string
+    province: number
+    remarkName: null
+    signature: string
+    userId: number
+    userType: number
+    vipType: number
+  }
+  description: string
+  englishTitle: null
+  gradeStatus: string
+  highQuality: boolean
+  historySharedUsers: null
+  id: number
+  name: string
+  newImported: boolean
+  officialPlaylistType: null
+  opRecommend: boolean
+  ordered: boolean
+  playCount: number
+  privacy: number
+  remixVideo: null
+  score: null
+  shareCount: number
+  sharedUsers: null
+  specialType: number
+  status: number
+  subscribed: null
+  subscribedCount: number
+  subscribers: {
+    accountStatus: number
+    anchor: boolean
+    authStatus: number
+    authenticationTypes: number
+    authority: number
+    avatarDetail: null
+    avatarImgId: number
+    avatarImgIdStr: string
+    avatarImgId_str: string
+    avatarUrl: string
+    backgroundImgId: number
+    backgroundImgIdStr: string
+    backgroundUrl: string
+    birthday: number
+    city: number
+    defaultAvatar: boolean
+    description: string
+    detailDescription: string
+    djStatus: number
+    expertTags: null
+    experts: null
+    followed: boolean
+    gender: number
+    mutual: boolean
+    nickname: string
+    province: number
+    remarkName: null
+    signature: string
+    userId: number
+    userType: number
+    vipType: number
+  }[]
+  tags: string[]
+  titleImage: number
+  titleImageUrl: null
+  trackCount: number
+  trackIds: {
+    alg: null
+    at: number
+    id: number
+    rcmdReason: string
+    sc: null
+    t: number
+    uid: number
+    v: number
+  }[]
+  trackNumberUpdateTime: number
+  trackUpdateTime: number
+  tracks: Track[]
+  updateFrequency: null
+  updateTime: number
+  userId: number
+  videoIds: null
+  videos: null
+}
 export interface privileges {
   chargeInfoList: {
     chargeMessage: null
@@ -311,7 +312,7 @@ export interface privileges {
 }
 export interface SongListsDetailType {
   code: number
-  playlist: PlayList
+  playlist: SongList
   privileges: privileges[]
   relatedVideos: null
   resEntrance: null
@@ -319,6 +320,7 @@ export interface SongListsDetailType {
   urls: null
 }
 
+/* Home中hooks的type */
 interface HomeHooksType {
   type: string
 }
@@ -331,3 +333,49 @@ export interface useMvType extends HomeHooksType {
 export interface useArtistsType extends HomeHooksType {
   list: ArtistType[]
 }
+
+/* player中歌曲的播放链接和歌曲信息 */
+export interface SongUrl {
+  br: number
+  canExtend: boolean
+  code: number
+  effectTypes: null
+  encodeType: string
+  expi: number
+  fee: number
+  flag: number
+  freeTimeTrialPrivilege: {
+    resConsumable: boolean
+    userConsumable: boolean
+    type: number
+    remainTime: number
+  }
+  freeTrialInfo: null
+  freeTrialPrivilege: {
+    resConsumable: boolean
+    userConsumable: boolean
+    listenType: null
+  }
+  gain: number
+  id: number
+  level: string
+  md5: string
+  payed: number
+  podcastCtrp: null
+  rightSource: number
+  size: number
+  time: number
+  type: string
+  uf: null
+  url: string
+  urlSource: number
+}
+export interface PlayListUrls {
+  code: number
+  data: SongUrl[]
+}
+export interface TrackAndUrl {
+  track: Track
+  trackUrl: SongUrl
+}
+

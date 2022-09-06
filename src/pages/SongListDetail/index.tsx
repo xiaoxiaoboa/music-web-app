@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, MouseEventHandler, useMemo } from "react"
 import styled from "styled-components"
 import Avatar from "../../components/Avatar"
 import { FaPlay } from "react-icons/fa"
 import { RiHeart2Fill, RiHeart2Line } from "react-icons/ri"
 import { BsFolderCheck, BsFolderPlus } from "react-icons/bs"
 import { useLocation } from "react-router-dom"
-import { songListsDetail } from "../../utils/request"
-import { SongListsDetailType } from "../../types"
+import { songListsDetail, songLink } from "../../utils/request"
+import { PlayListUrls, SongListsDetailType, TrackAndUrl, Track } from "../../types"
 import { useRecoilState } from "recoil"
-import { SongListDetailState } from "../../recoil"
+import {
+  SongListDetailState,
+  PlayListState,
+  
+} from "../../recoil"
 import Loading from "../../components/Loading"
+import { useSetRecoilState } from "recoil"
 
 interface LocationProps {
   hash: string
@@ -24,6 +29,8 @@ const SongListDetail = () => {
   const [loaded, setLoaded] = useState<boolean>(false)
   const location = useLocation() as LocationProps
   const [detail, setDetail] = useRecoilState(SongListDetailState)
+  const setPlayList = useSetRecoilState(PlayListState)
+  
 
   useEffect(() => {
     /* 如果点击的歌单和之前state中的歌单相同，直接显示，不再请求 */
@@ -39,20 +46,36 @@ const SongListDetail = () => {
   }, [location])
 
   /* 格式化音乐时间 */
-  const getMinute = (value: number): string => {
-    return (
-      ("" + (Math.floor(value / 60000) % 60)).slice(-2) +
-      ":" +
-      ("0" + (Math.floor(value / 1000) % 60)).slice(-2)
-    )
-  }
+  const getMinute = useMemo(
+    () =>
+      (value: number): string => {
+        return (
+          ("" + (Math.floor(value / 60000) % 60)).slice(-2) +
+          ":" +
+          ("0" + (Math.floor(value / 1000) % 60)).slice(-2)
+        )
+      },
+    [detail]
+  )
 
   /* 格式化创建时间 */
-  const getUpdateTime = (value: number): string => {
-    const re = /\//gi
-    const str = new Date(value).toLocaleDateString()
-    const newStr = str.replace(re, "-")
-    return newStr
+  const getUpdateTime = useMemo(
+    () =>
+      (value: number): string => {
+        const re = /\//gi
+        const str = new Date(value).toLocaleDateString()
+        const newStr = str.replace(re, "-")
+        return newStr
+      },
+    [detail]
+  )
+
+  const handleClick = (value: Track): void => {
+    songLink("song/url/v1", value.id).then((res: PlayListUrls) =>{
+      const newArr: TrackAndUrl = { track: value, trackUrl: res.data[0] }
+      setPlayList((prev: TrackAndUrl[]) => [...prev, newArr])
+    }
+    )
   }
 
   return (
@@ -127,17 +150,19 @@ const SongListDetail = () => {
           <Songs>
             {detail?.tracks.map(track => {
               return (
-                <Song key={track.id}>
+                <Song key={track.id} onDoubleClick={() => handleClick(track)}>
                   <div className="sn">
-                    <SongLightFont fontsize={`20px`}>{detail.tracks.indexOf(track) + 1}</SongLightFont>
+                    <SongLightFont fontsize={`20px`}>
+                      {detail.tracks.indexOf(track) + 1}
+                    </SongLightFont>
                   </div>
                   <div className="like">
                     <RiHeart2Line className="RiHeart2Line" />
                   </div>
-                  <div className="name" title={track.al.name}>
+                  <div className="name" title={track.name}>
                     {track.name}
                   </div>
-                  <div className="artist" title={track.al.name}>
+                  <div className="artist" title={track.ar[0].name}>
                     <SongLightFont fontsize={`20px`}>
                       <SongLinkFont>{track.ar[0].name}</SongLinkFont>
                     </SongLightFont>

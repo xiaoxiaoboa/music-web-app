@@ -141,5 +141,18 @@ export const songListsDetail = async (path: string, id:number) => {
 
     return await res.json()
   }catch(err){}
+}
 
+/* 请求歌曲播放链接 */
+export const songLink = async (path: string, id: number) => {
+  const totalUrl =
+    url + path + `?id=${id}&level=standard&timerstamp=${Date.now()}`
+
+  try{
+    const res = await fetch(totalUrl, {
+      method: "GET"
+    })
+
+    return await res.json()
+  }catch(err){}
 }
