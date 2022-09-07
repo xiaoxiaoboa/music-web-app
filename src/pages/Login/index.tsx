@@ -61,7 +61,7 @@ const Login = () => {
           } else if (res.code === 802) {
             console.log(res.message)
           } else if (res.code === 803) {
-            console.log('获取登录状态...')
+            console.log('登录成功')
             // await getLoginStatus(res.cookie).then(res => console.log(res))
             // localStorage.setItem('uerCookie', res.cookie)
             clearInterval(timer)
@@ -71,9 +71,6 @@ const Login = () => {
     }
   }, [state.base64])
 
-  const handleClick = () => {
-    getUserInfo().then(res => console.log(res))
-  }
 
   return (
     <LoginContainer>
@@ -89,7 +86,6 @@ const Login = () => {
             </NoticeMask> */}
           </ImgWrapper>
           <span>网易云音乐APP扫码</span>
-          <button onClick={handleClick}>点我</button>
         </LoginWrapper>
       )}
     </LoginContainer>

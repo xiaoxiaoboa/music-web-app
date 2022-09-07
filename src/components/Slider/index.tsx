@@ -38,8 +38,13 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
     setSliderValue
   })
 
+  // useEffect(() => {
+  //   setSliderValue(0)
+  // }, [props.type?.element.src])
+
   /* 修改音量 */
   useEffect(() => {
+    
     if (props.getSliderValue) {
       props.getSliderValue(sliderValue)
     } else if (isInterActive) {

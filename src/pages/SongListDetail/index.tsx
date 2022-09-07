@@ -6,7 +6,13 @@ import { RiHeart2Fill, RiHeart2Line } from "react-icons/ri"
 import { BsFolderCheck, BsFolderPlus } from "react-icons/bs"
 import { useLocation } from "react-router-dom"
 import { songListsDetail, songLink } from "../../utils/request"
-import { PlayListUrls, SongListsDetailType, TrackAndUrl, Track } from "../../types"
+import {
+  PlayListUrls,
+  SongListsDetailType,
+  TrackAndUrl,
+  Track,
+  
+} from "../../types"
 import { useRecoilState } from "recoil"
 import {
   SongListDetailState,
@@ -69,11 +75,10 @@ const SongListDetail = () => {
       },
     [detail]
   )
-
   const handleClick = (value: Track): void => {
     songLink("song/url/v1", value.id).then((res: PlayListUrls) =>{
-      const newArr: TrackAndUrl = { track: value, trackUrl: res.data[0] }
-      setPlayList((prev: TrackAndUrl[]) => [...prev, newArr])
+      const newObj: TrackAndUrl = { track: value, trackUrl: res.data[0] }
+      setPlayList((prev: TrackAndUrl[]) => [...prev, newObj])
     }
     )
   }

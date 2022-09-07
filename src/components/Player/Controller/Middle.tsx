@@ -4,30 +4,24 @@ import { FaPlay, FaPause, FaStepForward, FaStepBackward } from "react-icons/fa"
 import { Button } from "../index.style"
 import Slider from "../../Slider"
 import audio from "../../../utils/Media"
-import { useRecoilState } from "recoil"
+import { useRecoilValue } from "recoil"
 import { isPlayingState } from "../../../recoil"
 
 interface IProps {
   audioObject: audio
+  handlePlay: () => void
+  handlePause: () => void
 }
 
-const Middle: FC<IProps> = ({ audioObject }): ReactElement => {
+const Middle: FC<IProps> = ({
+  audioObject,
+  handlePlay,
+  handlePause
+}): ReactElement => {
   // const [isPlaying, setIsPlay] = useState<boolean>(false)
-  const [isPlaying, setIsPlay] = useRecoilState(isPlayingState)
+  const isPlaying = useRecoilValue(isPlayingState)
 
-  /* 播放控制 */
-  const handlePlay = (): void => {
-    audioObject
-      .play()
-      .then(() => setIsPlay(() => !audioObject?.paused))
-      .catch(err => console.log(err))
-  }
-
-  /* 暂停控制 */
-  const handlePause = (): void => {
-    audioObject.pause()
-    setIsPlay(() => !isPlaying)
-  }
+  
 
   return (
     <MiddleButton>

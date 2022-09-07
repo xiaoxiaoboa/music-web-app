@@ -7,7 +7,7 @@ import {
   CoverImg
 } from "./index.styled"
 import { BsFillPlayFill } from "react-icons/bs"
-import { imgSize } from "../../../utils/imgSize"
+import imgSize from "../../../utils/imgSize"
 import { SongListType, MvType, ArtistType } from "../../../types"
 
 interface IProps {

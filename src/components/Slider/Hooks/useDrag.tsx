@@ -37,7 +37,7 @@ export default function useDrag({
     () =>
       (trackElement?.offsetParent as HTMLDivElement)?.offsetLeft +
       trackElement?.offsetLeft,
-    [trackElement]
+    [(trackElement?.offsetParent as HTMLDivElement)?.offsetLeft]
   )
   const toFixed = useMemo(() => Math.floor(duration!) / 100, [duration!])
 
@@ -46,13 +46,14 @@ export default function useDrag({
     if (currentTime > 0 && isInterActive === false) {
       setSliderValue(() => parseFloat((currentTime! / toFixed).toFixed(1)))
     }
-  }, [currentTime, isInterActive])
+  }, [currentTime])
 
   /* 鼠标位置改变时，计算成百分比后更新state */
   useEffect(() => {
     if (offSetLeft === undefined || mouseX === 0) return
     setSliderValue(() => percentCalculate(mouseX - offSetLeft, trackElement))
   }, [mouseX])
+
 
   useEffect(
     () => () => {
@@ -75,7 +76,6 @@ export default function useDrag({
   const handleMouseDrag: MouseEventHandler = useCallback((e): void => {
     e.preventDefault()
     document.onmousemove = e => {
-      // setIsInterActive(true)
       setMouseX(() => e.clientX)
     }
   }, [])

@@ -19,6 +19,12 @@ export const isPlayingState = atom<boolean>({
   default: false
 })
 
+/* 是否再拖拽进度条 */
+export const isInterActiveState = atom<boolean>({
+  key: "isInterActive",
+  default: false
+})
+
 /* 主页歌单 */
 export const HomeSongListsState = atom<SongListType[]>({
   key: "songlists",
