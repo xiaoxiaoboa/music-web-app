@@ -61,10 +61,10 @@ const Login = () => {
           } else if (res.code === 802) {
             console.log(res.message)
           } else if (res.code === 803) {
+            clearInterval(timer)
             console.log('登录成功')
             // await getLoginStatus(res.cookie).then(res => console.log(res))
             // localStorage.setItem('uerCookie', res.cookie)
-            clearInterval(timer)
           }
         })
       }, 3000)

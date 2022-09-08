@@ -10,15 +10,10 @@ import {
   PlayListUrls,
   SongListsDetailType,
   TrackAndUrl,
-  Track,
-  
+  Track
 } from "../../types"
 import { useRecoilState } from "recoil"
-import {
-  SongListDetailState,
-  PlayListState,
-  
-} from "../../recoil"
+import { SongListDetailState, PlayListState } from "../../recoil"
 import Loading from "../../components/Loading"
 import { useSetRecoilState } from "recoil"
 
@@ -36,7 +31,6 @@ const SongListDetail = () => {
   const location = useLocation() as LocationProps
   const [detail, setDetail] = useRecoilState(SongListDetailState)
   const setPlayList = useSetRecoilState(PlayListState)
-  
 
   useEffect(() => {
     /* 如果点击的歌单和之前state中的歌单相同，直接显示，不再请求 */
@@ -76,11 +70,10 @@ const SongListDetail = () => {
     [detail]
   )
   const handleClick = (value: Track): void => {
-    songLink("song/url/v1", value.id).then((res: PlayListUrls) =>{
+    songLink("song/url/v1", value.id).then((res: PlayListUrls) => {
       const newObj: TrackAndUrl = { track: value, trackUrl: res.data[0] }
       setPlayList((prev: TrackAndUrl[]) => [...prev, newObj])
-    }
-    )
+    })
   }
 
   return (
@@ -165,7 +158,7 @@ const SongListDetail = () => {
                     <RiHeart2Line className="RiHeart2Line" />
                   </div>
                   <div className="name" title={track.name}>
-                    {track.name}
+                    <div className="nameWrapper">{track.name}</div>
                   </div>
                   <div className="artist" title={track.ar[0].name}>
                     <SongLightFont fontsize={`20px`}>
@@ -355,12 +348,22 @@ const Song = styled.div`
     align-items: center;
     justify-content: center;
     font-weight: bold;
+    overflow: hidden;
+    padding: 0 4px;
   }
+  .nameWrapper {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
   .artist {
     flex: 2;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    padding: 0 4px;
   }
   .album {
     flex: 2;
@@ -368,6 +371,7 @@ const Song = styled.div`
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    padding: 0 4px;
   }
   .duration {
     flex: 1;
