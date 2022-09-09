@@ -1,40 +1,21 @@
 const url = import.meta.env.VITE_REACT_APP_NETEASEMUSIC_API
 
-/* login 二维码key */
-export const qrCodeKey = async (path: string) => {
-  const totalUrl = url + path + `?timerstamp=${Date.now()}`
-  try {
-    const res = await fetch(totalUrl, {
-      method: "GET"
-    })
-    return await res.json()
-  } catch (err) {
-    console.log("二维码Key获取失败", err)
-  }
-}
+/* fetch请求 */
+export const request = async (
+  path: string,
+  method: string,
+  params?: string,
+  headers?: HeadersInit,
+  body?: BodyInit
+) => {
+  const totalUrl = url + path + `?timerstamp=${Date.now()}` + params
 
-/* 二维码 */
-export const qrCodeImg = async (path: string, key: string) => {
-  const totalUrl =
-    url + path + `?key=${key}&qrimg=${true}&timerstamp=${Date.now()}`
   try {
     const res = await fetch(totalUrl, {
-      method: "GET"
-    })
-    return await res.json()
-  } catch (err) {}
-}
-
-/* 获取登录状态 */
-export const getLoginStatus = async (cookie: string) => {
-  const totalUrl = url + "login/status" + `?timerstamp=${Date.now()}`
-  try {
-    const res = await fetch(totalUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ cookie })
+      method,
+      headers,
+      body,
+      credentials: "include"
     })
 
     return await res.json()
@@ -43,12 +24,17 @@ export const getLoginStatus = async (cookie: string) => {
   }
 }
 
-/* 轮询二维码状态 */
-export const qrCodeCheck = async (path: string, key: string) => {
-  const totalUrl = url + path + `?key=${key}&timerstamp=${Date.now()}`
+/* 获取登录状态 */
+export const getLoginStatus = async (cookie: string) => {
+  const totalUrl = url + "login/status" + `?timerstamp=${Date.now()}`
+
   try {
     const res = await fetch(totalUrl, {
-      method: "GET"
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ cookie })
     })
 
     return await res.json()
@@ -85,74 +71,4 @@ export const getUserInfo = async () => {
   } catch (err) {
     console.log(err)
   }
-}
-
-/* 首页推荐歌单 */
-export const recommendedList = async (path: string, limit: number) => {
-  const totalUrl = url + path + `?limit=${limit}&timerstamp=${Date.now()}`
-
-  try {
-    const res = await fetch(totalUrl, {
-      method: "GET"
-    })
-
-    return await res.json()
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-/* 首页推荐歌手 */
-export const recommendedArtist = async (path: string, type: number) => {
-  const totalUrl = url + path + `?type=${type}&timerstamp=${Date.now()}`
-
-  try {
-    const res = await fetch(totalUrl, {
-      method: "GET"
-    })
-
-    return await res.json()
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-/* 首页推荐MV */
-export const recommendedMv = async (path: string) => {
-  const totalUrl = url + path + `?&timerstamp=${Date.now()}`
-
-  try{
-    const res = await fetch(totalUrl, {
-      method:"GET"
-    })
-
-    return await res.json()
-  }catch(err){ console.log(err)}
-}
-
-/* 歌单详情页 */
-export const songListsDetail = async (path: string, id:number) => {
-  const totalUrl = url + path + `?id=${id}&timerstamp=${Date.now()}`
-
-  try{
-    const res = await fetch(totalUrl, {
-      method:"GET"
-    })
-
-    return await res.json()
-  }catch(err){}
-}
-
-/* 请求歌曲播放链接 */
-export const songLink = async (path: string, id: number) => {
-  const totalUrl =
-    url + path + `?id=${id}&level=standard&timerstamp=${Date.now()}`
-
-  try{
-    const res = await fetch(totalUrl, {
-      method: "GET"
-    })
-
-    return await res.json()
-  }catch(err){}
 }

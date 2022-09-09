@@ -1,13 +1,7 @@
 import { useEffect, useReducer, useState } from "react"
 import styled from "styled-components"
 import Loading from "../../components/Loading"
-import {
-  qrCodeKey,
-  qrCodeImg,
-  qrCodeCheck,
-  getLoginStatus,
-  getUserInfo
-} from "../../utils/request"
+import { request } from "../../utils/request"
 import { QRCodeState, QrCodeType, QrCodeAction } from "../../types"
 
 const reducer = (state: QRCodeState, action: QrCodeAction): QRCodeState => {
@@ -36,12 +30,17 @@ const Login = () => {
     dispatch({ type: QrCodeType.IS_LOADING, payload: true })
 
     /* 获取二维码key */
-    qrCodeKey("login/qr/key")
+    request("login/qr/key", "GET")
       .then(res => {
         dispatch({ type: QrCodeType.KEY, payload: res.data.unikey })
 
         /* 获取二维码 */
-        return qrCodeImg("login/qr/create", res.data.unikey)
+
+        return request(
+          "login/qr/create",
+          "GET",
+          `&key=${res.data.unikey}&qrimg=true`
+        )
       })
       .then(res => {
         dispatch({ type: QrCodeType.IS_LOADING, payload: false })
@@ -52,25 +51,25 @@ const Login = () => {
 
   useEffect(() => {
     if (state.base64.length > 0) {
-      const timer = setInterval( () => {
-        qrCodeCheck("login/qr/check", state.key)
-        .then(async res => {
-          if (res.code === 800) {
-            console.log(res.message)
-            clearInterval(timer)
-          } else if (res.code === 802) {
-            console.log(res.message)
-          } else if (res.code === 803) {
-            clearInterval(timer)
-            console.log('登录成功')
-            // await getLoginStatus(res.cookie).then(res => console.log(res))
-            // localStorage.setItem('uerCookie', res.cookie)
+      const timer = setInterval(() => {
+        request("login/qr/check", "GET", `&key=${state.key}`).then(
+          async res => {
+            if (res.code === 800) {
+              console.log(res.message)
+              clearInterval(timer)
+            } else if (res.code === 802) {
+              console.log(res.message)
+            } else if (res.code === 803) {
+              clearInterval(timer)
+              console.log("登录成功")
+              // await getLoginStatus(res.cookie).then(res => console.log(res))
+              // localStorage.setItem('uerCookie', res.cookie)
+            }
           }
-        })
+        )
       }, 3000)
     }
   }, [state.base64])
-
 
   return (
     <LoginContainer>

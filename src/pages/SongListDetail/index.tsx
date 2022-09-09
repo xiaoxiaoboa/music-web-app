@@ -5,7 +5,7 @@ import { FaPlay } from "react-icons/fa"
 import { RiHeart2Fill, RiHeart2Line } from "react-icons/ri"
 import { BsFolderCheck, BsFolderPlus } from "react-icons/bs"
 import { useLocation } from "react-router-dom"
-import { songListsDetail, songLink } from "../../utils/request"
+import { request } from "../../utils/request"
 import {
   PlayListUrls,
   SongListsDetailType,
@@ -36,7 +36,7 @@ const SongListDetail = () => {
     /* 如果点击的歌单和之前state中的歌单相同，直接显示，不再请求 */
     if (location.state.id === detail?.id) return setLoaded(true)
 
-    songListsDetail("playlist/detail", location.state.id).then(
+    request("playlist/detail", "GET", `&id=${location.state.id}`).then(
       (res: SongListsDetailType) =>
         setDetail(() => {
           setLoaded(() => true)
@@ -69,11 +69,15 @@ const SongListDetail = () => {
       },
     [detail]
   )
+
+  /* 双击歌曲播放 */
   const handleClick = (value: Track): void => {
-    songLink("song/url/v1", value.id).then((res: PlayListUrls) => {
-      const newObj: TrackAndUrl = { track: value, trackUrl: res.data[0] }
-      setPlayList((prev: TrackAndUrl[]) => [...prev, newObj])
-    })
+    request("song/url/v1", "GET", `&id=${value.id}&level=standard`).then(
+      (res: PlayListUrls) => {
+        const newObj: TrackAndUrl = { track: value, trackUrl: res.data[0] }
+        setPlayList((prev: TrackAndUrl[]) => [...prev, newObj])
+      }
+    )
   }
 
   return (
@@ -161,12 +165,12 @@ const SongListDetail = () => {
                     <div className="nameWrapper">{track.name}</div>
                   </div>
                   <div className="artist" title={track.ar[0].name}>
-                    <SongLightFont fontsize={`20px`}>
+                    <SongLightFont fontsize={`18px`}>
                       <SongLinkFont>{track.ar[0].name}</SongLinkFont>
                     </SongLightFont>
                   </div>
                   <div className="album" title={track.al.name}>
-                    <SongLightFont fontsize={`20px`}>
+                    <SongLightFont fontsize={`18px`}>
                       <SongLinkFont>{track.al.name}</SongLinkFont>
                     </SongLightFont>
                   </div>
@@ -316,7 +320,7 @@ const Songs = styled.div`
 const Song = styled.div`
   width: 100%;
   display: flex;
-  font-size: 18px;
+  /* font-size: 18px; */
   padding: 14px 0;
   border-radius: 8px;
 
@@ -350,6 +354,7 @@ const Song = styled.div`
     font-weight: bold;
     overflow: hidden;
     padding: 0 4px;
+    font-size:20px;
   }
   .nameWrapper {
     overflow: hidden;

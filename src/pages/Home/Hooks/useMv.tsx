@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { recommendedMv } from "../../../utils/request"
+import { request } from "../../../utils/request"
 import random from "../../../utils/random"
 import { MvsType, MvType } from "../../../types"
 import { useRecoilState } from "recoil"
@@ -12,7 +12,7 @@ const useMv = (): useMvType => {
 
   useEffect(() => {
     if (list.length > 0) return
-    recommendedMv("mv/first").then((res: MvsType) => {
+    request("mv/first", "GET").then((res: MvsType) => {
       const randomNumber: number[] = random(
         0,
         res.data.length - 1,
