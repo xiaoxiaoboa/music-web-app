@@ -30,9 +30,14 @@ export const SongDetails = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.3125rem;
+  max-width: 260px;
+  overflow:hidden;
 `
 export const SongTitle = styled.span`
   font-size: 1.125rem;
+  overflow:hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `
 export const Artist = styled.span`
   font-size: 0.875rem;

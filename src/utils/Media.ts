@@ -6,7 +6,7 @@ export default class Media {
       this._mediaElement = new Audio(arg)
       this._mediaElement.autoplay = true
     } else {
-      this._mediaElement = arg
+      this._mediaElement = arg as HTMLVideoElement
     }
   }
 

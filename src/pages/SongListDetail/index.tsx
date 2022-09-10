@@ -24,10 +24,9 @@ import {
   SongList,
   SongDetailType
 } from "../../types"
-import { useRecoilState } from "recoil"
 import { SongListDetailState, PlayListState } from "../../recoil"
 import Loading from "../../components/Loading"
-import { useSetRecoilState } from "recoil"
+import { useRecoilState } from "recoil"
 import useScroll from "./Hooks/useScroll"
 
 interface LocationProps {
@@ -67,13 +66,10 @@ const initialState: DetailState = {
 
 const SongListDetail = () => {
   const location = useLocation() as LocationProps
-  const setPlayList = useSetRecoilState(PlayListState)
+  const [playList, setPlayList] = useRecoilState(PlayListState)
   const [state, dispatch] = useReducer(reducer, initialState)
   const containerRef = useRef<HTMLDivElement>(null)
-  const [test, requesting, requestSongs] = useScroll(
-    state.songsId,
-    containerRef.current?.parentElement as HTMLDivElement
-  )
+  const [test, requesting, requestSongs] = useScroll(state.songsId)
 
   useEffect(() => {
     /* 如果点击的歌单和之前state中的歌单相同，直接显示，不再请求 */
@@ -126,12 +122,30 @@ const SongListDetail = () => {
 
   /* 双击歌曲播放 */
   const handleClick = (value: Track): void => {
-    request("song/url/v1", "GET", `&id=${value.id}&level=standard`).then(
-      (res: PlayListUrls) => {
-        const newObj: TrackAndUrl = { track: value, trackUrl: res.data[0] }
-        setPlayList((prev: TrackAndUrl[]) => [...prev, newObj])
-      }
+    /* 找一下是否已经播放过这个歌曲了 */
+    const sameVaue = playList.find(
+      (obj: TrackAndUrl) => obj.trackUrl.id === value.id
     )
+    /* 如果找到了，把对应的歌曲移动到数组末尾 */
+    if (sameVaue) {
+      /* 由于需要修改数组，而state不能直接修改，需要先深度拷贝 */
+      const temp: TrackAndUrl[] = [...playList]
+      /* 用排序把这个元素移动到末尾 */
+      temp.sort((a, b) => (b.trackUrl.id === sameVaue.trackUrl.id ? -1 : 0))
+      /* 更新state */
+      setPlayList(temp)
+    } else {
+      request("song/url/v1", "GET", `&id=${value.id}&level=exhigh`).then(
+        (res: PlayListUrls) => {
+          /* 如果返回的url是null，换一个链接播放 */
+          if (!res.data[0].url) {
+            res.data[0].url = `https://music.163.com/song/media/outer/url?id=${value.id}.mp3`
+          }
+          const newObj: TrackAndUrl = { track: value, trackUrl: res.data[0] }
+          setPlayList((prev: TrackAndUrl[]) => [...prev, newObj])
+        }
+      )
+    }
   }
 
   return (

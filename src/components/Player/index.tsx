@@ -15,24 +15,18 @@ import Right from "./Controller/Right"
 import { useRecoilValue, useSetRecoilState } from "recoil"
 import { PlayListState, isPlayingState } from "../../recoil"
 import imgSize from "../../utils/imgSize"
-import { TrackAndUrl } from "../../types"
 
 const Player: FC = (): ReactElement => {
   const playList = useRecoilValue(PlayListState)
   const audioElement = useRef(new MyAudio(""))
   const setIsPlaying = useSetRecoilState(isPlayingState)
 
-  
   useEffect(() => {
-    audioElement.current.element.src =
-      playList[playList.length - 1]?.trackUrl.url
-    if (playList.length !== 0) {
-      // audioElement.current
-      //   .play()
-      //   .then(() => setIsPlaying(() => !audioElement.current?.paused))
-      //   .catch(err => console.log(audioElement.current?.paused))
-      handlePlay()
-    }
+      if (playList[playList.length - 1]?.trackUrl.url.length) {
+        audioElement.current.element.src =
+          playList[playList.length - 1]?.trackUrl.url
+        handlePlay()
+      }
   }, [playList])
 
   /* 播放控制 */
@@ -61,7 +55,9 @@ const Player: FC = (): ReactElement => {
             )}
           />
           <SongDetails>
-            <SongTitle>{playList[playList.length - 1]?.track.name}</SongTitle>
+            <SongTitle title={playList[playList.length - 1]?.track.name}>
+              {playList[playList.length - 1]?.track.name}
+            </SongTitle>
             <Artist>{playList[playList.length - 1]?.track.ar[0].name}</Artist>
           </SongDetails>
         </SongCover>
