@@ -1,17 +1,112 @@
-/* 二维码API返回的类型 */
+/* 二维码API返回类型 */
+export interface QRCOdeKeyType {
+  code: number
+  data: { code: number; unikey: string }
+}
+/* 二维码img返回类型 */
+export interface QRCodeImgType {
+  code: number
+  data: {
+    qrimg: string
+    qrurl: string
+  }
+}
+/* 二维码状态返回类型 */
+export interface Waiting {
+  code: number
+  cookie: string
+  message: string
+}
+export interface Authorizing {
+  avatarUrl: string
+  code: number
+  cookie: string
+  message: string
+  nickname: string
+}
+export interface AuthSuccess {
+  code: number
+  cookie: string
+  message: string
+}
+/* 登录状态类型 */
+export interface LoginStatusType {
+  data: {
+    account: {
+      anonimousUser: boolean
+      ban: number
+      baoyueVersion: number
+      createTime: number
+      donateVersion: number
+      id: number
+      paidFee: boolean
+      status: number
+      tokenVersion: number
+      type: number
+      userName: string
+      vipType: number
+      whitelistAuthority: number
+    }
+    code: number
+    profile: {
+      accountStatus: number
+      accountType: number
+      anchor: boolean
+      authStatus: number
+      authenticated: boolean
+      authenticationTypes: number
+      authority: number
+      avatarDetail: null
+      avatarImgId: number
+      avatarUrl: string
+      backgroundImgId: number
+      backgroundUrl: string
+      birthday: number
+      city: number
+      createTime: number
+      defaultAvatar: boolean
+      description: null
+      detailDescription: null
+      djStatus: number
+      expertTags: null
+      experts: null
+      followed: boolean
+      gender: number
+      lastLoginIP: string
+      lastLoginTime: number
+      locationStatus: number
+      mutual: boolean
+      nickname: string
+      province: number
+      remarkName: null
+      shortUserName: string
+      signature: null
+      userId: number
+      userName: string
+      userType: number
+      vipType: number
+      viptypeVersion: number
+    }
+  }
+}
+
+/* 二维码state类型(reducer) */
 export interface QRCodeState {
   key: string
   base64: string
   isLoading: boolean
+  message: string
 }
 export enum QrCodeType {
   KEY = "key",
   BASE64 = "base64",
-  IS_LOADING = "isLoading"
+  IS_LOADING = "isLoading",
+  MESSAGE = "message",
+  RESET = "reset"
 }
 export interface QrCodeAction {
   type: QrCodeType
-  payload: string | boolean
+  payload: string | boolean | QRCodeState
 }
 
 /* 歌单返回类型(照抄API返回的数据) */
@@ -144,6 +239,18 @@ export interface Track {
   v: number
   version: number
 }
+
+export interface TrackIds {
+  alg: null
+  at: number
+  id: number
+  rcmdReason: string
+  sc: null
+  t: number
+  uid: number
+  v: number
+}
+
 export interface SongList {
   adType: number
   algTags: null
@@ -251,16 +358,7 @@ export interface SongList {
   titleImage: number
   titleImageUrl: null
   trackCount: number
-  trackIds: {
-    alg: null
-    at: number
-    id: number
-    rcmdReason: string
-    sc: null
-    t: number
-    uid: number
-    v: number
-  }[]
+  trackIds: TrackIds[]
   trackNumberUpdateTime: number
   trackUpdateTime: number
   tracks: Track[]
@@ -318,6 +416,67 @@ export interface SongListsDetailType {
   resEntrance: null
   sharedPrivilege: null
   urls: null
+}
+/* 歌曲详情state(reducer) */
+export interface DetailState {
+  isShowIntro: boolean
+  loaded: boolean
+  detail: SongList
+  songs: Track[]
+  songsId: number[]
+}
+export enum DetailType {
+  ISHOWINTRO = "isShowIntro",
+  LOADED = "loaded",
+  DETAIL = "detail",
+  SONGS = "songs",
+  SONGSID = "songsId"
+}
+export interface DetailAction {
+  type: DetailType
+  paylad: boolean | SongList | Track[] | number[]
+}
+/* 歌曲详情API返回类型 */
+export interface SongDetailType {
+  code: number
+  privileges: {
+    chargeInfoList: {
+      chargeMessage: null
+      chargeType: number
+      chargeUrl: null
+      rate: number
+    }[]
+    cp: number
+    cs: boolean
+    dl: number
+    dlLevel: string
+    downloadMaxBrLevel: string
+    downloadMaxbr: number
+    fee: number
+    fl: number
+    flLevel: string
+    flag: number
+    freeTrialPrivilege: {
+      resConsumable: boolean
+      userConsumable: boolean
+      listenType: null
+    }
+    id: number
+    maxBrLevel: string
+    maxbr: number
+    payed: number
+    pl: number
+    plLevel: string
+    playMaxBrLevel: string
+    playMaxbr: number
+    preSell: boolean
+    rscl: null
+    sp: number
+    st: number
+    subp: number
+    toast: boolean
+  }[]
+  songs: Track[]
 }
 
 /* Home中hooks的type */
@@ -378,4 +537,3 @@ export interface TrackAndUrl {
   track: Track
   trackUrl: SongUrl
 }
-

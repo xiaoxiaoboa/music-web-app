@@ -1,4 +1,11 @@
-import React, { useState, useEffect, MouseEventHandler, useMemo } from "react"
+import React, {
+  useState,
+  useEffect,
+  MouseEventHandler,
+  useMemo,
+  useReducer,
+  useRef
+} from "react"
 import styled from "styled-components"
 import Avatar from "../../components/Avatar"
 import { FaPlay } from "react-icons/fa"
@@ -10,12 +17,18 @@ import {
   PlayListUrls,
   SongListsDetailType,
   TrackAndUrl,
-  Track
+  Track,
+  DetailState,
+  DetailAction,
+  DetailType,
+  SongList,
+  SongDetailType
 } from "../../types"
 import { useRecoilState } from "recoil"
 import { SongListDetailState, PlayListState } from "../../recoil"
 import Loading from "../../components/Loading"
 import { useSetRecoilState } from "recoil"
+import useScroll from "./Hooks/useScroll"
 
 interface LocationProps {
   hash: string
@@ -25,23 +38,64 @@ interface LocationProps {
   state: { id: number }
 }
 
+const reducer = (state: DetailState, action: DetailAction): DetailState => {
+  const { type, paylad } = action
+  switch (type) {
+    case DetailType.ISHOWINTRO:
+      return { ...state, ...{ isShowIntro: paylad as boolean } }
+    case DetailType.LOADED:
+      return { ...state, ...{ loaded: paylad as boolean } }
+    case DetailType.DETAIL:
+      return { ...state, ...{ detail: paylad as SongList } }
+    case DetailType.SONGSID:
+      return { ...state, ...{ songsId: paylad as number[] } }
+    case DetailType.SONGS:
+      return { ...state, ...{ songs: paylad as Track[] } }
+
+    default:
+      return state
+  }
+}
+
+const initialState: DetailState = {
+  isShowIntro: false,
+  loaded: false,
+  detail: {} as SongList,
+  songs: [] as Track[],
+  songsId: [] as number[]
+}
+
 const SongListDetail = () => {
-  const [state, setState] = useState<boolean>(false)
-  const [loaded, setLoaded] = useState<boolean>(false)
   const location = useLocation() as LocationProps
-  const [detail, setDetail] = useRecoilState(SongListDetailState)
   const setPlayList = useSetRecoilState(PlayListState)
+  const [state, dispatch] = useReducer(reducer, initialState)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [test, requesting, requestSongs] = useScroll(
+    state.songsId,
+    containerRef.current?.parentElement as HTMLDivElement
+  )
 
   useEffect(() => {
     /* 如果点击的歌单和之前state中的歌单相同，直接显示，不再请求 */
-    if (location.state.id === detail?.id) return setLoaded(true)
+    if (location.state.id === state.detail?.id) {
+      return dispatch({ type: DetailType.LOADED, paylad: true })
+    }
 
     request("playlist/detail", "GET", `&id=${location.state.id}`).then(
-      (res: SongListsDetailType) =>
-        setDetail(() => {
-          setLoaded(() => true)
-          return res.playlist
+      (res: SongListsDetailType) => {
+        dispatch({ type: DetailType.DETAIL, paylad: res.playlist })
+        dispatch({
+          type: DetailType.SONGSID,
+          paylad: res.playlist.trackIds.map(obj => obj.id)
         })
+        // const ids = res.playlist.trackIds.map(obj => obj.id)
+
+        // request("song/detail", "GET", `&ids=${ids.toString()}`).then(
+        //   (res: SongDetailType) =>
+        //     dispatch({ type: DetailType.SONGS, paylad: res.songs })
+        // )
+        return dispatch({ type: DetailType.LOADED, paylad: true })
+      }
     )
   }, [location])
 
@@ -55,7 +109,7 @@ const SongListDetail = () => {
           ("0" + (Math.floor(value / 1000) % 60)).slice(-2)
         )
       },
-    [detail]
+    [state.detail]
   )
 
   /* 格式化创建时间 */
@@ -67,7 +121,7 @@ const SongListDetail = () => {
         const newStr = str.replace(re, "-")
         return newStr
       },
-    [detail]
+    [state.detail]
   )
 
   /* 双击歌曲播放 */
@@ -81,51 +135,53 @@ const SongListDetail = () => {
   }
 
   return (
-    <Container>
-      {loaded ? (
+    <Container ref={containerRef}>
+      {state.loaded ? (
         <>
           <SongListInfo>
             <CoverImg>
-              <img src={detail?.coverImgUrl} />
+              <img src={state.detail?.coverImgUrl} />
             </CoverImg>
             <Desc>
-              <div className="title">{detail?.name}</div>
+              <div className="title">{state.detail?.name}</div>
               <Creator>
-                <Avatar src={detail?.creator.avatarUrl} size={`2rem`} />
-                <LinkFont>{detail?.creator.nickname}</LinkFont>
+                <Avatar src={state.detail?.creator.avatarUrl} size={`2rem`} />
+                <LinkFont>{state.detail?.creator.nickname}</LinkFont>
                 <LightFont fontsize={`14px`}>
-                  {getUpdateTime(detail.createTime)} 创建
+                  {getUpdateTime(state.detail.createTime)} 创建
                 </LightFont>
               </Creator>
               <Tag>
                 <div>标签：</div>
-                {detail?.tags.map(tag => (
-                  <LinkFont key={detail.tags.indexOf(tag)}>{tag}</LinkFont>
+                {state.detail?.tags.map(tag => (
+                  <LinkFont key={state.detail.tags.indexOf(tag)}>
+                    {tag}
+                  </LinkFont>
                 ))}
               </Tag>
               <Count>
                 <CountItem>
                   <div>歌曲：</div>
                   <LightFont fontsize={`14px`}>
-                    {detail?.trackCount.toLocaleString()}
+                    {state.detail?.trackCount.toLocaleString()}
                   </LightFont>
                 </CountItem>
                 <CountItem>
                   <div>播放：</div>
                   <LightFont fontsize={`14px`}>
-                    {detail?.playCount.toLocaleString()}
+                    {state.detail?.playCount.toLocaleString()}
                   </LightFont>
                 </CountItem>
                 <CountItem>
                   <div>收藏：</div>
                   <LightFont fontsize={`14px`}>
-                    {detail?.subscribedCount.toLocaleString()}
+                    {state.detail?.subscribedCount.toLocaleString()}
                   </LightFont>
                 </CountItem>
                 <CountItem>
                   <div>分享：</div>
                   <LightFont fontsize={`14px`}>
-                    {detail?.shareCount.toLocaleString()}
+                    {state.detail?.shareCount.toLocaleString()}
                   </LightFont>
                 </CountItem>
               </Count>
@@ -140,49 +196,70 @@ const SongListDetail = () => {
                 </Button>
               </PlayButton>
               <Intro
-                height={state ? "100%" : "52px"}
-                onClick={() => setState(!state)}>
+                height={state.isShowIntro ? "100%" : "52px"}
+                onClick={() =>
+                  dispatch({
+                    type: DetailType.ISHOWINTRO,
+                    paylad: !state.isShowIntro
+                  })
+                }>
                 <IntroLightFont as="div" fontsize={`14px`}>
                   <label>简介：</label>
-                  {detail?.description}
+                  {state.detail?.description}
                 </IntroLightFont>
               </Intro>
             </Desc>
           </SongListInfo>
-          <Songs>
-            {detail?.tracks.map(track => {
-              return (
-                <Song key={track.id} onDoubleClick={() => handleClick(track)}>
-                  <div className="sn">
-                    <SongLightFont fontsize={`20px`}>
-                      {detail.tracks.indexOf(track) + 1}
-                    </SongLightFont>
-                  </div>
-                  <div className="like">
-                    <RiHeart2Line className="RiHeart2Line" />
-                  </div>
-                  <div className="name" title={track.name}>
-                    <div className="nameWrapper">{track.name}</div>
-                  </div>
-                  <div className="artist" title={track.ar[0].name}>
-                    <SongLightFont fontsize={`18px`}>
-                      <SongLinkFont>{track.ar[0].name}</SongLinkFont>
-                    </SongLightFont>
-                  </div>
-                  <div className="album" title={track.al.name}>
-                    <SongLightFont fontsize={`18px`}>
-                      <SongLinkFont>{track.al.name}</SongLinkFont>
-                    </SongLightFont>
-                  </div>
-                  <div className="duration">
-                    <SongLightFont fontsize={`20px`}>
-                      {getMinute(track.dt)}
-                    </SongLightFont>
-                  </div>
-                </Song>
-              )
-            })}
-          </Songs>
+
+          {test.length > 0 ? (
+            <>
+              <Songs>
+                {(test as Track[]).map(song => {
+                  return (
+                    <Song key={song.id} onDoubleClick={() => handleClick(song)}>
+                      <div className="sn">
+                        <SongLightFont fontsize={`20px`}>
+                          {(test as Track[]).indexOf(song) + 1}
+                        </SongLightFont>
+                      </div>
+                      <div className="like">
+                        <RiHeart2Line className="RiHeart2Line" />
+                      </div>
+                      <div className="name" title={song.name}>
+                        <div className="nameWrapper">{song.name}</div>
+                      </div>
+                      <div className="artist" title={song.ar[0].name}>
+                        <SongLightFont fontsize={`18px`}>
+                          <SongLinkFont>{song.ar[0].name}</SongLinkFont>
+                        </SongLightFont>
+                      </div>
+                      <div className="album" title={song.al.name}>
+                        <SongLightFont fontsize={`18px`}>
+                          <SongLinkFont>{song.al.name}</SongLinkFont>
+                        </SongLightFont>
+                      </div>
+                      <div className="duration">
+                        <SongLightFont fontsize={`20px`}>
+                          {getMinute(song.dt)}
+                        </SongLightFont>
+                      </div>
+                    </Song>
+                  )
+                })}
+              </Songs>
+              <ButtonBottom>
+                {requesting === true ? (
+                  <Loading scale={0.5} />
+                ) : typeof requesting === "string" ? (
+                  requesting
+                ) : (
+                  <RequestButton onClick={requestSongs}>加载更多</RequestButton>
+                )}
+              </ButtonBottom>
+            </>
+          ) : (
+            <Loading />
+          )}
         </>
       ) : (
         <Loading />
@@ -311,10 +388,10 @@ const Songs = styled.div`
   flex-direction: column;
   gap: 18px;
 
-  &::after {
+  /* &::after {
     content: "";
     height: 30px;
-  }
+  } */
 `
 
 const Song = styled.div`
@@ -354,7 +431,7 @@ const Song = styled.div`
     font-weight: bold;
     overflow: hidden;
     padding: 0 4px;
-    font-size:20px;
+    font-size: 20px;
   }
   .nameWrapper {
     overflow: hidden;
@@ -397,4 +474,14 @@ const SongLightFont = styled(LightFont)`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+`
+
+const ButtonBottom = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 30px;
+`
+const RequestButton = styled(Button)`
+  padding: 7px;
+  border-radius: 7px;
 `

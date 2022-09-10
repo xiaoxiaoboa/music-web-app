@@ -1,10 +1,14 @@
-import React from "react"
+import React, { FC, ReactElement } from "react"
 import styled, { keyframes } from "styled-components"
 
-const Loading = () => {
+interface CProps {
+  scale?: number;
+}
+
+const Loading:FC<CProps> = ({scale=1}):ReactElement => {
   return (
     <LoadingContainer>
-      <LoadingBody />
+      <LoadingBody scale={scale} />
     </LoadingContainer>
   )
 }
@@ -33,11 +37,12 @@ const LoadingContainer = styled.div`
   align-items: center;
 `
 
-const LoadingBody = styled.div`
+const LoadingBody = styled.div<CProps>`
   display: block;
   position: relative;
   width: 6px;
   height: 10px;
+  transform: scale(${props => props.scale});
 
   animation: ${loading} infinite 1s ease-in-out -0.2s;
 
