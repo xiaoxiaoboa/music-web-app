@@ -1,3 +1,15 @@
+import Media from '../utils/Media'
+export interface AudioStateType {
+  audio: Media
+  duration: number
+  currentTime: number
+  playIndex: number
+  isPlaying: boolean
+  continuousWay: string
+  playList: Track[]
+}
+
+
 /* 二维码API返回类型 */
 export interface QRCOdeKeyType {
   code: number

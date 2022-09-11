@@ -12,8 +12,8 @@ import {
 import MyAudio from "../../utils/MyAudio"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
-import { useRecoilValue, useSetRecoilState } from "recoil"
-import { PlayListState, isPlayingState } from "../../recoil"
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
+import { PlayListState, isPlayingState, AudioState } from "../../recoil/atom"
 import imgSize from "../../utils/imgSize"
 
 const Player: FC = (): ReactElement => {

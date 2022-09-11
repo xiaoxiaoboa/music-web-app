@@ -24,7 +24,7 @@ import {
   SongList,
   SongDetailType
 } from "../../types"
-import { SongListDetailState, PlayListState } from "../../recoil"
+import { SongListDetailState, PlayListState } from "../../recoil/atom"
 import Loading from "../../components/Loading"
 import { useRecoilState } from "recoil"
 import useScroll from "./Hooks/useScroll"
@@ -84,12 +84,6 @@ const SongListDetail = () => {
           type: DetailType.SONGSID,
           paylad: res.playlist.trackIds.map(obj => obj.id)
         })
-        // const ids = res.playlist.trackIds.map(obj => obj.id)
-
-        // request("song/detail", "GET", `&ids=${ids.toString()}`).then(
-        //   (res: SongDetailType) =>
-        //     dispatch({ type: DetailType.SONGS, paylad: res.songs })
-        // )
         return dispatch({ type: DetailType.LOADED, paylad: true })
       }
     )
@@ -121,7 +115,7 @@ const SongListDetail = () => {
   )
 
   /* 双击歌曲播放 */
-  const handleClick = (value: Track): void => {
+  const handleDbClick = (value: Track): void => {
     /* 找一下是否已经播放过这个歌曲了 */
     const sameVaue = playList.find(
       (obj: TrackAndUrl) => obj.trackUrl.id === value.id
@@ -230,7 +224,9 @@ const SongListDetail = () => {
               <Songs>
                 {(test as Track[]).map(song => {
                   return (
-                    <Song key={song.id} onDoubleClick={() => handleClick(song)}>
+                    <Song
+                      key={song.id}
+                      onDoubleClick={() => handleDbClick(song)}>
                       <div className="sn">
                         <SongLightFont fontsize={`20px`}>
                           {(test as Track[]).indexOf(song) + 1}

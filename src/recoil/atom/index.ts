@@ -1,11 +1,13 @@
 import { atom } from "recoil"
+import MyAudio from '../../utils/MyAudio'
 import {
   SongListType,
   MvType,
   ArtistType,
   SongList,
-  TrackAndUrl
-} from "../types"
+  TrackAndUrl,
+  AudioStateType
+} from "../../types"
 
 /* 主题state */
 export const ThemeState = atom<boolean>({
@@ -13,9 +15,22 @@ export const ThemeState = atom<boolean>({
   default: true
 })
 
+export const AudioState = atom<AudioStateType>({
+  key: "playerState",
+  default: {
+    audio: new MyAudio(''),
+    duration: 0,
+    currentTime: 0,
+    playIndex: 0,
+    isPlaying: false,
+    continuousWay: "order",
+    playList: []
+  }
+})
+
 /* 播放状态 */
 export const isPlayingState = atom<boolean>({
-  key: 'isPlaying',
+  key: "isPlaying",
   default: false
 })
 
@@ -33,7 +48,7 @@ export const HomeSongListsState = atom<SongListType[]>({
 
 /* 主页歌手 */
 export const HomeArtistsState = atom<ArtistType[]>({
-  key: 'artists',
+  key: "artists",
   default: []
 })
 
@@ -49,8 +64,8 @@ export const SongListDetailState = atom<SongList>({
   default: undefined
 })
 
+/* 歌曲url和歌曲信息 */
 export const PlayListState = atom<TrackAndUrl[]>({
   key: "PlayList",
   default: []
 })
-

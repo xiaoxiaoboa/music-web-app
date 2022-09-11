@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { request } from "../../../utils/request"
 import { SongListType, SongListsType } from "../../../types"
 import { useRecoilState } from "recoil"
-import { HomeSongListsState } from "../../../recoil"
+import { HomeSongListsState } from "../../../recoil/atom"
 import { useSongListsType } from "../../../types"
 
 const useSongLists = (): useSongListsType => {

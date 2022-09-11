@@ -5,7 +5,7 @@ import { Button } from "../index.style"
 import Slider from "../../Slider"
 import audio from "../../../utils/Media"
 import { useRecoilValue } from "recoil"
-import { isPlayingState } from "../../../recoil"
+import { isPlayingState } from "../../../recoil/atom"
 
 interface IProps {
   audioObject: audio

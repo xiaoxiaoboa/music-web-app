@@ -3,7 +3,7 @@ import {  request } from "../../../utils/request"
 import random from "../../../utils/random"
 import { ArtistsType, ArtistType } from "../../../types"
 import { useRecoilState } from "recoil"
-import { HomeArtistsState } from "../../../recoil"
+import { HomeArtistsState } from "../../../recoil/atom"
 import { useArtistsType } from "../../../types"
 
 const useArtists = (): useArtistsType => {
