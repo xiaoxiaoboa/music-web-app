@@ -7,7 +7,7 @@ import audio from "../../../utils/Media"
 import { isPlayingState } from "../../../recoil/atom"
 import {useRecoilValue} from 'recoil'
 import {AudioState} from '../../../recoil/atom'
-
+ 
 interface IProps {
   handlePlay: () => void
   handlePause: () => void
