@@ -6,7 +6,8 @@ import {
   ArtistType,
   SongList,
   TrackAndUrl,
-  AudioStateType
+  AudioStateType,
+  continuousWayEnum
 } from "../../types"
 
 /* 主题state */
@@ -18,12 +19,10 @@ export const ThemeState = atom<boolean>({
 export const AudioState = atom<AudioStateType>({
   key: "playerState",
   default: {
-    audio: new MyAudio(''),
-    duration: 0,
-    currentTime: 0,
+    audio: new MyAudio(""),
     playIndex: 0,
     isPlaying: false,
-    continuousWay: "order",
+    continuousWay: continuousWayEnum.ORDER,
     playList: []
   }
 })

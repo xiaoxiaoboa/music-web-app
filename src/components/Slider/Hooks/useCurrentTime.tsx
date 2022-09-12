@@ -4,13 +4,13 @@ import { useRecoilValue } from "recoil"
 import { PlayListState } from "../../../recoil/atom"
 
 interface IProps {
-  mediaObject: Media
+  media: Media
   isInterActive: boolean
 }
 
 /* 获取媒体的currentTime，无设置功能 */
 export default function useCurrentTime({
-  mediaObject,
+  media,
   isInterActive
 }: IProps): [string, number, React.Dispatch<React.SetStateAction<number>>] {
   const [currentTime, setCurrentTime] = useState<number>(0)
@@ -20,16 +20,16 @@ export default function useCurrentTime({
   /* 播放媒体时如果未拖拽滑块，则通过定时器改变进度条左侧的currentTime */
   useEffect(() => {
     let timer: number = -1
-    if (mediaObject?.paused === false && isInterActive === false) {
+    if (media?.paused === false && isInterActive === false) {
       timer = setInterval(() => {
-        setCurrentTime(() => Math.floor(mediaObject?.currentTime))
+        setCurrentTime(() => Math.floor(media?.currentTime))
       }, 1000)
     }
 
     return () => {
       clearInterval(timer)
     }
-  }, [mediaObject?.paused, isInterActive])
+  }, [media?.paused, isInterActive])
 
   const toMinute = useMemo(() => {
     return (

@@ -10,7 +10,7 @@ import Media from "../../../utils/Media"
 
 interface IProps {
   trackElement: HTMLDivElement
-  mediaObject: Media
+  media: Media
   duration: number
   currentTime: number
   isInterActive: boolean
@@ -20,7 +20,7 @@ interface IProps {
 
 export default function useDrag({
   trackElement,
-  mediaObject,
+  media,
   duration,
   currentTime,
   isInterActive,
@@ -102,7 +102,7 @@ export default function useDrag({
 
   /* 点击Slider轨道实现快进 */
   const fastForward = () => {
-    if (mediaObject) mediaObject.currentTime = currentTime
+    if (media) media.currentTime = currentTime
   }
 
   return [handleMouseDown, handleMouseDrag]

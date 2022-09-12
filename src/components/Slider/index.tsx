@@ -21,16 +21,16 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
   const [isInterActive, setIsInterActive] = useState<boolean>(false)
 
   const [strDuration, duration, toFixed] = useDuration({
-    mediaObject: props.type as Media
+    media: props.type as Media
   })
   const [strCurrentTime, currentTime, setCurrentTime] = useCurrentTime({
-    mediaObject: props.type as Media,
+    media: props.type as Media,
     isInterActive
   })
 
   const [handleMouseDown, handleMouseDrag] = useDrag({
     trackElement: TrackRef.current as HTMLDivElement,
-    mediaObject: props.type as Media,
+    media: props.type as Media,
     duration,
     currentTime,
     isInterActive,

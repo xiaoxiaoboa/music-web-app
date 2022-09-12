@@ -1,14 +1,28 @@
-import Media from '../utils/Media'
+import Media from "../utils/Media"
+
 export interface AudioStateType {
   audio: Media
-  duration: number
-  currentTime: number
+  duration?: number
+  currentTime?: number
   playIndex: number
   isPlaying: boolean
-  continuousWay: string
-  playList: Track[]
+  continuousWay: continuousWayEnum
+  playList: TrackAndUrl[]
 }
-
+export enum continuousWayEnum {
+  ORDER = "order",
+  SHUFFLE = "shuffle",
+  LOOP = "loop",
+  LISTLOOP='listLoop'
+}
+// export interface PlayListType {
+//   type: AudioStateEnum
+//   list: TrackAndUrl[]
+// }
+// export enum AudioStateEnum {
+//   SINGLE = 'singleSong',
+//   MANY = 'allSongOfSongList'
+// }
 
 /* 二维码API返回类型 */
 export interface QRCOdeKeyType {

@@ -4,22 +4,22 @@ import { FaPlay, FaPause, FaStepForward, FaStepBackward } from "react-icons/fa"
 import { Button } from "../index.style"
 import Slider from "../../Slider"
 import audio from "../../../utils/Media"
-import { useRecoilValue } from "recoil"
 import { isPlayingState } from "../../../recoil/atom"
+import {useRecoilValue} from 'recoil'
+import {AudioState} from '../../../recoil/atom'
 
 interface IProps {
-  audioObject: audio
   handlePlay: () => void
   handlePause: () => void
 }
 
 const Middle: FC<IProps> = ({
-  audioObject,
   handlePlay,
   handlePause
 }): ReactElement => {
   // const [isPlaying, setIsPlay] = useState<boolean>(false)
   const isPlaying = useRecoilValue(isPlayingState)
+  const state = useRecoilValue(AudioState)
 
   
 
@@ -29,8 +29,8 @@ const Middle: FC<IProps> = ({
         <Button>
           <FaStepBackward className="FaStepBackward" />
         </Button>
-        <Button onClick={() => (isPlaying ? handlePause() : handlePlay())}>
-          {isPlaying ? (
+        <Button onClick={() => (state.isPlaying ? handlePause() : handlePlay())}>
+          {state.isPlaying ? (
             <FaPause className="FaPause" />
           ) : (
             <FaPlay className="FaPlay" />
@@ -40,7 +40,7 @@ const Middle: FC<IProps> = ({
           <FaStepForward className="FaStepForward" />
         </Button>
       </ButtonBox>
-      <Slider type={audioObject} sWidth={`100%`} sPadding={`4px 0`} />
+      <Slider type={state.audio!} sWidth={`100%`} sPadding={`4px 0`} />
     </MiddleButton>
   )
 }

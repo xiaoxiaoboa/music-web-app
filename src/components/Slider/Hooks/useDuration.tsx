@@ -2,20 +2,20 @@ import React, { useCallback, useMemo, useState } from "react"
 import Media from "../../../utils/Media"
 
 interface IProps {
-  mediaObject: Media
+  media: Media
 }
 
 export default function useDuration({
-  mediaObject
+  media
 }: IProps): [string, number, number] {
   const [duration, setDuration] = useState<number>(0)
   const toFixed = useMemo(() => Math.floor(duration!) / 100, [duration!])
 
 
   /* canplaythrough事件触发后，可以准确的获得到媒体的duration */
-  mediaObject?.element.addEventListener("canplay", () => {
+  media?.element.addEventListener("canplay", () => {
     
-    setDuration(() => mediaObject?.duration)
+    setDuration(() => media?.duration)
   })
 
   /* 转换格式 */
