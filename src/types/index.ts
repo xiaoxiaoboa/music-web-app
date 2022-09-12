@@ -1,13 +1,13 @@
 import Media from "../utils/Media"
 
+/* audio状态 */
 export interface AudioStateType {
   audio: Media
-  duration?: number
-  currentTime?: number
+  duration: number
+  currentTime: number
   playIndex: number
   isPlaying: boolean
   continuousWay: continuousWayEnum
-  playList: TrackAndUrl[]
 }
 export enum continuousWayEnum {
   ORDER = "order",
@@ -15,14 +15,51 @@ export enum continuousWayEnum {
   LOOP = "loop",
   LISTLOOP='listLoop'
 }
-// export interface PlayListType {
-//   type: AudioStateEnum
-//   list: TrackAndUrl[]
-// }
-// export enum AudioStateEnum {
-//   SINGLE = 'singleSong',
-//   MANY = 'allSongOfSongList'
-// }
+/* player中歌曲的播放链接和歌曲信息 */
+export interface SongUrl {
+  br: number
+  canExtend: boolean
+  code: number
+  effectTypes: null
+  encodeType: string
+  expi: number
+  fee: number
+  flag: number
+  freeTimeTrialPrivilege: {
+    resConsumable: boolean
+    userConsumable: boolean
+    type: number
+    remainTime: number
+  }
+  freeTrialInfo: null
+  freeTrialPrivilege: {
+    resConsumable: boolean
+    userConsumable: boolean
+    listenType: null
+  }
+  gain: number
+  id: number
+  level: string
+  md5: string
+  payed: number
+  podcastCtrp: null
+  rightSource: number
+  size: number
+  time: number
+  type: string
+  uf: null
+  url: string
+  urlSource: number
+}
+export interface PlayListUrls {
+  code: number
+  data: SongUrl[]
+}
+export interface TrackAndUrl {
+  track: Track
+  trackUrl: SongUrl
+}
+
 
 /* 二维码API返回类型 */
 export interface QRCOdeKeyType {
@@ -116,6 +153,7 @@ export interface LoginStatusType {
   }
 }
 
+
 /* 二维码state类型(reducer) */
 export interface QRCodeState {
   key: string
@@ -134,6 +172,7 @@ export interface QrCodeAction {
   type: QrCodeType
   payload: string | boolean | QRCodeState
 }
+
 
 /* 歌单返回类型(照抄API返回的数据) */
 export interface SongListType {
@@ -155,6 +194,7 @@ export interface SongListsType {
   hasTaste: boolean
   result: SongListType[]
 }
+
 
 /* Mv返回类型(照抄API返回的数据) */
 export interface MvArtistsType {
@@ -179,6 +219,7 @@ export interface MvsType {
   code: number
   data: MvType[]
 }
+
 
 /* 歌手返回类型(照抄API返回的数据) */
 export interface ArtistType {
@@ -208,6 +249,7 @@ export interface ArtistsType {
   code: number
   list: ArtistsListType
 }
+
 
 /* 歌单详情 */
 export interface Track {
@@ -519,47 +561,4 @@ export interface useArtistsType extends HomeHooksType {
   list: ArtistType[]
 }
 
-/* player中歌曲的播放链接和歌曲信息 */
-export interface SongUrl {
-  br: number
-  canExtend: boolean
-  code: number
-  effectTypes: null
-  encodeType: string
-  expi: number
-  fee: number
-  flag: number
-  freeTimeTrialPrivilege: {
-    resConsumable: boolean
-    userConsumable: boolean
-    type: number
-    remainTime: number
-  }
-  freeTrialInfo: null
-  freeTrialPrivilege: {
-    resConsumable: boolean
-    userConsumable: boolean
-    listenType: null
-  }
-  gain: number
-  id: number
-  level: string
-  md5: string
-  payed: number
-  podcastCtrp: null
-  rightSource: number
-  size: number
-  time: number
-  type: string
-  uf: null
-  url: string
-  urlSource: number
-}
-export interface PlayListUrls {
-  code: number
-  data: SongUrl[]
-}
-export interface TrackAndUrl {
-  track: Track
-  trackUrl: SongUrl
-}
+

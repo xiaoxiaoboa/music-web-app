@@ -11,15 +11,15 @@ import {
 import { continuousWayEnum, TrackAndUrl } from "../../types"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
-import { useRecoilState } from "recoil"
-import { AudioState } from "../../recoil/atom"
+import { useRecoilState,useRecoilValue } from "recoil"
+import { AudioState,PlayListState } from "../../recoil/atom"
 import imgSize from "../../utils/imgSize"
 
 const Player: FC = (): ReactElement => {
   const [state, setState] = useRecoilState(AudioState)
+  const playList = useRecoilValue(PlayListState)
 
   useEffect(() => {
-    console.log(state.playList)
     switch (state.continuousWay) {
       case continuousWayEnum.ORDER:
         return orderPlay()
@@ -33,14 +33,10 @@ const Player: FC = (): ReactElement => {
       default:
         break
     }
-    // if (state.playList[state.playIndex]?.trackUrl.url.length) {
-    //   state.audio.element.src = state.playList[state.playIndex]?.trackUrl.url
-    //   handlePlay()
-    // }
-  }, [state.playList])
+  }, [playList])
 
   useEffect(() => {
-    state.audio.element.src = state.playList[state.playIndex]?.trackUrl.url
+    state.audio.element.src = playList[state.playIndex]?.trackUrl.url
   },[state.playIndex])
 
   state.audio.element.onended = () => {
@@ -71,18 +67,18 @@ const Player: FC = (): ReactElement => {
 
   /* 下一首 */
   const next = ():void => {
-    if(state.playIndex + 1 >= state.playList.length) return handlePause()
+    if(state.playIndex + 1 >= playList.length) return handlePause()
     setState((prev) =>  ({...prev, ...{playIndex: prev.playIndex + 1}}))
   }
 
   /* 顺序播放 */
   const orderPlay = (): void => {
-    state.audio.element.src = state.playList[state.playIndex]?.trackUrl.url
+    state.audio.element.src = playList[state.playIndex]?.trackUrl.url
     handlePlay()
   }
   /* 随机播放 */
   const shufflePlay = () => {
-    const arr:number[] = state.playList.map((obj) => obj.trackUrl.id)
+    const arr:number[] = playList.map((obj) => obj.trackUrl.id)
     let i = arr.length
     while (i) {
       let j = Math.floor(Math.random() * i--);
@@ -96,16 +92,16 @@ const Player: FC = (): ReactElement => {
         <SongCover>
           <SongCoverImg
             src={imgSize(
-              state.playList[state.playIndex]?.track.al.picUrl,
+              playList[state.playIndex]?.track.al.picUrl,
               60,
               60
             )}
           />
           <SongDetails>
-            <SongTitle title={state.playList[state.playIndex]?.track.name}>
-              {state.playList[state.playIndex]?.track.name}
+            <SongTitle title={playList[state.playIndex]?.track.name}>
+              {playList[state.playIndex]?.track.name}
             </SongTitle>
-            <Artist>{state.playList[state.playIndex]?.track.ar[0].name}</Artist>
+            <Artist>{playList[state.playIndex]?.track.ar[0].name}</Artist>
           </SongDetails>
         </SongCover>
         <Middle handlePlay={handlePlay} handlePause={handlePause} />

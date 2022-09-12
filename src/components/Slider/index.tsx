@@ -1,54 +1,53 @@
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import Media from "../../utils/Media"
-import useCurrentTime from "./Hooks/useCurrentTime"
+import useCurrentTime from "../Player/Controller/Hooks/useCurrentTime"
 import useDrag from "./Hooks/useDrag"
-import useDuration from "./Hooks/useDuration"
+import useDuration from "../Player/Controller/Hooks/useDuration"
+import { useRecoilState, useRecoilValue } from "recoil"
+import { isInterActiveState, AudioState } from "../../recoil/atom"
 
-export interface SliderProps {
-  type?: Media
-  volume?: "volume"
+interface SliderProps {
+  type?: string
   sWidth?: string
   sPadding?: string
   isMuted?: boolean
-  getSliderValue?: (value: number) => void
+  getSliderValue?: (value: number, isInterActive?: boolean) => void
+  currentTime?: string
+  duration?: string
+}
+enum Type {
+  MEDIA = "media",
+  VOLUME = "volume"
 }
 
 const Slider: FC<SliderProps> = (props): ReactElement => {
   /* Slider的值 */
+  const state = useRecoilValue(AudioState)
   const [sliderValue, setSliderValue] = useState<number>(0)
   const TrackRef = useRef<HTMLDivElement>(null)
-  const [isInterActive, setIsInterActive] = useState<boolean>(false)
-
-  const [strDuration, duration, toFixed] = useDuration({
-    media: props.type as Media
-  })
-  const [strCurrentTime, currentTime, setCurrentTime] = useCurrentTime({
-    media: props.type as Media,
-    isInterActive
-  })
+  const [isInterActive, setIsInterActive] = useRecoilState(isInterActiveState)
 
   const [handleMouseDown, handleMouseDrag] = useDrag({
     trackElement: TrackRef.current as HTMLDivElement,
-    media: props.type as Media,
-    duration,
-    currentTime,
+    // media: props.type as Media,
     isInterActive,
     setIsInterActive,
     setSliderValue
   })
 
-  // useEffect(() => {
-  //   setSliderValue(0)
-  // }, [props.type?.element.src])
+  useEffect(() => {
+    if (!isInterActive && props.type === Type.MEDIA) {
+      const temp = state.currentTime / (Math.floor(state.duration) / 100)
+
+      setSliderValue(() => parseFloat(temp.toFixed(1)))
+    }
+  }, [state.currentTime])
 
   /* 修改音量 */
   useEffect(() => {
-    
     if (props.getSliderValue) {
-      props.getSliderValue(sliderValue)
-    } else if (isInterActive) {
-      setCurrentTime(() => Math.floor(sliderValue * toFixed))
+      props.getSliderValue(sliderValue, isInterActive)
     }
   }, [sliderValue])
 
@@ -70,7 +69,7 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
 
   return (
     <SliderContainer co={props}>
-      {props.volume ? <></> : <StartTime>{strCurrentTime}</StartTime>}
+      {props?.currentTime ? <StartTime>{props?.currentTime}</StartTime> : <></>}
       <SliderTrack id="track" ref={TrackRef} onMouseDown={handleMouseDown}>
         <SlideColor slideColorWidth={sliderValue} />
         <SliderThumb
@@ -80,7 +79,7 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
           TrackElement={TrackRef.current as HTMLDivElement}
         />
       </SliderTrack>
-      {props.volume ? <></> : <EndTime>{strDuration}</EndTime>}
+      {props?.duration ? <EndTime>{props?.duration}</EndTime> : <></>}
     </SliderContainer>
   )
 }

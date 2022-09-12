@@ -25,9 +25,9 @@ import {
   SongDetailType
 } from "../../types"
 import {
-  SongListDetailState,
+  AudioState,
   PlayListState,
-  AudioState
+  SongListDetailState
 } from "../../recoil/atom"
 import Loading from "../../components/Loading"
 import { useRecoilState, useSetRecoilState } from "recoil"
@@ -70,26 +70,28 @@ const initialState: DetailState = {
 
 const SongListDetail = () => {
   const location = useLocation() as LocationProps
-  const [state, setState] = useRecoilState(AudioState)
-  const [reducerState, dispatch] = useReducer(reducer, initialState)
-  const [test, requesting, requestSongs] = useScroll(reducerState.songsId)
+  const [playList, setPlayList] = useRecoilState(PlayListState)
+  const [SongListDetail, setSongListDetail] =
+    useRecoilState(SongListDetailState)
+  const [test, requesting, requestSongs] = useScroll(SongListDetail.songsId)
 
   useEffect(() => {
     /* 如果点击的歌单和之前state中的歌单相同，直接显示，不再请求 */
-    if (location.state.id === reducerState.detail?.id) {
-      return dispatch({ type: DetailType.LOADED, paylad: true })
+    if (location.state.id === SongListDetail.detail?.id) {
+      console.log('@')
+      return setSongListDetail(prev => ({ ...prev, ...{ loaded: true } }))
+    } else {
+      request("playlist/detail", "GET", `&id=${location.state.id}`).then(
+        (res: SongListsDetailType) => {
+          setSongListDetail(prev => ({ ...prev, ...{ detail: res.playlist } }))
+          setSongListDetail(prev => ({
+            ...prev,
+            ...{ songsId: res.playlist.trackIds.map(obj => obj.id) }
+          }))
+          return setSongListDetail(prev => ({ ...prev, ...{ loaded: true } }))
+        }
+      )
     }
-
-    request("playlist/detail", "GET", `&id=${location.state.id}`).then(
-      (res: SongListsDetailType) => {
-        dispatch({ type: DetailType.DETAIL, paylad: res.playlist })
-        dispatch({
-          type: DetailType.SONGSID,
-          paylad: res.playlist.trackIds.map(obj => obj.id)
-        })
-        return dispatch({ type: DetailType.LOADED, paylad: true })
-      }
-    )
   }, [location])
 
   /* 格式化音乐时间 */
@@ -102,7 +104,7 @@ const SongListDetail = () => {
           ("0" + (Math.floor(value / 1000) % 60)).slice(-2)
         )
       },
-    [reducerState.detail]
+    [SongListDetail.detail]
   )
 
   /* 格式化创建时间 */
@@ -114,23 +116,24 @@ const SongListDetail = () => {
         const newStr = str.replace(re, "-")
         return newStr
       },
-    [reducerState.detail]
+    [SongListDetail.detail]
   )
 
   /* 双击歌曲播放 */
   const handleDbClick = (value: Track): void => {
     /* 找一下是否已经播放过这个歌曲了 */
-    const sameVaue = state.playList.find(
+    const sameVaue = playList.find(
       (obj: TrackAndUrl) => obj.trackUrl.id === value.id
     )
     /* 如果找到了，把对应的歌曲移动到数组末尾 */
     if (sameVaue) {
       /* 由于需要修改数组，而state不能直接修改，需要先深度拷贝 */
-      const temp: TrackAndUrl[] = [...state.playList]
+      const temp: TrackAndUrl[] = [...playList]
       /* 用排序把这个元素移动到末尾 */
       temp.sort((a, b) => (a.trackUrl.id === sameVaue.trackUrl.id ? -1 : 0))
       /* 更新state */
-      setState(prev => ({ ...prev, ...{ playList: temp } }))
+      // setState(prev => ({ ...prev, ...{ playList: temp } }))
+      setPlayList(temp)
     } else {
       request("song/url/v1", "GET", `&id=${value.id}&level=exhigh`).then(
         (res: PlayListUrls) => {
@@ -139,10 +142,11 @@ const SongListDetail = () => {
             res.data[0].url = `https://music.163.com/song/media/outer/url?id=${value.id}.mp3`
           }
           const newObj: TrackAndUrl = { track: value, trackUrl: res.data[0] }
-          setState(prev => ({
-            ...prev,
-            ...{ playList: [newObj, ...prev.playList] }
-          }))
+          setPlayList(prev => [...prev, newObj])
+          // setState(prev => ({
+          //   ...prev,
+          //   ...{ playList: [newObj, ...prev.playList] }
+          // }))
         }
       )
     }
@@ -150,28 +154,28 @@ const SongListDetail = () => {
 
   return (
     <Container>
-      {reducerState.loaded ? (
+      {SongListDetail.loaded ? (
         <>
           <SongListInfo>
             <CoverImg>
-              <img src={reducerState.detail?.coverImgUrl} />
+              <img src={SongListDetail.detail?.coverImgUrl} />
             </CoverImg>
             <Desc>
-              <div className="title">{reducerState.detail?.name}</div>
+              <div className="title">{SongListDetail.detail?.name}</div>
               <Creator>
                 <Avatar
-                  src={reducerState.detail?.creator.avatarUrl}
+                  src={SongListDetail.detail?.creator.avatarUrl}
                   size={`2rem`}
                 />
-                <LinkFont>{reducerState.detail?.creator.nickname}</LinkFont>
+                <LinkFont>{SongListDetail.detail?.creator.nickname}</LinkFont>
                 <LightFont fontsize={`14px`}>
-                  {getUpdateTime(reducerState.detail.createTime)} 创建
+                  {getUpdateTime(SongListDetail.detail.createTime)} 创建
                 </LightFont>
               </Creator>
               <Tag>
                 <div>标签：</div>
-                {reducerState.detail?.tags.map(tag => (
-                  <LinkFont key={reducerState.detail.tags.indexOf(tag)}>
+                {SongListDetail.detail?.tags.map(tag => (
+                  <LinkFont key={SongListDetail.detail.tags.indexOf(tag)}>
                     {tag}
                   </LinkFont>
                 ))}
@@ -180,25 +184,25 @@ const SongListDetail = () => {
                 <CountItem>
                   <div>歌曲：</div>
                   <LightFont fontsize={`14px`}>
-                    {reducerState.detail?.trackCount.toLocaleString()}
+                    {SongListDetail.detail?.trackCount.toLocaleString()}
                   </LightFont>
                 </CountItem>
                 <CountItem>
                   <div>播放：</div>
                   <LightFont fontsize={`14px`}>
-                    {reducerState.detail?.playCount.toLocaleString()}
+                    {SongListDetail.detail?.playCount.toLocaleString()}
                   </LightFont>
                 </CountItem>
                 <CountItem>
                   <div>收藏：</div>
                   <LightFont fontsize={`14px`}>
-                    {reducerState.detail?.subscribedCount.toLocaleString()}
+                    {SongListDetail.detail?.subscribedCount.toLocaleString()}
                   </LightFont>
                 </CountItem>
                 <CountItem>
                   <div>分享：</div>
                   <LightFont fontsize={`14px`}>
-                    {reducerState.detail?.shareCount.toLocaleString()}
+                    {SongListDetail.detail?.shareCount.toLocaleString()}
                   </LightFont>
                 </CountItem>
               </Count>
@@ -213,16 +217,16 @@ const SongListDetail = () => {
                 </Button>
               </PlayButton>
               <Intro
-                height={reducerState.isShowIntro ? "100%" : "52px"}
+                height={SongListDetail.isShowIntro ? "100%" : "52px"}
                 onClick={() =>
-                  dispatch({
-                    type: DetailType.ISHOWINTRO,
-                    paylad: !reducerState.isShowIntro
-                  })
+                  setSongListDetail(prev => ({
+                    ...prev,
+                    ...{ isShowIntro: !prev.isShowIntro }
+                  }))
                 }>
                 <IntroLightFont as="div" fontsize={`14px`}>
                   <label>简介：</label>
-                  {reducerState.detail?.description}
+                  {SongListDetail.detail?.description}
                 </IntroLightFont>
               </Intro>
             </Desc>

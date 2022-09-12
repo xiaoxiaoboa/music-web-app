@@ -5,21 +5,30 @@ import { Button } from "../index.style"
 import Slider from "../../Slider"
 import audio from "../../../utils/Media"
 import { isPlayingState } from "../../../recoil/atom"
-import {useRecoilValue} from 'recoil'
-import {AudioState} from '../../../recoil/atom'
- 
+import { useRecoilState } from "recoil"
+import { AudioState } from "../../../recoil/atom"
+import useCurrentTime from "./Hooks/useCurrentTime"
+import useDuration from "./Hooks/useDuration"
+
 interface IProps {
   handlePlay: () => void
   handlePause: () => void
 }
 
-const Middle: FC<IProps> = ({
-  handlePlay,
-  handlePause
-}): ReactElement => {
-  // const [isPlaying, setIsPlay] = useState<boolean>(false)
-  const isPlaying = useRecoilValue(isPlayingState)
-  const state = useRecoilValue(AudioState)
+const Middle: FC<IProps> = ({ handlePlay, handlePause }): ReactElement => {
+  const [state, setState] = useRecoilState(AudioState)
+  // const [isInterActive, setIsInterActive] = useState<boolean>(false)
+  const strCurrentTime = useCurrentTime()
+  const strDuration = useDuration()
+
+  /* 拖拽媒体进度条的时候 */
+  const dragging = (value: number, isInterActive?: boolean) => {
+    if (isInterActive) {
+      const currentTime = Math.floor((value * state.duration) / 100)
+      // setState((prev) => ({...prev, ...{currentTime}}))
+      state.audio.currentTime = currentTime
+    }
+  }
 
   
 
@@ -29,7 +38,8 @@ const Middle: FC<IProps> = ({
         <Button>
           <FaStepBackward className="FaStepBackward" />
         </Button>
-        <Button onClick={() => (state.isPlaying ? handlePause() : handlePlay())}>
+        <Button
+          onClick={() => (state.isPlaying ? handlePause() : handlePlay())}>
           {state.isPlaying ? (
             <FaPause className="FaPause" />
           ) : (
@@ -40,7 +50,14 @@ const Middle: FC<IProps> = ({
           <FaStepForward className="FaStepForward" />
         </Button>
       </ButtonBox>
-      <Slider type={state.audio!} sWidth={`100%`} sPadding={`4px 0`} />
+      <Slider
+        duration={strDuration}
+        currentTime={strCurrentTime}
+        type='media'
+        sWidth={`100%`}
+        sPadding={`4px 0`}
+        getSliderValue={dragging}
+      />
     </MiddleButton>
   )
 }

@@ -39,7 +39,7 @@ const Volume: FC<IProps> = ({ mediaObject, Button }) => {
         )}
       </Button>
       <Slider
-        volume="volume"
+        type="volume"
         sWidth={`6.25rem`}
         sPadding={`.5rem 0`}
         getSliderValue={handleVolume}

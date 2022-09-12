@@ -6,23 +6,20 @@ import {
   useRef,
   useState
 } from "react"
+import { SetterOrUpdater } from "recoil"
 import Media from "../../../utils/Media"
 
 interface IProps {
   trackElement: HTMLDivElement
-  media: Media
-  duration: number
-  currentTime: number
+  // media: Media
   isInterActive: boolean
-  setIsInterActive: React.Dispatch<React.SetStateAction<boolean>>
+  setIsInterActive: SetterOrUpdater<boolean>
   setSliderValue: React.Dispatch<React.SetStateAction<number>>
 }
 
 export default function useDrag({
   trackElement,
-  media,
-  duration,
-  currentTime,
+  // media,
   isInterActive,
   setIsInterActive,
   setSliderValue
@@ -39,21 +36,20 @@ export default function useDrag({
       trackElement?.offsetLeft,
     [(trackElement?.offsetParent as HTMLDivElement)?.offsetLeft]
   )
-  const toFixed = useMemo(() => Math.floor(duration!) / 100, [duration!])
+  // const toFixed = useMemo(() => Math.floor(duration!) / 100, [duration!])
 
   /* currentTime变化时，就改变Slider的值，进度条就会根据媒体的播放移动 */
-  useEffect(() => {
-    if (currentTime > 0 && isInterActive === false) {
-      setSliderValue(() => parseFloat((currentTime! / toFixed).toFixed(1)))
-    }
-  }, [currentTime])
+  // useEffect(() => {
+  //   if (currentTime > 0 && isInterActive === false) {
+  //     setSliderValue(() => parseFloat((currentTime! / toFixed).toFixed(1)))
+  //   }
+  // }, [currentTime])
 
   /* 鼠标位置改变时，计算成百分比后更新state */
   useEffect(() => {
     if (offSetLeft === undefined || mouseX === 0) return
     setSliderValue(() => percentCalculate(mouseX - offSetLeft, trackElement))
   }, [mouseX])
-
 
   useEffect(
     () => () => {
@@ -83,11 +79,8 @@ export default function useDrag({
   /* 结束鼠标按键时，清除监听 */
   document.onmouseup = () => {
     document.onmousemove = null
-    if (tempClickedElement.current?.isEqualNode(trackElement)) {
-      setIsInterActive(false)
-      fastForward()
-      tempClickedElement.current = null
-    }
+    setIsInterActive(false)
+    tempClickedElement.current = null
   }
 
   /* 百分比计算 */
@@ -101,9 +94,9 @@ export default function useDrag({
   }
 
   /* 点击Slider轨道实现快进 */
-  const fastForward = () => {
-    if (media) media.currentTime = currentTime
-  }
+  // const fastForward = () => {
+  //   if (media) media.currentTime = currentTime
+  // }
 
   return [handleMouseDown, handleMouseDrag]
 }
