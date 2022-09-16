@@ -5,7 +5,7 @@ export interface AudioStateType {
   audio: Media
   duration: number
   currentTime: number
-  playIndex: number
+  playIndex: number | null
   isPlaying: boolean
   continuousWay: continuousWayEnum
 }

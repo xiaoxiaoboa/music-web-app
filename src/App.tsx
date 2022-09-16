@@ -5,7 +5,6 @@ import TopBar from "./components/TopBar"
 import Routes from "./routes"
 
 const App: FC = (): ReactElement => {
-
   return (
     <AppContainer>
       <TopBar />

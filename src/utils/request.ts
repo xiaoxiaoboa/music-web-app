@@ -15,7 +15,8 @@ export const request = async (
       method,
       headers,
       body,
-      credentials: "include"
+      credentials: "include",
+      mode: "cors"
     })
 
     return await res.json()

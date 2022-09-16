@@ -17,20 +17,18 @@ interface IProps {
 
 const Middle: FC<IProps> = ({ handlePlay, handlePause }): ReactElement => {
   const [state, setState] = useRecoilState(AudioState)
-  // const [isInterActive, setIsInterActive] = useState<boolean>(false)
-  const strCurrentTime = useCurrentTime()
+  const [strCurrentTime, getisInterActiveValue] = useCurrentTime()
   const strDuration = useDuration()
 
   /* 拖拽媒体进度条的时候 */
   const dragging = (value: number, isInterActive?: boolean) => {
     if (isInterActive) {
       const currentTime = Math.floor((value * state.duration) / 100)
-      // setState((prev) => ({...prev, ...{currentTime}}))
-      state.audio.currentTime = currentTime
+      setState((prev) => ({...prev, ...{currentTime}}))
+      // state.audio.currentTime = currentTime
     }
   }
 
-  
 
   return (
     <MiddleButton>
@@ -53,10 +51,11 @@ const Middle: FC<IProps> = ({ handlePlay, handlePause }): ReactElement => {
       <Slider
         duration={strDuration}
         currentTime={strCurrentTime}
-        type='media'
+        type="media"
         sWidth={`100%`}
         sPadding={`4px 0`}
         getSliderValue={dragging}
+        getisInterActiveValue={getisInterActiveValue}
       />
     </MiddleButton>
   )

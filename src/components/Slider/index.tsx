@@ -15,6 +15,7 @@ interface SliderProps {
   getSliderValue?: (value: number, isInterActive?: boolean) => void
   currentTime?: string
   duration?: string
+  getisInterActiveValue: React.Dispatch<React.SetStateAction<boolean>>
 }
 enum Type {
   MEDIA = "media",
@@ -26,25 +27,33 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
   const state = useRecoilValue(AudioState)
   const [sliderValue, setSliderValue] = useState<number>(0)
   const TrackRef = useRef<HTMLDivElement>(null)
-  const [isInterActive, setIsInterActive] = useRecoilState(isInterActiveState)
+  // const [isInterActive, setIsInterActive] = useState<boolean>(false)
 
-  const [handleMouseDown, handleMouseDrag] = useDrag({
+  const [isInterActive, handleMouseDown, handleMouseDrag] = useDrag({
     trackElement: TrackRef.current as HTMLDivElement,
-    // media: props.type as Media,
-    isInterActive,
-    setIsInterActive,
+    // isInterActive,
+    // setIsInterActive,
     setSliderValue
   })
 
   useEffect(() => {
-    if (!isInterActive && props.type === Type.MEDIA) {
+    if (isInterActive === false && props.type === Type.MEDIA) {
       const temp = state.currentTime / (Math.floor(state.duration) / 100)
 
       setSliderValue(() => parseFloat(temp.toFixed(1)))
     }
   }, [state.currentTime])
 
-  /* 修改音量 */
+  useEffect(() => {
+    if (props.type === Type.MEDIA) {
+      props.getisInterActiveValue(isInterActive)
+    }
+    if (isInterActive === false && props.type === Type.MEDIA) {
+      const currentTime = Math.floor((sliderValue * state.duration) / 100)
+      state.audio.currentTime = currentTime
+    }
+  }, [isInterActive])
+
   useEffect(() => {
     if (props.getSliderValue) {
       props.getSliderValue(sliderValue, isInterActive)

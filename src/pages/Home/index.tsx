@@ -9,7 +9,7 @@ import Loading from "../../components/Loading"
 const Home: FC = (): ReactElement => {
   const [loaded, setLoaded] = useState<boolean>(false)
   const songLists = useSongLists()
-  const artists = useArtists()
+  // const artists = useArtists()
   const mvs = useMv()
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const Home: FC = (): ReactElement => {
             <h2>推荐歌单</h2>
             <List amount={5} datas={songLists} />
           </ListWrapper>
-          <ListWrapper>
+          {/* <ListWrapper>
             <h2>推荐歌手</h2>
             <List
               amount={6}
@@ -38,7 +38,7 @@ const Home: FC = (): ReactElement => {
               w={400}
               h={400}
             />
-          </ListWrapper>
+          </ListWrapper> */}
           <ListWrapper>
             <h2>推荐MV</h2>
             <List

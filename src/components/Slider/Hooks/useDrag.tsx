@@ -6,26 +6,29 @@ import {
   useRef,
   useState
 } from "react"
+import { FaBullseye } from "react-icons/fa"
 import { SetterOrUpdater } from "recoil"
 import Media from "../../../utils/Media"
 
 interface IProps {
   trackElement: HTMLDivElement
   // media: Media
-  isInterActive: boolean
-  setIsInterActive: SetterOrUpdater<boolean>
+  // isInterActive: boolean
+  // setIsInterActive: React.Dispatch<React.SetStateAction<boolean>>
   setSliderValue: React.Dispatch<React.SetStateAction<number>>
 }
 
 export default function useDrag({
   trackElement,
   // media,
-  isInterActive,
-  setIsInterActive,
+  // isInterActive,
+  // setIsInterActive,
   setSliderValue
-}: IProps): [MouseEventHandler, MouseEventHandler] {
+}: IProps): [boolean, MouseEventHandler, MouseEventHandler] {
   /* 鼠标距文档左侧X轴额距离 */
   const [mouseX, setMouseX] = useState<number>(0)
+
+  const [isInterActive, setIsInterActive] = useState<boolean>(false)
 
   /* 存储点击Slider时的元素节点，用于在松开鼠标按键时判断鼠标事件是否起始于Slider */
   const tempClickedElement = useRef<Element | null>(null)
@@ -36,14 +39,6 @@ export default function useDrag({
       trackElement?.offsetLeft,
     [(trackElement?.offsetParent as HTMLDivElement)?.offsetLeft]
   )
-  // const toFixed = useMemo(() => Math.floor(duration!) / 100, [duration!])
-
-  /* currentTime变化时，就改变Slider的值，进度条就会根据媒体的播放移动 */
-  // useEffect(() => {
-  //   if (currentTime > 0 && isInterActive === false) {
-  //     setSliderValue(() => parseFloat((currentTime! / toFixed).toFixed(1)))
-  //   }
-  // }, [currentTime])
 
   /* 鼠标位置改变时，计算成百分比后更新state */
   useEffect(() => {
@@ -53,8 +48,7 @@ export default function useDrag({
 
   useEffect(
     () => () => {
-      document.onmouseup = null
-      document.onmousemove = null
+      document.removeEventListener("mouseup", handleMouseUp)
     },
     []
   )
@@ -76,12 +70,14 @@ export default function useDrag({
     }
   }, [])
 
-  /* 结束鼠标按键时，清除监听 */
-  document.onmouseup = () => {
+  const handleMouseUp = (e: MouseEvent) => {
+    e.preventDefault()
     document.onmousemove = null
-    setIsInterActive(false)
-    tempClickedElement.current = null
+    document.removeEventListener('mouseup', handleMouseUp)
+    console.log("@")
+    // setIsInterActive(prev => !prev)
   }
+  document.addEventListener("mouseup", handleMouseUp)
 
   /* 百分比计算 */
   const percentCalculate = (
@@ -93,10 +89,6 @@ export default function useDrag({
     return rel > 100 ? 100 : rel < 0 ? 0 : rel
   }
 
-  /* 点击Slider轨道实现快进 */
-  // const fastForward = () => {
-  //   if (media) media.currentTime = currentTime
-  // }
 
-  return [handleMouseDown, handleMouseDrag]
+  return [isInterActive, handleMouseDown, handleMouseDrag]
 }

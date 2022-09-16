@@ -8,19 +8,27 @@ interface IProps {
   isInterActive: boolean
 }
 
-/* 获取媒体的currentTime，无设置功能 */
-export default function useCurrentTime(): string {
+/* 获取媒体的currentTime */
+export default function useCurrentTime(): [
+  string,
+  React.Dispatch<React.SetStateAction<boolean>>
+] {
   const [state, setState] = useRecoilState(AudioState)
-  const isInterActive = useRecoilValue(isInterActiveState)
+  const [isInterActive, setIsInterActive] = useState<boolean>(false)
 
   state.audio.element.ontimeupdate = () => {
-    if (!isInterActive) {
+    if (isInterActive === false) {
       setState(prev => ({
         ...prev,
         ...{ currentTime: Math.floor(state.audio.currentTime) }
       }))
     }
   }
+
+  // const getisInterActiveValue = (value: boolean):void => {
+  //   // console.log(value)
+  //   setIsInterActive(value)
+  // }
 
   const toMinute = useMemo(() => {
     return (
@@ -30,5 +38,5 @@ export default function useCurrentTime(): string {
     )
   }, [state.currentTime])
 
-  return toMinute
+  return [toMinute, setIsInterActive]
 }
