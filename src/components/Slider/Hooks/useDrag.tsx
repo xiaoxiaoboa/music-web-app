@@ -1,4 +1,5 @@
 import {
+  MouseEvent,
   MouseEventHandler,
   useCallback,
   useEffect,
@@ -32,6 +33,9 @@ export default function useDrag({
 
   /* 存储点击Slider时的元素节点，用于在松开鼠标按键时判断鼠标事件是否起始于Slider */
   const tempClickedElement = useRef<Element | null>(null)
+  const mouseDownRef = useRef<((e: globalThis.MouseEvent) => void) | null>(null)
+  const mouseMoveRef = useRef<((e: globalThis.MouseEvent) => void) | null>(null)
+  const mouseUpRef = useRef<((e: globalThis.MouseEvent) => void) | null>(null)
 
   const offSetLeft: number = useMemo(
     () =>
@@ -46,39 +50,42 @@ export default function useDrag({
     setSliderValue(() => percentCalculate(mouseX - offSetLeft, trackElement))
   }, [mouseX])
 
-  useEffect(
-    () => () => {
-      document.removeEventListener("mouseup", handleMouseUp)
-    },
-    []
-  )
 
-  /* 鼠标单击落下时 */
-  const handleMouseDown: MouseEventHandler = useCallback((e): void => {
-    e.preventDefault()
-    tempClickedElement.current = e.currentTarget
-    setIsInterActive(true)
-    setMouseX(() => e.clientX)
-    handleMouseDrag(e)
-  }, [])
-
-  /* 拖拽鼠标时 */
-  const handleMouseDrag: MouseEventHandler = useCallback((e): void => {
-    e.preventDefault()
-    document.onmousemove = e => {
+  const startDrag: MouseEventHandler = (e) => {
+    /* 鼠标单击落下时 */
+    const handleMouseDown = () => {
+      e.preventDefault()
+      tempClickedElement.current = e.currentTarget
+      setIsInterActive(true)
       setMouseX(() => e.clientX)
+      // handleMouseDrag(e)
     }
-  }, [])
 
-  const handleMouseUp = (e: MouseEvent) => {
-    e.preventDefault()
-    document.onmousemove = null
-    document.removeEventListener('mouseup', handleMouseUp)
-    console.log("@")
-    // setIsInterActive(prev => !prev)
+    /* 拖拽鼠标时 */
+    const handleMouseDrag = (e: globalThis.MouseEvent) => {
+      e.preventDefault()
+      document.onmousemove = e => {
+        setMouseX(() => e.clientX)
+      }
+    }
+
+    const handleMouseUp = (e: globalThis.MouseEvent) => {
+      setIsInterActive(false)
+
+
+      document.onmousedown = null
+      document.onmousemove = null
+      document.onmouseup = null
+
+    }
+
+    document.onmousedown = handleMouseDown
+    document.onmousemove = handleMouseDrag
+    document.onmouseup = handleMouseUp
+
   }
-  document.addEventListener("mouseup", handleMouseUp)
 
+  const handleMouseDrag = () => {}
   /* 百分比计算 */
   const percentCalculate = (
     progressValue: number,
@@ -89,6 +96,5 @@ export default function useDrag({
     return rel > 100 ? 100 : rel < 0 ? 0 : rel
   }
 
-
-  return [isInterActive, handleMouseDown, handleMouseDrag]
+  return [isInterActive, startDrag, handleMouseDrag]
 }

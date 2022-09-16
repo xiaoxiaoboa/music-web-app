@@ -33,7 +33,8 @@ const Player: FC = (): ReactElement => {
 
   useEffect(() => {
     if(playList.length < 1 || state.playIndex === null) return
-    state.audio.element.src = playList[state.playIndex!]?.trackUrl.url
+    changeUrl(state.playIndex!)
+    // state.audio.element.src = playList[state.playIndex!]?.trackUrl.url
     handlePlay()
   }, [state.playIndex])
 
@@ -54,7 +55,11 @@ const Player: FC = (): ReactElement => {
           ...{ isPlaying: !state.audio.element.paused }
         }))
       )
-      .catch(err => handlePause())
+      .catch(err => {
+        handlePause()
+        console.log('播放失败', err)
+        console.log(state.isPlaying)
+      })
   }
 
   /* 暂停 */
@@ -85,7 +90,6 @@ const Player: FC = (): ReactElement => {
 
   /* 一首歌播放结束时触发 */
   state.audio.element.onended = () => {
-    // next()
     selectMode()
   }
 
@@ -93,13 +97,16 @@ const Player: FC = (): ReactElement => {
   const next = (): void => {
     prepareForPlayToPlayList()
 
-    // if (state.playIndex + 1 >= playList.length) return handlePause()
-    // setState(prev => ({ ...prev, ...{ playIndex: prev.playIndex + 1 } }))
+  }
+
+  const changeUrl = (value: number) => {
+    state.audio.element.src = playList[value]?.trackUrl.url
   }
 
   /* 顺序播放 */
   const orderPlay = (): void => {
-    const index: number = state.playIndex === null ? 0 : state.playIndex! + 1
+    let index: number = state.playIndex === null ? 0 : state.playIndex! + 1 
+    if(index >= playList.length) handlePause()
     setState(prev => ({ ...prev, ...{ playIndex: index } }))
   }
   /* 随机播放 */

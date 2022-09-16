@@ -27,12 +27,9 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
   const state = useRecoilValue(AudioState)
   const [sliderValue, setSliderValue] = useState<number>(0)
   const TrackRef = useRef<HTMLDivElement>(null)
-  // const [isInterActive, setIsInterActive] = useState<boolean>(false)
 
   const [isInterActive, handleMouseDown, handleMouseDrag] = useDrag({
     trackElement: TrackRef.current as HTMLDivElement,
-    // isInterActive,
-    // setIsInterActive,
     setSliderValue
   })
 

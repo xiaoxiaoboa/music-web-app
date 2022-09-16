@@ -129,6 +129,7 @@ const SongListDetail = () => {
 
   /* 双击单曲播放 */
   const handleDbClick = (value: Track): void => {
+      
     /* 找一下是否已经播放过这个歌曲了 */
     const sameVaue = playList.find(
       (obj: TrackAndUrl) => obj.trackUrl.id === value.id
@@ -138,22 +139,12 @@ const SongListDetail = () => {
       /* 由于需要修改数组，而state不能直接修改，需要先深度拷贝 */
       const temp: TrackAndUrl[] = [...playList]
       /* 用排序把这个元素移动到头部 */
-      temp.sort((a, b) => (a.trackUrl.id === sameVaue.trackUrl.id ? -1 : 0))
+      temp.sort((a, b) => (b.trackUrl.id === sameVaue.trackUrl.id ? -1 : 0))
       /* 更新state */
       setPlayList(temp)
     } else {
-      // request("song/url/v1", "GET", `&id=${value.id}&level=exhigh`).then(
-      //   (res: PlayListUrls) => {
-      //     /* 如果返回的url是null，换一个链接播放 */
-      //     if (!res.data[0].url) {
-      //       res.data[0].url = `https://music.163.com/song/media/outer/url?id=${value.id}.mp3`
-      //     }
-      //     const newObj: TrackAndUrl = { track: value, trackUrl: res.data[0] }
-      //     setPlayList(prev => [newObj, ...prev])
-      //   }
-      // )
       getTrackUrl(value, val =>
-        setPlayList(prev => [val as TrackAndUrl, ...prev])
+        setPlayList(prev => [...prev, val as TrackAndUrl])
       )
     }
   }

@@ -67,13 +67,13 @@ export const prepareForPlayState = atom<Track[]>({
 export const PlayListState = atom<TrackAndUrl[]>({
   key: "PlayList",
   default: [],
-  // effects: [
-  //   ({ node, onSet }) => {
-  //     onSet((newValue, oldValue) => {
-  //       console.log(newValue)
-  //     })
-  //   }
-  // ]
+  effects: [
+    ({ node, onSet }) => {
+      onSet((newValue, oldValue) => {
+        console.log(newValue)
+      })
+    }
+  ]
 })
 
 /* 主页歌单 */
