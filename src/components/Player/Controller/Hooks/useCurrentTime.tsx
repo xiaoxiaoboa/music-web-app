@@ -16,7 +16,7 @@ export default function useCurrentTime(): [
   const [state, setState] = useRecoilState(AudioState)
   const [isInterActive, setIsInterActive] = useState<boolean>(false)
 
-  state.audio.element.ontimeupdate = () => {
+  state.audio.ontimeupdate = () => {
     if (isInterActive === false) {
       setState(prev => ({
         ...prev,

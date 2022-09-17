@@ -1,8 +1,8 @@
-import Media from "../utils/Media"
+// import Media from "../utils/Media"
 
 /* audio状态 */
 export interface AudioStateType {
-  audio: Media
+  audio: HTMLMediaElement
   duration: number
   currentTime: number
   playIndex: number | null

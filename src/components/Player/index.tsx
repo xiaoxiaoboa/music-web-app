@@ -32,10 +32,8 @@ const Player: FC = (): ReactElement => {
   }, [playList])
 
   useEffect(() => {
-    if(playList.length < 1 || state.playIndex === null) return
+    if (playList.length < 1 || state.playIndex === null) return
     changeUrl(state.playIndex!)
-    // state.audio.element.src = playList[state.playIndex!]?.trackUrl.url
-    handlePlay()
   }, [state.playIndex])
 
   useEffect(() => {
@@ -52,13 +50,12 @@ const Player: FC = (): ReactElement => {
       .then(() =>
         setState(prev => ({
           ...prev,
-          ...{ isPlaying: !state.audio.element.paused }
+          ...{ isPlaying: !state.audio.paused }
         }))
       )
       .catch(err => {
         handlePause()
-        console.log('播放失败', err)
-        console.log(state.isPlaying)
+        console.log("播放失败", err)
       })
   }
 
@@ -67,7 +64,7 @@ const Player: FC = (): ReactElement => {
     state.audio.pause()
     setState(prev => ({
       ...prev,
-      ...{ isPlaying: !state.audio.element.paused }
+      ...{ isPlaying: !state.audio.paused }
     }))
   }
 
@@ -81,7 +78,7 @@ const Player: FC = (): ReactElement => {
       case continuousWayEnum.LOOP:
         return
       case continuousWayEnum.LISTLOOP:
-        return
+        return listLoop()
 
       default:
         return
@@ -89,26 +86,29 @@ const Player: FC = (): ReactElement => {
   }
 
   /* 一首歌播放结束时触发 */
-  state.audio.element.onended = () => {
+  state.audio.onended = () => {
     selectMode()
   }
 
   /* 下一首 */
   const next = (): void => {
     prepareForPlayToPlayList()
-
   }
 
   const changeUrl = (value: number) => {
-    state.audio.element.src = playList[value]?.trackUrl.url
+    state.audio.src = playList[value]?.trackUrl.url
+    handlePlay()
   }
 
   /* 顺序播放 */
   const orderPlay = (): void => {
-    let index: number = state.playIndex === null ? 0 : state.playIndex! + 1 
-    if(index >= playList.length) handlePause()
+    let index: number = state.playIndex === null ? 0 : state.playIndex! + 1
+    if (index >= playList.length) handlePause()
     setState(prev => ({ ...prev, ...{ playIndex: index } }))
   }
+  /* 列表循环 */
+  const listLoop = (): void => {}
+
   /* 随机播放 */
   const shufflePlay = () => {
     const arr: number[] = playList.map(obj => obj.trackUrl.id)

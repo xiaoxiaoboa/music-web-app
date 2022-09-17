@@ -24,7 +24,7 @@ export const ThemeState = atom<boolean>({
 export const AudioState = atom<AudioStateType>({
   key: "playerState",
   default: {
-    audio: new MyAudio(""),
+    audio: new Audio(),
     currentTime: 0,
     duration: 0,
     playIndex: null,

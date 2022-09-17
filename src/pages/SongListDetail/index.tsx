@@ -97,9 +97,9 @@ const SongListDetail = () => {
     )
   }, [location.state.id])
 
-  useEffect(() => {
-    if(prepareForPlay.length > 0) resetPrepareForPlay()
-  },[])
+  // useEffect(() => {
+  //   if(prepareForPlay.length > 0) resetPrepareForPlay()
+  // },[])
 
 
   /* 格式化音乐时间 */

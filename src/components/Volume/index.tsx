@@ -6,7 +6,7 @@ import Media from "../../utils/Media"
 import { DefaultTheme, StyledComponent } from "styled-components"
 
 interface IProps {
-  mediaObject: Media
+  mediaObject: HTMLMediaElement
   Button: StyledComponent<"button", DefaultTheme, {}, never>
 }
 
@@ -20,7 +20,7 @@ const Volume: FC<IProps> = ({ mediaObject, Button }) => {
 
   /* 修改音量 */
   const handleVolume = (value: number): void => {
-    mediaObject.volume = value
+    mediaObject.volume = value / 100
 
     if (value === 0 && isMuted === false) {
       handleMuted()

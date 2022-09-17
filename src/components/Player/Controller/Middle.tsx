@@ -25,7 +25,6 @@ const Middle: FC<IProps> = ({ handlePlay, handlePause }): ReactElement => {
     if (isInterActive) {
       const currentTime = Math.floor((value * state.duration) / 100)
       setState((prev) => ({...prev, ...{currentTime}}))
-      // state.audio.currentTime = currentTime
     }
   }
 

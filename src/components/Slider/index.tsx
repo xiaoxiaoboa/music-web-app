@@ -15,7 +15,7 @@ interface SliderProps {
   getSliderValue?: (value: number, isInterActive?: boolean) => void
   currentTime?: string
   duration?: string
-  getisInterActiveValue: React.Dispatch<React.SetStateAction<boolean>>
+  getisInterActiveValue?: React.Dispatch<React.SetStateAction<boolean>>
 }
 enum Type {
   MEDIA = "media",
@@ -43,7 +43,7 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
 
   useEffect(() => {
     if (props.type === Type.MEDIA) {
-      props.getisInterActiveValue(isInterActive)
+      props.getisInterActiveValue!(isInterActive)
     }
     if (isInterActive === false && props.type === Type.MEDIA) {
       const currentTime = Math.floor((sliderValue * state.duration) / 100)

@@ -28,14 +28,9 @@ export default function useDrag({
 }: IProps): [boolean, MouseEventHandler, MouseEventHandler] {
   /* 鼠标距文档左侧X轴额距离 */
   const [mouseX, setMouseX] = useState<number>(0)
-
+  /* Slider是否在交互中 */
   const [isInterActive, setIsInterActive] = useState<boolean>(false)
 
-  /* 存储点击Slider时的元素节点，用于在松开鼠标按键时判断鼠标事件是否起始于Slider */
-  const tempClickedElement = useRef<Element | null>(null)
-  const mouseDownRef = useRef<((e: globalThis.MouseEvent) => void) | null>(null)
-  const mouseMoveRef = useRef<((e: globalThis.MouseEvent) => void) | null>(null)
-  const mouseUpRef = useRef<((e: globalThis.MouseEvent) => void) | null>(null)
 
   const offSetLeft: number = useMemo(
     () =>
@@ -55,10 +50,8 @@ export default function useDrag({
     /* 鼠标单击落下时 */
     const handleMouseDown = () => {
       e.preventDefault()
-      tempClickedElement.current = e.currentTarget
       setIsInterActive(true)
       setMouseX(() => e.clientX)
-      // handleMouseDrag(e)
     }
 
     /* 拖拽鼠标时 */
@@ -69,14 +62,13 @@ export default function useDrag({
       }
     }
 
+    /* 松开鼠标时 */
     const handleMouseUp = (e: globalThis.MouseEvent) => {
       setIsInterActive(false)
-
 
       document.onmousedown = null
       document.onmousemove = null
       document.onmouseup = null
-
     }
 
     document.onmousedown = handleMouseDown

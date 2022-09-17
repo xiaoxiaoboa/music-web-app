@@ -15,7 +15,7 @@ export default function useDuration(): string {
   // )
 
   /* canplaythrough事件触发后，可以准确的获得到媒体的duration */
-  state.audio.element.oncanplay = () => {
+  state.audio.oncanplay = () => {
     setState((prev) => ({...prev, ...{duration: state.audio.duration}}))
   }
 

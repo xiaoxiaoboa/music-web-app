@@ -2,11 +2,11 @@ import React, { FC, ReactElement, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { Button } from "../index.style"
 import { RiPlayListFill, RiHeart2Line } from "react-icons/ri"
-import Media from "../../../utils/Media"
+// import Media from "../../../utils/Media"
 import Volume from "../../Volume"
 
 interface IProps {
-  mediaObject: Media
+  mediaObject: HTMLMediaElement
 }
 
 const Right: FC<IProps> = (props): ReactElement => {
