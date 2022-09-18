@@ -26,10 +26,10 @@ const Player: FC = (): ReactElement => {
   const [prepareForPlay, setPrepareForPlay] =
     useRecoilState(prepareForPlayState)
 
-  useEffect(() => {
-    if (playList.length < 1) return
-    selectMode()
-  }, [playList])
+  // useEffect(() => {
+  //   if (playList.length < 1) return
+  //   selectMode()
+  // }, [playList])
 
   useEffect(() => {
     if (playList.length < 1 || state.playIndex === null) return
@@ -74,9 +74,9 @@ const Player: FC = (): ReactElement => {
       case continuousWayEnum.ORDER:
         return orderPlay()
       case continuousWayEnum.SHUFFLE:
-        return
+        return  shufflePlay()
       case continuousWayEnum.LOOP:
-        return
+        return loop()
       case continuousWayEnum.LISTLOOP:
         return listLoop()
 
@@ -92,7 +92,7 @@ const Player: FC = (): ReactElement => {
 
   /* 下一首 */
   const next = (): void => {
-    prepareForPlayToPlayList()
+    selectMode()
   }
 
   const changeUrl = (value: number) => {
@@ -103,20 +103,28 @@ const Player: FC = (): ReactElement => {
   /* 顺序播放 */
   const orderPlay = (): void => {
     let index: number = state.playIndex === null ? 0 : state.playIndex! + 1
-    if (index >= playList.length) handlePause()
+    if (index >= playList.length) return handlePause()
     setState(prev => ({ ...prev, ...{ playIndex: index } }))
   }
+  /* 单曲循环 */
+  const loop = ():void => {
+    handlePause()
+    handlePlay()
+  }
   /* 列表循环 */
-  const listLoop = (): void => {}
+  const listLoop = (): void => {
+    let index: number = state.playIndex === null ? 0 : state.playIndex! + 1
+    if (index >= playList.length) return setState(prev => ({ ...prev, ...{ playIndex: 0 } }))
+    setState(prev => ({ ...prev, ...{ playIndex: index } }))
+  }
 
   /* 随机播放 */
   const shufflePlay = () => {
-    const arr: number[] = playList.map(obj => obj.trackUrl.id)
-    let i = arr.length
-    while (i) {
-      let j = Math.floor(Math.random() * i--)
-      ;[arr[j], arr[i]] = [arr[i], arr[j]]
-    }
+    const numbers: number[] = playList
+      .filter(obj => obj.track.id !== playList[state.playIndex!].track.id)
+      .map(obj => obj.track.id)
+    const index = Math.floor(Math.random() * numbers.length)
+    setState(prev => ({ ...prev, ...{ playIndex: index } }))
   }
 
   /* 待播放列表向播放列表推送歌曲 */

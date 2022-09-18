@@ -75,8 +75,10 @@ const initialState: DetailState = {
 
 const SongListDetail = () => {
   const location = useLocation() as LocationProps
+  const [state, setState] = useRecoilState(AudioState)
   const [playList, setPlayList] = useRecoilState(PlayListState)
-  const [prepareForPlay,setPrepareForPlay] = useRecoilState(prepareForPlayState)
+  const [prepareForPlay, setPrepareForPlay] =
+    useRecoilState(prepareForPlayState)
   const resetPrepareForPlay = useResetRecoilState(prepareForPlayState)
   const [reducerState, dispatch] = useReducer(reducer, initialState)
   const [tracks, requesting, requestSongs] = useScroll(reducerState.songsId)
@@ -100,7 +102,6 @@ const SongListDetail = () => {
   // useEffect(() => {
   //   if(prepareForPlay.length > 0) resetPrepareForPlay()
   // },[])
-
 
   /* 格式化音乐时间 */
   const getMinute = useMemo(
@@ -129,23 +130,24 @@ const SongListDetail = () => {
 
   /* 双击单曲播放 */
   const handleDbClick = (value: Track): void => {
-      
     /* 找一下是否已经播放过这个歌曲了 */
-    const sameVaue = playList.find(
+    const sameIndex = playList.findIndex(
       (obj: TrackAndUrl) => obj.trackUrl.id === value.id
     )
-    /* 如果找到了，把对应的歌曲移动到数组头部 */
-    if (sameVaue) {
-      /* 由于需要修改数组，而state不能直接修改，需要先深度拷贝 */
-      const temp: TrackAndUrl[] = [...playList]
-      /* 用排序把这个元素移动到头部 */
-      temp.sort((a, b) => (b.trackUrl.id === sameVaue.trackUrl.id ? -1 : 0))
-      /* 更新state */
-      setPlayList(temp)
+    /* 如果找到了：把对应歌曲的索引更新到state */
+    if (sameIndex > -1) {
+      setState(prev => ({ ...prev, ...{ playIndex: sameIndex } }))
     } else {
-      getTrackUrl(value, val =>
-        setPlayList(prev => [...prev, val as TrackAndUrl])
-      )
+      /* 没有找到：把请求回来的歌曲加入到正在播放歌曲的后面，然后更新索引，更新列表 */
+      getTrackUrl(value, val => {
+        const tempList = [...playList]
+        tempList.splice(state.playIndex! + 1, 0, val as TrackAndUrl)
+        const index = tempList.findIndex(
+          obj => obj.trackUrl.id === (val as TrackAndUrl).track.id
+        )
+        setState(prev => ({ ...prev, ...{ playIndex:  index} }))
+        setPlayList(tempList)
+      })
     }
   }
   /* 播放歌单全部 */

@@ -5,7 +5,7 @@ import { Button } from "../index.style"
 import Slider from "../../Slider"
 import audio from "../../../utils/Media"
 import { isPlayingState } from "../../../recoil/atom"
-import { useRecoilState } from "recoil"
+import { useRecoilState, useRecoilValue } from "recoil"
 import { AudioState } from "../../../recoil/atom"
 import useCurrentTime from "./Hooks/useCurrentTime"
 import useDuration from "./Hooks/useDuration"
@@ -16,18 +16,19 @@ interface IProps {
 }
 
 const Middle: FC<IProps> = ({ handlePlay, handlePause }): ReactElement => {
-  const [state, setState] = useRecoilState(AudioState)
-  const [strCurrentTime, getisInterActiveValue] = useCurrentTime()
-  const strDuration = useDuration()
+  const state = useRecoilValue(AudioState)
+  const [currentTime, strCurrentTime, setCurrentTime, getisInterActiveValue] =
+    useCurrentTime()
+  const [duration, strDuration] = useDuration()
 
   /* 拖拽媒体进度条的时候 */
   const dragging = (value: number, isInterActive?: boolean) => {
     if (isInterActive) {
-      const currentTime = Math.floor((value * state.duration) / 100)
-      setState((prev) => ({...prev, ...{currentTime}}))
+      // const currentTime = Math.floor((value * state.duration) / 100)
+      // setState((prev) => ({...prev, ...{currentTime}}))
+      setCurrentTime(Math.floor((value * duration) / 100))
     }
   }
-
 
   return (
     <MiddleButton>
@@ -48,8 +49,8 @@ const Middle: FC<IProps> = ({ handlePlay, handlePause }): ReactElement => {
         </Button>
       </ButtonBox>
       <Slider
-        duration={strDuration}
-        currentTime={strCurrentTime}
+        duration={{ num: duration, str: strDuration }}
+        currentTime={{ num: currentTime, str: strCurrentTime }}
         type="media"
         sWidth={`100%`}
         sPadding={`4px 0`}

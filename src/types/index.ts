@@ -3,8 +3,8 @@
 /* audio状态 */
 export interface AudioStateType {
   audio: HTMLMediaElement
-  duration: number
-  currentTime: number
+  // duration: number
+  // currentTime: number
   playIndex: number | null
   isPlaying: boolean
   continuousWay: continuousWayEnum

@@ -13,8 +13,8 @@ interface SliderProps {
   sPadding?: string
   isMuted?: boolean
   getSliderValue?: (value: number, isInterActive?: boolean) => void
-  currentTime?: string
-  duration?: string
+  currentTime?: {num: number, str: string}
+  duration?: {num: number, str:string}
   getisInterActiveValue?: React.Dispatch<React.SetStateAction<boolean>>
 }
 enum Type {
@@ -35,18 +35,20 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
 
   useEffect(() => {
     if (isInterActive === false && props.type === Type.MEDIA) {
-      const temp = state.currentTime / (Math.floor(state.duration) / 100)
+      const temp = props.currentTime?.num! / (Math.floor(props?.duration?.num!) / 100)
 
       setSliderValue(() => parseFloat(temp.toFixed(1)))
     }
-  }, [state.currentTime])
+  }, [props.currentTime?.num!])
 
   useEffect(() => {
     if (props.type === Type.MEDIA) {
       props.getisInterActiveValue!(isInterActive)
     }
     if (isInterActive === false && props.type === Type.MEDIA) {
-      const currentTime = Math.floor((sliderValue * state.duration) / 100)
+      const currentTime = Math.floor(
+        (sliderValue * props?.duration?.num!) / 100
+      )
       state.audio.currentTime = currentTime
     }
   }, [isInterActive])
@@ -75,7 +77,7 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
 
   return (
     <SliderContainer co={props}>
-      {props?.currentTime ? <StartTime>{props?.currentTime}</StartTime> : <></>}
+      {props?.currentTime ? <StartTime>{props?.currentTime.str!}</StartTime> : <></>}
       <SliderTrack id="track" ref={TrackRef} onMouseDown={handleMouseDown}>
         <SlideColor slideColorWidth={sliderValue} />
         <SliderThumb
@@ -85,7 +87,7 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
           TrackElement={TrackRef.current as HTMLDivElement}
         />
       </SliderTrack>
-      {props?.duration ? <EndTime>{props?.duration}</EndTime> : <></>}
+      {props?.duration ? <EndTime>{props?.duration.str!}</EndTime> : <></>}
     </SliderContainer>
   )
 }

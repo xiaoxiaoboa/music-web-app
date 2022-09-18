@@ -25,11 +25,11 @@ export const AudioState = atom<AudioStateType>({
   key: "playerState",
   default: {
     audio: new Audio(),
-    currentTime: 0,
-    duration: 0,
+    // currentTime: 0,
+    // duration: 0,
     playIndex: null,
     isPlaying: false,
-    continuousWay: continuousWayEnum.ORDER
+    continuousWay: continuousWayEnum.LOOP
   },
   // effects: [
   //   ({ node, onSet }) => {
