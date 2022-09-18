@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  MouseEventHandler,
-  useMemo,
-  useReducer,
-  useRef
-} from "react"
+import React, { useEffect, useMemo, useReducer } from "react"
 import styled from "styled-components"
 import Avatar from "../../components/Avatar"
 import { FaPlay } from "react-icons/fa"
@@ -14,9 +7,7 @@ import { BsFolderCheck, BsFolderPlus } from "react-icons/bs"
 import { useLocation } from "react-router-dom"
 import { request } from "../../utils/request"
 import {
-  PlayListUrls,
   SongListsDetailType,
-  TrackAndUrl,
   Track,
   DetailState,
   DetailAction,
@@ -24,16 +15,10 @@ import {
   SongList,
   SongDetailType
 } from "../../types"
-import {
-  AudioState,
-  PlayListState,
-  prepareForPlayState,
-  SongListDetailState
-} from "../../recoil/atom"
+import { AudioState, PlayListState } from "../../recoil/atom"
 import Loading from "../../components/Loading"
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil"
+import { useRecoilState } from "recoil"
 import useScroll from "./Hooks/useScroll"
-import { getTrackUrl } from "../../utils/getTrackUrl"
 
 interface LocationProps {
   hash: string
@@ -96,10 +81,6 @@ const SongListDetail = () => {
     )
   }, [location.state.id])
 
-  // useEffect(() => {
-  //   if(prepareForPlay.length > 0) resetPrepareForPlay()
-  // },[])
-
   /* 格式化音乐时间 */
   const getMinute = useMemo(
     () =>
@@ -133,31 +114,21 @@ const SongListDetail = () => {
     if (sameIndex > -1) {
       setState(prev => ({ ...prev, ...{ playIndex: sameIndex } }))
     } else {
-      /* 没有找到：把请求回来的歌曲加入到正在播放歌曲的后面，然后更新索引，更新列表 */
-      // getTrackUrl(value, val => {
-      //   console.log(val)
-      //   const tempList = [...playList]
-      //   tempList.splice(state.playIndex! + 1, 0, val as TrackAndUrl)
-      //   const index = tempList.findIndex(
-      //     obj => obj.trackUrl.id === (val as TrackAndUrl).track.id
-      //   )
-      //   setState(prev => ({ ...prev, ...{ playIndex: index } }))
-      //   setPlayList(tempList)
-      // })
-
       const tempList = [...playList]
       tempList.splice(state.playIndex! + 1, 0, value)
       const index = tempList.findIndex(obj => obj.id === value.id)
 
-      setState(prev => ({ ...prev, ...{ playIndex: index } }))
       setPlayList(tempList)
+      setState(prev => ({ ...prev, ...{ playIndex: index } }))
     }
   }
   /* 播放歌单全部 */
   const handlePlayAll = (): void => {
     request("playlist/track/all", "GET", `&id=${location.state.id}`).then(
       (res: SongDetailType) => {
+        const index = Math.floor(Math.random() * res.songs.length)
         setPlayList(res.songs)
+        setState(prev => ({ ...prev, playIndex: index }))
       }
     )
   }

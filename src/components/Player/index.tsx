@@ -1,4 +1,11 @@
-import { FC, ReactElement, useEffect, useRef, useState } from "react"
+import {
+  FC,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from "react"
 import {
   ControllerBarContainer,
   ControllerWrapper,
@@ -12,30 +19,21 @@ import { continuousWayEnum, Track, TrackAndUrl } from "../../types"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
 import { useRecoilState, useRecoilValue } from "recoil"
-import {
-  AudioState,
-  PlayListState,
-  prepareForPlayState
-} from "../../recoil/atom"
+import { AudioState, PlayListState } from "../../recoil/atom"
 import imgSize from "../../utils/imgSize"
 import { getTrackUrl } from "../../utils/getTrackUrl"
 
 const Player: FC = (): ReactElement => {
   const [state, setState] = useRecoilState(AudioState)
-  const [playList, setPlayList] = useRecoilState(PlayListState)
-  // const [prepareForPlay, setPrepareForPlay] =
-  //   useRecoilState(prepareForPlayState)
+  const [indexCache, setIndexCache] = useState<number | null>(null)
+  const playList = useRecoilValue(PlayListState)
+
 
   useEffect(() => {
-    if (playList.length < 1) return
-    selectMode()
-  }, [playList])
-
-  // useEffect(() => {
-  //   if (playList.length < 1 || state.playIndex === null) return
-  //   changeUrl(state.playIndex!)
-  // }, [state.playIndex])
-
+    if (state.playIndex !== null) {
+      changeUrl(state.playIndex)
+    }
+  }, [state.playIndex])
 
   /* 开始 */
   const handlePlay = (): void => {
@@ -68,7 +66,7 @@ const Player: FC = (): ReactElement => {
       case continuousWayEnum.ORDER:
         return orderPlay()
       case continuousWayEnum.SHUFFLE:
-        return  shufflePlay()
+        return shufflePlay()
       case continuousWayEnum.LOOP:
         return loop()
       case continuousWayEnum.LISTLOOP:
@@ -81,22 +79,30 @@ const Player: FC = (): ReactElement => {
 
   /* 一首歌播放结束时触发 */
   state.audio.onended = () => {
+    setIndexCache(state.playIndex)
+
     selectMode()
   }
 
   /* 下一首 */
-  const next = (): void => {
+  const next = useCallback((): void => {
+    setIndexCache(state.playIndex)
     selectMode()
-  }
+  }, [state])
+
+  /* 上一首 */
+  const prev = useCallback((): void => {
+    if (indexCache !== null) {
+      // changeUrl(indexCache)
+      setState(prev => ({ ...prev, ...{ playIndex: indexCache } }))
+    }
+  }, [indexCache])
 
   const changeUrl = (index: number) => {
-    // state.audio.src = playList[value]?.trackUrl.url
-    // handlePlay()
-
     getTrackUrl(playList[index], val => {
       state.audio.src = val.url
-      setState(prev => ({ ...prev, ...{ playIndex: index } }))
       handlePlay()
+      // setState(prev => ({ ...prev, ...{ playIndex: index } }))
     })
   }
 
@@ -104,32 +110,38 @@ const Player: FC = (): ReactElement => {
   const orderPlay = (): void => {
     let index: number = state.playIndex === null ? 0 : state.playIndex! + 1
     if (index >= playList.length) return handlePause()
-    // setState(prev => ({ ...prev, ...{ playIndex: index } }))
-    changeUrl(index)
+    setState(prev => ({ ...prev, ...{ playIndex: index } }))
+    // changeUrl(index)
   }
   /* 单曲循环 */
-  const loop = ():void => {
+  const loop = (): void => {
     handlePause()
     handlePlay()
   }
   /* 列表循环 */
   const listLoop = (): void => {
     let index: number = state.playIndex === null ? 0 : state.playIndex! + 1
-    if (index >= playList.length) return setState(prev => ({ ...prev, ...{ playIndex: 0 } }))
-    // setState(prev => ({ ...prev, ...{ playIndex: index } }))
-    changeUrl(index)
+    if (index >= playList.length)
+      return setState(prev => ({ ...prev, ...{ playIndex: 0 } }))
+    setState(prev => ({ ...prev, ...{ playIndex: index } }))
+    // changeUrl(index)
   }
 
   /* 随机播放 */
   const shufflePlay = () => {
-    const numbers: number[] = playList
-      .filter(obj => obj.id !== playList[state.playIndex!].id)
-      .map(obj => obj.id)
-    const index = Math.floor(Math.random() * numbers.length)
-    // setState(prev => ({ ...prev, ...{ playIndex: index } }))
-    changeUrl(index)
-  }
+    let numbers: number[] = []
+    if (state.playIndex === null) {
+      numbers = playList.map(obj => obj.id)
+    } else {
+      numbers = playList
+        .filter(obj => obj.id !== playList[state.playIndex!].id)
+        .map(obj => obj.id)
+    }
 
+    const index = Math.floor(Math.random() * numbers.length)
+    // changeUrl(index)
+    setState(prev => ({ ...prev, ...{ playIndex: index } }))
+  }
 
   return (
     <ControllerBarContainer>
@@ -145,7 +157,12 @@ const Player: FC = (): ReactElement => {
             <Artist>{playList[state.playIndex!]?.ar[0].name}</Artist>
           </SongDetails>
         </SongCover>
-        <Middle handlePlay={handlePlay} handlePause={handlePause} />
+        <Middle
+          handlePlay={handlePlay}
+          handlePause={handlePause}
+          prev={prev}
+          next={next}
+        />
         <Right mediaObject={state.audio!} />
       </ControllerWrapper>
     </ControllerBarContainer>

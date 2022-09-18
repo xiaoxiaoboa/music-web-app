@@ -29,7 +29,7 @@ export const AudioState = atom<AudioStateType>({
     // duration: 0,
     playIndex: null,
     isPlaying: false,
-    continuousWay: continuousWayEnum.ORDER
+    continuousWay: continuousWayEnum.SHUFFLE
   },
   effects: [
     ({ node, onSet }) => {
@@ -39,28 +39,10 @@ export const AudioState = atom<AudioStateType>({
     }
   ]
 })
-/* 进度条是否在交互中 */
-export const isInterActiveState = atom<boolean>({
-  key: "isInterActiveState",
-  default: false
-})
 /* 播放状态 */
 export const isPlayingState = atom<boolean>({
   key: "isPlaying",
   default: false
-})
-/* 待播放列表 */
-export const prepareForPlayState = atom<Track[]>({
-  key: "prepareForPlayState",
-  default: [],
-
-  // effects:[
-  //   ({node,onSet}) => {
-  //     onSet((newValue, oldValue) => {
-  //       console.log(newValue)
-  //     })
-  //   }
-  // ]
 })
 
 /* 音频歌单 */

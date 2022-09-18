@@ -1,36 +1,18 @@
-import {
-  MouseEvent,
-  MouseEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from "react"
-import { FaBullseye } from "react-icons/fa"
-import { SetterOrUpdater } from "recoil"
-import Media from "../../../utils/Media"
+import { MouseEventHandler, useEffect, useMemo, useState } from "react"
 
 interface IProps {
   trackElement: HTMLDivElement
-  // media: Media
-  // isInterActive: boolean
-  // setIsInterActive: React.Dispatch<React.SetStateAction<boolean>>
   setSliderValue: React.Dispatch<React.SetStateAction<number>>
 }
 
 export default function useDrag({
   trackElement,
-  // media,
-  // isInterActive,
-  // setIsInterActive,
   setSliderValue
-}: IProps): [boolean, MouseEventHandler, MouseEventHandler] {
+}: IProps): [boolean, MouseEventHandler] {
   /* 鼠标距文档左侧X轴额距离 */
   const [mouseX, setMouseX] = useState<number>(0)
   /* Slider是否在交互中 */
   const [isInterActive, setIsInterActive] = useState<boolean>(false)
-
 
   const offSetLeft: number = useMemo(
     () =>
@@ -45,8 +27,7 @@ export default function useDrag({
     setSliderValue(() => percentCalculate(mouseX - offSetLeft, trackElement))
   }, [mouseX])
 
-
-  const startDrag: MouseEventHandler = (e) => {
+  const startDrag: MouseEventHandler = e => {
     /* 鼠标单击落下时 */
     const handleMouseDown = () => {
       e.preventDefault()
@@ -63,7 +44,7 @@ export default function useDrag({
     }
 
     /* 松开鼠标时 */
-    const handleMouseUp = (e: globalThis.MouseEvent) => {
+    const handleMouseUp = () => {
       setIsInterActive(false)
 
       document.onmousedown = null
@@ -74,19 +55,18 @@ export default function useDrag({
     document.onmousedown = handleMouseDown
     document.onmousemove = handleMouseDrag
     document.onmouseup = handleMouseUp
-
   }
 
-  const handleMouseDrag = () => {}
   /* 百分比计算 */
-  const percentCalculate = (
-    progressValue: number,
-    htmlElement: HTMLDivElement
-  ): number => {
-    const rel = Math.round((progressValue / htmlElement?.clientWidth) * 100)
+  const percentCalculate = useMemo(
+    () =>
+      (value: number, htmlElement: HTMLDivElement): number => {
+        const rel = Math.round((value / htmlElement?.clientWidth) * 100)
 
-    return rel > 100 ? 100 : rel < 0 ? 0 : rel
-  }
+        return rel > 100 ? 100 : rel < 0 ? 0 : rel
+      },
+    [mouseX]
+  )
 
-  return [isInterActive, startDrag, handleMouseDrag]
+  return [isInterActive, startDrag]
 }

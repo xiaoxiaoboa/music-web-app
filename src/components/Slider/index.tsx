@@ -1,11 +1,8 @@
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
-import Media from "../../utils/Media"
-import useCurrentTime from "../Player/Controller/Hooks/useCurrentTime"
 import useDrag from "./Hooks/useDrag"
-import useDuration from "../Player/Controller/Hooks/useDuration"
-import { useRecoilState, useRecoilValue } from "recoil"
-import { isInterActiveState, AudioState } from "../../recoil/atom"
+import { useRecoilValue } from "recoil"
+import { AudioState } from "../../recoil/atom"
 
 interface SliderProps {
   type?: string
@@ -28,7 +25,7 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
   const [sliderValue, setSliderValue] = useState<number>(0)
   const TrackRef = useRef<HTMLDivElement>(null)
 
-  const [isInterActive, handleMouseDown, handleMouseDrag] = useDrag({
+  const [isInterActive, handleDrag] = useDrag({
     trackElement: TrackRef.current as HTMLDivElement,
     setSliderValue
   })
@@ -78,12 +75,12 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
   return (
     <SliderContainer co={props}>
       {props?.currentTime ? <StartTime>{props?.currentTime.str!}</StartTime> : <></>}
-      <SliderTrack id="track" ref={TrackRef} onMouseDown={handleMouseDown}>
+      <SliderTrack id="track" ref={TrackRef} onMouseDown={handleDrag}>
         <SlideColor slideColorWidth={sliderValue} />
         <SliderThumb
           id="thumb"
           SliderThumbLeft={sliderValue}
-          onMouseDown={handleMouseDrag}
+          // onMouseDown={handleMouseDrag}
           TrackElement={TrackRef.current as HTMLDivElement}
         />
       </SliderTrack>
@@ -154,6 +151,6 @@ const SlideColor = styled.span.attrs<SlideColorProps>(props => ({
   border-radius: 10px;
 `
 const StartTime = styled.span`
-  font-size: 10px;
+  font-size: 12px;
 `
 const EndTime = styled(StartTime)``

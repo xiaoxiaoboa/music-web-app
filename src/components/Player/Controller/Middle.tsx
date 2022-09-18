@@ -13,9 +13,14 @@ import useDuration from "./Hooks/useDuration"
 interface IProps {
   handlePlay: () => void
   handlePause: () => void
+  prev: () => void
+  next: () => void
 }
 
-const Middle: FC<IProps> = ({ handlePlay, handlePause }): ReactElement => {
+const Middle: FC<IProps> = (props): ReactElement => {
+  const { handlePlay, handlePause, prev, next } = props
+
+
   const state = useRecoilValue(AudioState)
   const [currentTime, strCurrentTime, setCurrentTime, getisInterActiveValue] =
     useCurrentTime()
@@ -33,7 +38,7 @@ const Middle: FC<IProps> = ({ handlePlay, handlePause }): ReactElement => {
   return (
     <MiddleButton>
       <ButtonBox>
-        <Button>
+        <Button onClick={prev}>
           <FaStepBackward className="FaStepBackward" />
         </Button>
         <Button
@@ -44,7 +49,7 @@ const Middle: FC<IProps> = ({ handlePlay, handlePause }): ReactElement => {
             <FaPlay className="FaPlay" />
           )}
         </Button>
-        <Button>
+        <Button onClick={next}>
           <FaStepForward className="FaStepForward" />
         </Button>
       </ButtonBox>

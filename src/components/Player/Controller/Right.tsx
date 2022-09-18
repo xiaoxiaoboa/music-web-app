@@ -7,6 +7,7 @@ import Volume from "../../Volume"
 
 interface IProps {
   mediaObject: HTMLMediaElement
+  
 }
 
 const Right: FC<IProps> = (props): ReactElement => {
