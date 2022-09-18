@@ -77,9 +77,6 @@ const SongListDetail = () => {
   const location = useLocation() as LocationProps
   const [state, setState] = useRecoilState(AudioState)
   const [playList, setPlayList] = useRecoilState(PlayListState)
-  const [prepareForPlay, setPrepareForPlay] =
-    useRecoilState(prepareForPlayState)
-  const resetPrepareForPlay = useResetRecoilState(prepareForPlayState)
   const [reducerState, dispatch] = useReducer(reducer, initialState)
   const [tracks, requesting, requestSongs] = useScroll(reducerState.songsId)
 
@@ -131,29 +128,37 @@ const SongListDetail = () => {
   /* 双击单曲播放 */
   const handleDbClick = (value: Track): void => {
     /* 找一下是否已经播放过这个歌曲了 */
-    const sameIndex = playList.findIndex(
-      (obj: TrackAndUrl) => obj.trackUrl.id === value.id
-    )
+    const sameIndex = playList.findIndex((obj: Track) => obj.id === value.id)
     /* 如果找到了：把对应歌曲的索引更新到state */
     if (sameIndex > -1) {
       setState(prev => ({ ...prev, ...{ playIndex: sameIndex } }))
     } else {
       /* 没有找到：把请求回来的歌曲加入到正在播放歌曲的后面，然后更新索引，更新列表 */
-      getTrackUrl(value, val => {
-        const tempList = [...playList]
-        tempList.splice(state.playIndex! + 1, 0, val as TrackAndUrl)
-        const index = tempList.findIndex(
-          obj => obj.trackUrl.id === (val as TrackAndUrl).track.id
-        )
-        setState(prev => ({ ...prev, ...{ playIndex:  index} }))
-        setPlayList(tempList)
-      })
+      // getTrackUrl(value, val => {
+      //   console.log(val)
+      //   const tempList = [...playList]
+      //   tempList.splice(state.playIndex! + 1, 0, val as TrackAndUrl)
+      //   const index = tempList.findIndex(
+      //     obj => obj.trackUrl.id === (val as TrackAndUrl).track.id
+      //   )
+      //   setState(prev => ({ ...prev, ...{ playIndex: index } }))
+      //   setPlayList(tempList)
+      // })
+
+      const tempList = [...playList]
+      tempList.splice(state.playIndex! + 1, 0, value)
+      const index = tempList.findIndex(obj => obj.id === value.id)
+
+      setState(prev => ({ ...prev, ...{ playIndex: index } }))
+      setPlayList(tempList)
     }
   }
   /* 播放歌单全部 */
   const handlePlayAll = (): void => {
     request("playlist/track/all", "GET", `&id=${location.state.id}`).then(
-      (res: SongDetailType) => setPrepareForPlay(res.songs)
+      (res: SongDetailType) => {
+        setPlayList(res.songs)
+      }
     )
   }
 

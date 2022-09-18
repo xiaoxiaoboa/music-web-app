@@ -23,25 +23,19 @@ import { getTrackUrl } from "../../utils/getTrackUrl"
 const Player: FC = (): ReactElement => {
   const [state, setState] = useRecoilState(AudioState)
   const [playList, setPlayList] = useRecoilState(PlayListState)
-  const [prepareForPlay, setPrepareForPlay] =
-    useRecoilState(prepareForPlayState)
+  // const [prepareForPlay, setPrepareForPlay] =
+  //   useRecoilState(prepareForPlayState)
+
+  useEffect(() => {
+    if (playList.length < 1) return
+    selectMode()
+  }, [playList])
 
   // useEffect(() => {
-  //   if (playList.length < 1) return
-  //   selectMode()
-  // }, [playList])
+  //   if (playList.length < 1 || state.playIndex === null) return
+  //   changeUrl(state.playIndex!)
+  // }, [state.playIndex])
 
-  useEffect(() => {
-    if (playList.length < 1 || state.playIndex === null) return
-    changeUrl(state.playIndex!)
-  }, [state.playIndex])
-
-  useEffect(() => {
-    if (prepareForPlay.length < 1) return
-    getTrackUrl([prepareForPlay[0], prepareForPlay[1]], val => {
-      setPlayList(val as TrackAndUrl[])
-    })
-  }, [prepareForPlay])
 
   /* 开始 */
   const handlePlay = (): void => {
@@ -95,16 +89,23 @@ const Player: FC = (): ReactElement => {
     selectMode()
   }
 
-  const changeUrl = (value: number) => {
-    state.audio.src = playList[value]?.trackUrl.url
-    handlePlay()
+  const changeUrl = (index: number) => {
+    // state.audio.src = playList[value]?.trackUrl.url
+    // handlePlay()
+
+    getTrackUrl(playList[index], val => {
+      state.audio.src = val.url
+      setState(prev => ({ ...prev, ...{ playIndex: index } }))
+      handlePlay()
+    })
   }
 
   /* 顺序播放 */
   const orderPlay = (): void => {
     let index: number = state.playIndex === null ? 0 : state.playIndex! + 1
     if (index >= playList.length) return handlePause()
-    setState(prev => ({ ...prev, ...{ playIndex: index } }))
+    // setState(prev => ({ ...prev, ...{ playIndex: index } }))
+    changeUrl(index)
   }
   /* 单曲循环 */
   const loop = ():void => {
@@ -115,39 +116,33 @@ const Player: FC = (): ReactElement => {
   const listLoop = (): void => {
     let index: number = state.playIndex === null ? 0 : state.playIndex! + 1
     if (index >= playList.length) return setState(prev => ({ ...prev, ...{ playIndex: 0 } }))
-    setState(prev => ({ ...prev, ...{ playIndex: index } }))
+    // setState(prev => ({ ...prev, ...{ playIndex: index } }))
+    changeUrl(index)
   }
 
   /* 随机播放 */
   const shufflePlay = () => {
     const numbers: number[] = playList
-      .filter(obj => obj.track.id !== playList[state.playIndex!].track.id)
-      .map(obj => obj.track.id)
+      .filter(obj => obj.id !== playList[state.playIndex!].id)
+      .map(obj => obj.id)
     const index = Math.floor(Math.random() * numbers.length)
-    setState(prev => ({ ...prev, ...{ playIndex: index } }))
+    // setState(prev => ({ ...prev, ...{ playIndex: index } }))
+    changeUrl(index)
   }
 
-  /* 待播放列表向播放列表推送歌曲 */
-  const prepareForPlayToPlayList = (): void => {
-    if (prepareForPlay.length > 0 && playList.length < prepareForPlay.length) {
-      getTrackUrl(prepareForPlay[playList.length], val => {
-        setPlayList(prev => [...prev, val as TrackAndUrl])
-      })
-    }
-  }
 
   return (
     <ControllerBarContainer>
       <ControllerWrapper>
         <SongCover>
           <SongCoverImg
-            src={imgSize(playList[state.playIndex!]?.track.al.picUrl, 60, 60)}
+            src={imgSize(playList[state.playIndex!]?.al.picUrl, 60, 60)}
           />
           <SongDetails>
-            <SongTitle title={playList[state.playIndex!]?.track.name}>
-              {playList[state.playIndex!]?.track.name}
+            <SongTitle title={playList[state.playIndex!]?.name}>
+              {playList[state.playIndex!]?.name}
             </SongTitle>
-            <Artist>{playList[state.playIndex!]?.track.ar[0].name}</Artist>
+            <Artist>{playList[state.playIndex!]?.ar[0].name}</Artist>
           </SongDetails>
         </SongCover>
         <Middle handlePlay={handlePlay} handlePause={handlePause} />

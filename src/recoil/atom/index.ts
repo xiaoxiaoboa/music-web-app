@@ -29,15 +29,15 @@ export const AudioState = atom<AudioStateType>({
     // duration: 0,
     playIndex: null,
     isPlaying: false,
-    continuousWay: continuousWayEnum.LOOP
+    continuousWay: continuousWayEnum.ORDER
   },
-  // effects: [
-  //   ({ node, onSet }) => {
-  //     onSet((newValue, oldValue) => {
-  //       console.log(newValue)
-  //     })
-  //   }
-  // ]
+  effects: [
+    ({ node, onSet }) => {
+      onSet((newValue, oldValue) => {
+        console.log(newValue)
+      })
+    }
+  ]
 })
 /* 进度条是否在交互中 */
 export const isInterActiveState = atom<boolean>({
@@ -64,16 +64,16 @@ export const prepareForPlayState = atom<Track[]>({
 })
 
 /* 音频歌单 */
-export const PlayListState = atom<TrackAndUrl[]>({
+export const PlayListState = atom<Track[]>({
   key: "PlayList",
   default: [],
-  effects: [
-    ({ node, onSet }) => {
-      onSet((newValue, oldValue) => {
-        console.log(newValue)
-      })
-    }
-  ]
+  // effects: [
+  //   ({ node, onSet }) => {
+  //     onSet((newValue, oldValue) => {
+  //       console.log(newValue)
+  //     })
+  //   }
+  // ]
 })
 
 /* 主页歌单 */

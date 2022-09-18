@@ -1,9 +1,9 @@
-import { PlayListUrls, Track, TrackAndUrl } from "../types"
+import { PlayListUrls, SongUrl, Track, TrackAndUrl } from "../types"
 import { request } from "./request"
 
 export const getTrackUrl = (
   value: Track | Track[],
-  F: (val: TrackAndUrl | TrackAndUrl[]) => void
+  F: (val: SongUrl) => void
 ) => {
   if (Array.isArray(value)) {
     const ids: number[] = value.map(obj => obj.id)
@@ -22,7 +22,7 @@ export const getTrackUrl = (
           const newObj: TrackAndUrl = { track: value[i], trackUrl: res.data[i] }
           newArr.push(newObj)
         }
-        F(newArr)
+        // F(newArr)
       }
     )
   } else {
@@ -33,8 +33,8 @@ export const getTrackUrl = (
         if (!res.data[0].url) {
           res.data[0].url = `https://music.163.com/song/media/outer/url?id=${value.id}.mp3`
         }
-        const newObj: TrackAndUrl = { track: value, trackUrl: res.data[0] }
-        F(newObj)
+        // const newObj: TrackAndUrl = { track: value, trackUrl: res.data[0] }
+        F(res.data[0])
       }
     )
   }
