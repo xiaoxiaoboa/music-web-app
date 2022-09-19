@@ -8,6 +8,10 @@ export const getTrackUrl = (value: Track, F: (val: SongUrl) => void) => {
       /* 如果返回的url是null，换一个链接播放 */
       if (!res.data[0].url) {
         res.data[0].url = `https://music.163.com/song/media/outer/url?id=${value.id}.mp3`
+      } else {
+        // res.data[0].url = res.data[0].url.replace("http", "https")
+        res.data[0].url = res.data[0].url.split(':',2)[1]
+        // console.log(res.data[0].url.replace("http", "https"))
       }
       F(res.data[0])
     }

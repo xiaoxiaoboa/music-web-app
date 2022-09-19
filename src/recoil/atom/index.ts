@@ -4,7 +4,6 @@ import {
   MvType,
   ArtistType,
   SongList,
-  TrackAndUrl,
   AudioStateType,
   continuousWayEnum,
   DetailState,
