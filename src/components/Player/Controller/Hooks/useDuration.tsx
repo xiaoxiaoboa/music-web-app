@@ -1,24 +1,14 @@
 import React, { useCallback, useMemo, useState } from "react"
-import Media from "../../../../utils/Media"
 import { useRecoilState, useRecoilValue } from "recoil"
 import { AudioState } from "../../../../recoil/atom"
 
-interface IProps {
-  media: Media
-}
 
 export default function useDuration(): [number,string] {
-  // const [state, setState] = useRecoilState(AudioState)
   const state = useRecoilValue(AudioState)
   const [duration, setDuration] = useState<number>(0)
-  // const toFixed = useMemo(
-  //   () => Math.floor(state.duration!) / 100,
-  //   [state.duration!]
-  // )
 
   /* canplaythrough事件触发后，可以准确的获得到媒体的duration */
   state.audio.oncanplay = () => {
-    // setState((prev) => ({...prev, ...{duration: state.audio.duration}}))
     setDuration(state.audio.duration)
   }
 

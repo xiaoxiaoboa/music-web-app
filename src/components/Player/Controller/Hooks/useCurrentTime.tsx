@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import Media from "../../../../utils/Media"
 import { useRecoilState, useRecoilValue } from "recoil"
-import { AudioState, isInterActiveState } from "../../../../recoil/atom"
+import { AudioState } from "../../../../recoil/atom"
 
 interface IProps {
   // media: Media

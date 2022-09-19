@@ -2,7 +2,6 @@ import React, { FC, useCallback, useMemo, useState } from "react"
 import Slider from "../Slider"
 import { RiVolumeUpFill, RiVolumeMuteFill } from "react-icons/ri"
 // import { Button } from "../Player/index.style"
-import Media from "../../utils/Media"
 import { DefaultTheme, StyledComponent } from "styled-components"
 
 interface IProps {
