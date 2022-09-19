@@ -1,4 +1,4 @@
-import { FC, ReactElement, useState } from "react"
+import { FC, ReactElement } from "react"
 import styled from "styled-components"
 import Player from "./components/Player"
 import TopBar from "./components/TopBar"
