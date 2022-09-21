@@ -15,7 +15,7 @@ import {
 } from "./index.style"
 import ToggleTheme from "../ToggleTheme"
 import { BiSearchAlt } from "react-icons/bi"
-
+import { NavLink } from "react-router-dom"
 
 const TopBar: FC = (): ReactElement => {
   return (
@@ -24,7 +24,9 @@ const TopBar: FC = (): ReactElement => {
         <TopLogo />
         <Nav>
           <Ul>
-            <Li>首页</Li>
+            <NavLink to={'/'}>
+              <Li>首页</Li>
+            </NavLink>
             <Li>歌单</Li>
             <Li>新碟上架</Li>
             <Li>私人FM</Li>

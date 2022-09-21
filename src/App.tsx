@@ -1,6 +1,6 @@
-import { FC, ReactElement } from "react"
+import { FC, ReactElement, Suspense } from "react"
 import styled from "styled-components"
-import Player from "./components/Player"
+import AudioPlayer from "./components/AudioPlayer"
 import TopBar from "./components/TopBar"
 import Routes from "./routes"
 
@@ -9,9 +9,11 @@ const App: FC = (): ReactElement => {
     <AppContainer>
       <TopBar />
       <MainContainer>
-        <Routes />
+        <Suspense fallback={""}>
+          <Routes />
+        </Suspense>
       </MainContainer>
-      <Player  />
+      <AudioPlayer />
     </AppContainer>
   )
 }
@@ -26,7 +28,7 @@ const AppContainer = styled.div`
 const MainContainer = styled.div`
   flex: 1;
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   overflow-y: auto;
   background-color: ${props => props.theme.primary_bgColor};
   color: ${props => props.theme.primary_color};

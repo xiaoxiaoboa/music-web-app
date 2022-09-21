@@ -26,30 +26,28 @@ const List: FC<IProps> = ({
 }: IProps): ReactElement => {
   const navigate = useNavigate()
 
-  const toSongListDetail = (
+  const toDetail = (
     e: React.MouseEvent,
     id: number,
     element: HTMLImageElement | HTMLSpanElement,
-    type: string
   ) => {
     if (e.target !== element) return
-    navigate(type, { state: { id } })
+    navigate(datas.type, { state: { id } })
   }
 
 
   return (
     <ListContainer amount={amount}>
-      {datas.list.map((obj: any) => {
+      {datas.list.map((obj: SongListType | MvType | ArtistType) => {
         return (
           <Item
             key={obj.id}
             borderRadius={borderRadius}
             alignItems={alignItems}
             data={obj}
-            type={datas.type}
             w={w}
             h={h}
-            toSongListDetail={toSongListDetail}
+            toDetail={toDetail}
           />
         )
       })}

@@ -6,8 +6,8 @@ import { AudioState } from "../../recoil/atom"
 
 interface SliderProps {
   type?: string
-  sWidth?: string
-  sPadding?: string
+  sWidth: string
+  sPadding: string
   isMuted?: boolean
   getSliderValue?: (value: number, isInterActive?: boolean) => void
   currentTime?: {num: number, str: string}

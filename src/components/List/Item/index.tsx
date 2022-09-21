@@ -11,28 +11,25 @@ import imgSize from "../../../utils/imgSize"
 import { SongListType, MvType, ArtistType } from "../../../types"
 
 interface IProps {
-  type: string
   data: SongListType | MvType | ArtistType
   borderRadius?: string
   alignItems?: string
   w?: number
   h?: number
-  toSongListDetail: (
+  toDetail: (
     e: React.MouseEvent<Element, MouseEvent>,
     id: number,
-    element: HTMLImageElement | HTMLSpanElement,
-    type: string
+    element: HTMLImageElement | HTMLSpanElement
   ) => void
 }
 
 const Item: FC<IProps> = ({
-  type,
   borderRadius,
   alignItems,
   data,
   w,
   h,
-  toSongListDetail
+  toDetail
 }: IProps): ReactElement => {
   const ItemRef = useRef<HTMLDivElement>(null)
   const CoverRef = useRef<HTMLImageElement>(null)
@@ -52,17 +49,27 @@ const Item: FC<IProps> = ({
             h
           )}
           borderRadius={borderRadius}
-          onClick={e => toSongListDetail(e, data.id, CoverRef.current!, type)}
+          onClick={e => toDetail(e, data.id, CoverRef.current!)}
           ref={CoverRef}
         />
         <PlayButton onClick={handleClick} ref={ItemRef}>
           <BsFillPlayFill className="BsFillPlayFill" />
         </PlayButton>
       </Cover>
-      <Title
-        onClick={e => toSongListDetail(e, data.id, TitleRef.current!, type)}
-        ref={TitleRef}>
-        {data.name}
+      <Title ref={TitleRef}>
+        <span
+          className="name"
+          onClick={e => toDetail(e, data.id, TitleRef.current!)}>
+          {data.name}
+        </span>
+        {(data as MvType).artistName ? (
+          <>
+            <span> - </span>
+            <span className="artist">{(data as MvType).artistName}</span>
+          </>
+        ) : (
+          <></>
+        )}
       </Title>
     </ItemContainer>
   )

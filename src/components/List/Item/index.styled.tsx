@@ -61,7 +61,21 @@ export const PlayButton = styled.div`
 `
 
 export const Title = styled.span`
-  &:hover {
+  /* &:hover {
+    text-decoration: underline #9370db;
+    cursor: pointer;
+  } */
+
+  .name {
+    font-weight: bold;
+  }
+  .artist {
+    font-size: 12px;
+    color: ${props => props.theme.light_color};
+  }
+
+  .name:hover,
+  .artist:hover {
     text-decoration: underline #9370db;
     cursor: pointer;
   }

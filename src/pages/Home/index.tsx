@@ -19,11 +19,11 @@ const Home: FC = (): ReactElement => {
   }, [songLists, mvs])
 
   return (
-    <HomeContainer>
+    <>
       {loaded === false ? (
         <Loading />
       ) : (
-        <>
+        <HomeContainer>
           <ListWrapper>
             <h2>推荐歌单</h2>
             <List amount={5} datas={songLists} />
@@ -50,9 +50,9 @@ const Home: FC = (): ReactElement => {
               h={260}
             />
           </ListWrapper>
-        </>
+        </HomeContainer>
       )}
-    </HomeContainer>
+    </>
   )
 }
 

@@ -14,3 +14,9 @@ body {
   height: 100%;
 }
 
+
+.active{
+  color: #937dc2;
+  font-weight: bold;
+}
+

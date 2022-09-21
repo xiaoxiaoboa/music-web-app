@@ -55,5 +55,14 @@ export const GlobalStyle = createGlobalStyle`
     outline: none;
   }
 
+  a {
+    color:inherit;
+  }
+
+  a:link{
+    text-decoration: none;
+    
+  }
+
   
 `

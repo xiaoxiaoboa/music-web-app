@@ -134,141 +134,145 @@ const SongListDetail = () => {
   }
 
   return (
-    <Container>
+    <>
       {reducerState.loaded ? (
-        <>
-          <SongListInfo>
-            <CoverImg>
-              <img src={reducerState.detail?.coverImgUrl} />
-            </CoverImg>
-            <Desc>
-              <div className="title">{reducerState.detail?.name}</div>
-              <Creator>
-                <Avatar
-                  src={reducerState.detail?.creator.avatarUrl}
-                  size={`2rem`}
-                />
-                <LinkFont>{reducerState.detail?.creator.nickname}</LinkFont>
-                <LightFont fontsize={`14px`}>
-                  {getUpdateTime(reducerState.detail.createTime)} 创建
-                </LightFont>
-              </Creator>
-              <Tag>
-                <div>标签：</div>
-                {reducerState.detail?.tags.map(tag => (
-                  <LinkFont key={reducerState.detail.tags.indexOf(tag)}>
-                    {tag}
-                  </LinkFont>
-                ))}
-              </Tag>
-              <Count>
-                <CountItem>
-                  <div>歌曲：</div>
+        <Container>
+          <>
+            <SongListInfo>
+              <CoverImg>
+                <img src={reducerState.detail?.coverImgUrl} />
+              </CoverImg>
+              <Desc>
+                <div className="title">{reducerState.detail?.name}</div>
+                <Creator>
+                  <Avatar
+                    src={reducerState.detail?.creator.avatarUrl}
+                    size={`2rem`}
+                  />
+                  <LinkFont>{reducerState.detail?.creator.nickname}</LinkFont>
                   <LightFont fontsize={`14px`}>
-                    {reducerState.detail?.trackCount.toLocaleString()}
+                    {getUpdateTime(reducerState.detail.createTime)} 创建
                   </LightFont>
-                </CountItem>
-                <CountItem>
-                  <div>播放：</div>
-                  <LightFont fontsize={`14px`}>
-                    {reducerState.detail?.playCount.toLocaleString()}
-                  </LightFont>
-                </CountItem>
-                <CountItem>
-                  <div>收藏：</div>
-                  <LightFont fontsize={`14px`}>
-                    {reducerState.detail?.subscribedCount.toLocaleString()}
-                  </LightFont>
-                </CountItem>
-                <CountItem>
-                  <div>分享：</div>
-                  <LightFont fontsize={`14px`}>
-                    {reducerState.detail?.shareCount.toLocaleString()}
-                  </LightFont>
-                </CountItem>
-              </Count>
-              <PlayButton>
-                <Button onClick={handlePlayAll}>
-                  <FaPlay size={`18px`} />
-                  播放全部
-                </Button>
-                <Button>
-                  <BsFolderPlus size={`18px`} />
-                  收藏歌单
-                </Button>
-              </PlayButton>
-              <Intro
-                height={reducerState.isShowIntro ? "100%" : "52px"}
-                onClick={() =>
-                  dispatch({
-                    type: DetailType.ISHOWINTRO,
-                    paylad: !reducerState.isShowIntro
-                  })
-                }>
-                <IntroLightFont as="div" fontsize={`14px`}>
-                  <label>简介：</label>
-                  {reducerState.detail?.description}
-                </IntroLightFont>
-              </Intro>
-            </Desc>
-          </SongListInfo>
+                </Creator>
+                <Tag>
+                  <div>标签：</div>
+                  {reducerState.detail?.tags.map(tag => (
+                    <LinkFont key={reducerState.detail.tags.indexOf(tag)}>
+                      {tag}
+                    </LinkFont>
+                  ))}
+                </Tag>
+                <Count>
+                  <CountItem>
+                    <div>歌曲：</div>
+                    <LightFont fontsize={`14px`}>
+                      {reducerState.detail?.trackCount.toLocaleString()}
+                    </LightFont>
+                  </CountItem>
+                  <CountItem>
+                    <div>播放：</div>
+                    <LightFont fontsize={`14px`}>
+                      {reducerState.detail?.playCount.toLocaleString()}
+                    </LightFont>
+                  </CountItem>
+                  <CountItem>
+                    <div>收藏：</div>
+                    <LightFont fontsize={`14px`}>
+                      {reducerState.detail?.subscribedCount.toLocaleString()}
+                    </LightFont>
+                  </CountItem>
+                  <CountItem>
+                    <div>分享：</div>
+                    <LightFont fontsize={`14px`}>
+                      {reducerState.detail?.shareCount.toLocaleString()}
+                    </LightFont>
+                  </CountItem>
+                </Count>
+                <PlayButton>
+                  <Button onClick={handlePlayAll}>
+                    <FaPlay size={`18px`} />
+                    播放全部
+                  </Button>
+                  <Button>
+                    <BsFolderPlus size={`18px`} />
+                    收藏歌单
+                  </Button>
+                </PlayButton>
+                <Intro
+                  height={reducerState.isShowIntro ? "100%" : "52px"}
+                  onClick={() =>
+                    dispatch({
+                      type: DetailType.ISHOWINTRO,
+                      paylad: !reducerState.isShowIntro
+                    })
+                  }>
+                  <IntroLightFont as="div" fontsize={`14px`}>
+                    <label>简介：</label>
+                    {reducerState.detail?.description}
+                  </IntroLightFont>
+                </Intro>
+              </Desc>
+            </SongListInfo>
 
-          {tracks.length > 0 ? (
-            <>
-              <Songs>
-                {tracks.map(song => {
-                  return (
-                    <Song
-                      key={song.id}
-                      onDoubleClick={() => handleDbClick(song)}>
-                      <div className="sn">
-                        <SongLightFont fontsize={`20px`}>
-                          {tracks.indexOf(song) + 1}
-                        </SongLightFont>
-                      </div>
-                      <div className="like">
-                        <RiHeart2Line className="RiHeart2Line" />
-                      </div>
-                      <div className="name" title={song.name}>
-                        <div className="nameWrapper">{song.name}</div>
-                      </div>
-                      <div className="artist" title={song.ar[0].name}>
-                        <SongLightFont fontsize={`18px`}>
-                          <SongLinkFont>{song.ar[0].name}</SongLinkFont>
-                        </SongLightFont>
-                      </div>
-                      <div className="album" title={song.al.name}>
-                        <SongLightFont fontsize={`18px`}>
-                          <SongLinkFont>{song.al.name}</SongLinkFont>
-                        </SongLightFont>
-                      </div>
-                      <div className="duration">
-                        <SongLightFont fontsize={`20px`}>
-                          {getMinute(song.dt)}
-                        </SongLightFont>
-                      </div>
-                    </Song>
-                  )
-                })}
-              </Songs>
-              <ButtonBottom>
-                {requesting === true ? (
-                  <Loading scale={0.5} />
-                ) : typeof requesting === "string" ? (
-                  requesting
-                ) : (
-                  <RequestButton onClick={requestSongs}>加载更多</RequestButton>
-                )}
-              </ButtonBottom>
-            </>
-          ) : (
-            <Loading />
-          )}
-        </>
+            {tracks.length > 0 ? (
+              <>
+                <Songs>
+                  {tracks.map(song => {
+                    return (
+                      <Song
+                        key={song.id}
+                        onDoubleClick={() => handleDbClick(song)}>
+                        <div className="sn">
+                          <SongLightFont fontsize={`20px`}>
+                            {tracks.indexOf(song) + 1}
+                          </SongLightFont>
+                        </div>
+                        <div className="like">
+                          <RiHeart2Line className="RiHeart2Line" />
+                        </div>
+                        <div className="name" title={song.name}>
+                          <div className="nameWrapper">{song.name}</div>
+                        </div>
+                        <div className="artist" title={song.ar[0].name}>
+                          <SongLightFont fontsize={`18px`}>
+                            <SongLinkFont>{song.ar[0].name}</SongLinkFont>
+                          </SongLightFont>
+                        </div>
+                        <div className="album" title={song.al.name}>
+                          <SongLightFont fontsize={`18px`}>
+                            <SongLinkFont>{song.al.name}</SongLinkFont>
+                          </SongLightFont>
+                        </div>
+                        <div className="duration">
+                          <SongLightFont fontsize={`20px`}>
+                            {getMinute(song.dt)}
+                          </SongLightFont>
+                        </div>
+                      </Song>
+                    )
+                  })}
+                </Songs>
+                <ButtonBottom>
+                  {requesting === true ? (
+                    <Loading scale={0.5} />
+                  ) : typeof requesting === "string" ? (
+                    requesting
+                  ) : (
+                    <RequestButton onClick={requestSongs}>
+                      加载更多
+                    </RequestButton>
+                  )}
+                </ButtonBottom>
+              </>
+            ) : (
+              <Loading />
+            )}
+          </>
+        </Container>
       ) : (
         <Loading />
       )}
-    </Container>
+    </>
   )
 }
 

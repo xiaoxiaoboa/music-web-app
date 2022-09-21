@@ -112,32 +112,34 @@ const Login: FC = (): ReactElement => {
   }
 
   return (
-    <LoginContainer>
+    <>
       {state.isLoading ? (
         <Loading />
       ) : (
-        <LoginWrapper>
-          <ImgWrapper>
-            <img src={state.base64} alt="" />
-            {state.message.length > 0 ? (
-              <NoticeMask>
-                <span>{state.message}</span>
-                {/过期/.test(state.message) ? (
-                  <span className="reset" onClick={handleReSet}>
-                    点击刷新
-                  </span>
-                ) : (
-                  <></>
-                )}
-              </NoticeMask>
-            ) : (
-              <></>
-            )}
-          </ImgWrapper>
-          <span>网易云音乐APP扫码</span>
-        </LoginWrapper>
+        <LoginContainer>
+          <LoginWrapper>
+            <ImgWrapper>
+              <img src={state.base64} alt="" />
+              {state.message.length > 0 ? (
+                <NoticeMask>
+                  <span>{state.message}</span>
+                  {/过期/.test(state.message) ? (
+                    <span className="reset" onClick={handleReSet}>
+                      点击刷新
+                    </span>
+                  ) : (
+                    <></>
+                  )}
+                </NoticeMask>
+              ) : (
+                <></>
+              )}
+            </ImgWrapper>
+            <span>网易云音乐APP扫码</span>
+          </LoginWrapper>
+        </LoginContainer>
       )}
-    </LoginContainer>
+    </>
   )
 }
 
@@ -162,8 +164,8 @@ const ImgWrapper = styled.div`
   display: flex;
   /* padding: 30px 30px 10px 30px; */
 
-  &  img{
-    border-radius:10px;
+  & img {
+    border-radius: 10px;
   }
 `
 const NoticeMask = styled.div`
