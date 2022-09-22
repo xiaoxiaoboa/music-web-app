@@ -1,27 +1,21 @@
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import useDrag from "./Hooks/useDrag"
-import { useRecoilValue } from "recoil"
-import { AudioState } from "../../recoil/atom"
 
 interface SliderProps {
-  type?: string
+  media?: HTMLAudioElement | HTMLVideoElement
   sWidth: string
   sPadding: string
   isMuted?: boolean
   getSliderValue?: (value: number, isInterActive?: boolean) => void
-  currentTime?: {num: number, str: string}
-  duration?: {num: number, str:string}
+  currentTime?: { num: number; str: string }
+  duration?: { num: number; str: string }
   getisInterActiveValue?: React.Dispatch<React.SetStateAction<boolean>>
-}
-enum Type {
-  MEDIA = "media",
-  VOLUME = "volume"
 }
 
 const Slider: FC<SliderProps> = (props): ReactElement => {
   /* Slider的值 */
-  const state = useRecoilValue(AudioState)
+
   const [sliderValue, setSliderValue] = useState<number>(0)
   const TrackRef = useRef<HTMLDivElement>(null)
 
@@ -31,25 +25,30 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
   })
 
   useEffect(() => {
-    if (isInterActive === false && props.type === Type.MEDIA) {
-      const temp = props.currentTime?.num! / (Math.floor(props?.duration?.num!) / 100)
+    if (isInterActive === false && props.media) {
+      const temp =
+        props.currentTime?.num! / (Math.floor(props?.duration?.num!) / 100)
 
       setSliderValue(() => parseFloat(temp.toFixed(1)))
     }
   }, [props.currentTime?.num!])
 
+  /* isInterActive变化时 */
   useEffect(() => {
-    if (props.type === Type.MEDIA) {
+    /* 如果是Media类型的Slider，就可以获取isInterActive的值 */
+    if (props.media) {
       props.getisInterActiveValue!(isInterActive)
     }
-    if (isInterActive === false && props.type === Type.MEDIA) {
+    /* isInterActive为false并且类型时Media时， */
+    if (isInterActive === false && props.media) {
       const currentTime = Math.floor(
         (sliderValue * props?.duration?.num!) / 100
       )
-      state.audio.currentTime = currentTime
+      props.media.currentTime = currentTime
     }
   }, [isInterActive])
 
+  /* 父组件获取SliderValue */
   useEffect(() => {
     if (props.getSliderValue) {
       props.getSliderValue(sliderValue, isInterActive)
@@ -74,16 +73,20 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
 
   return (
     <SliderContainer co={props}>
-      {props?.currentTime ? <StartTime>{props?.currentTime.str!}</StartTime> : <></>}
-      <SliderTrack id="track" ref={TrackRef} onMouseDown={handleDrag}>
+      {props?.currentTime ? (
+        <StartTime>{props?.currentTime.str!}</StartTime>
+      ) : (
+        <></>
+      )}
+      <TrackWrapper onMouseDown={handleDrag}>
+        <SliderTrack id="track" ref={TrackRef}></SliderTrack>
         <SlideColor slideColorWidth={sliderValue} />
         <SliderThumb
           id="thumb"
           SliderThumbLeft={sliderValue}
-          // onMouseDown={handleMouseDrag}
           TrackElement={TrackRef.current as HTMLDivElement}
         />
-      </SliderTrack>
+      </TrackWrapper>
       {props?.duration ? <EndTime>{props?.duration.str!}</EndTime> : <></>}
     </SliderContainer>
   )
@@ -99,7 +102,6 @@ const SliderContainer = styled.div<SliderContainerProps>`
   justify-content: center;
   align-items: center;
   width: ${props => props.co.sWidth};
-  position: relative;
   padding: ${props => props.co.sPadding};
   gap: 8px;
 
@@ -110,15 +112,23 @@ const SliderContainer = styled.div<SliderContainerProps>`
   }
 `
 
+const TrackWrapper = styled.span`
+  position: relative;
+  width: 100%;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`
+
 const SliderTrack = styled.div`
+  position: absolute;
   width: inherit;
   height: 4px;
   border-radius: 10px;
   background-color: #e1e1e1;
-  position: relative;
   display: flex;
   align-items: center;
-  cursor: pointer;
 `
 
 interface SliderThumbProps {
@@ -135,6 +145,8 @@ const SliderThumb = styled.span.attrs<SliderThumbProps>(props => ({
   height: 12px;
   border-radius: 50%;
   position: absolute;
+  top: 2px;
+  transition: background-color 0.2s linear;
 `
 
 interface SlideColorProps {
@@ -149,8 +161,10 @@ const SlideColor = styled.span.attrs<SlideColorProps>(props => ({
   position: absolute;
   height: 4px;
   border-radius: 10px;
+  /* transition: all 0.2s linear; */
 `
 const StartTime = styled.span`
   font-size: 12px;
+  color:inherit;
 `
 const EndTime = styled(StartTime)``

@@ -14,11 +14,10 @@ export default function useDrag({
   /* Slider是否在交互中 */
   const [isInterActive, setIsInterActive] = useState<boolean>(false)
 
+  /* track左边到浏览器左边缘的距离 */
   const offSetLeft: number = useMemo(
-    () =>
-      (trackElement?.offsetParent as HTMLDivElement)?.offsetLeft +
-      trackElement?.offsetLeft,
-    [(trackElement?.offsetParent as HTMLDivElement)?.offsetLeft]
+    () => Math.round(trackElement?.getBoundingClientRect().x),
+    [trackElement?.getBoundingClientRect().x]
   )
 
   /* 鼠标位置改变时，计算成百分比后更新state */

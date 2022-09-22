@@ -5,6 +5,8 @@ import TopBar from "./components/TopBar"
 import Routes from "./routes"
 
 const App: FC = (): ReactElement => {
+
+
   return (
     <AppContainer>
       <TopBar />
@@ -14,6 +16,7 @@ const App: FC = (): ReactElement => {
         </Suspense>
       </MainContainer>
       <AudioPlayer />
+      
     </AppContainer>
   )
 }
