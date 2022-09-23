@@ -389,11 +389,6 @@ const IntroLightFont = styled(LightFont)`
   }
 `
 
-const SongsWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-`
 
 const Songs = styled.div`
   flex: 2;
@@ -401,16 +396,11 @@ const Songs = styled.div`
   flex-direction: column;
   gap: 18px;
 
-  /* &::after {
-    content: "";
-    height: 30px;
-  } */
 `
 
 const Song = styled.div`
   width: 100%;
   display: flex;
-  /* font-size: 18px; */
   padding: 14px 0;
   border-radius: 8px;
 

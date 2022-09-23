@@ -1,8 +1,8 @@
-import { FC, ReactElement, useEffect } from "react"
+import { FC, ReactElement, useEffect, useCallback } from "react"
 import { ListContainer } from "./index.style"
 import Item from "./Item"
 import { SongListType, MvType, ArtistType } from "../../types"
-import { useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 interface IProps {
   datas: {
@@ -25,16 +25,20 @@ const List: FC<IProps> = ({
   h
 }: IProps): ReactElement => {
   const navigate = useNavigate()
+  const location = useLocation()
 
-  const toDetail = (
-    e: React.MouseEvent,
-    id: number,
-    element: HTMLImageElement | HTMLSpanElement,
-  ) => {
-    if (e.target !== element) return
-    navigate(datas.type, { state: { id } })
-  }
-
+console.log(location)
+  const toDetail = useCallback(
+    (
+      e: React.MouseEvent,
+      id: number,
+      element: HTMLImageElement | HTMLSpanElement
+    ) => {
+      if (e.target !== element) return
+      navigate(datas.type, { state: { id } })
+    },
+    []
+  )
 
   return (
     <ListContainer amount={amount}>

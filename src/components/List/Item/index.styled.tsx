@@ -76,7 +76,7 @@ export const Title = styled.span`
 
   .name:hover,
   .artist:hover {
-    text-decoration: underline #9370db;
+    text-decoration: underline ${props => props.theme.secondary_color};
     cursor: pointer;
   }
 `

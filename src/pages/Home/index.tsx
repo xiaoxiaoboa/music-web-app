@@ -10,7 +10,7 @@ const Home: FC = (): ReactElement => {
   const [loaded, setLoaded] = useState<boolean>(false)
   const songLists = useSongLists()
   // const artists = useArtists()
-  const mvs = useMv()
+  const mvs = useMv(3)
 
   useEffect(() => {
     if (songLists.list.length > 0 && mvs.list.length > 0) {

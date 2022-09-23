@@ -7,7 +7,7 @@ import { HomeMvsState } from "../../../recoil/atom"
 import { useMvType } from "../../../types"
 
 
-const useMv = (): useMvType => {
+const useMv = (amount:number): useMvType => {
   const [list, setList] = useRecoilState(HomeMvsState)
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const useMv = (): useMvType => {
       const randomNumber: number[] = random(
         0,
         res.data.length - 1,
-        3
+        amount
       ) as number[]
       const newArr: any = []
       for (let i = 0; i < randomNumber.length; i++) {
