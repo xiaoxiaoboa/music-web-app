@@ -25,7 +25,8 @@ export const Button = styled.button`
   .FaStepForward,
   .RiVolumeMute,
   .RiHeart2Line,
-  .RiPlayListFill {
+  .RiPlayListFill,
+  .RiFullscreenFill {
     font-size: 1.25rem;
   }
 

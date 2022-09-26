@@ -21,8 +21,8 @@ const Middle: FC<IProps> = (props): ReactElement => {
 
   const state = useRecoilValue(AudioState)
   const [currentTime, strCurrentTime, setCurrentTime, getisInterActiveValue] =
-    useCurrentTime()
-  const [duration, strDuration] = useDuration()
+    useCurrentTime(state.audio)
+  const [duration, strDuration] = useDuration(state.audio)
 
   /* 拖拽媒体进度条的时候 */
   const dragging = (value: number, isInterActive?: boolean) => {

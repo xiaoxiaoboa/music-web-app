@@ -13,20 +13,15 @@ import {
   DetailAction,
   DetailType,
   SongList,
-  SongDetailType
+  SongDetailType,
+  LocationProps
 } from "../../types"
 import { AudioState, PlayListState } from "../../recoil/atom"
 import Loading from "../../components/Loading"
 import { useRecoilState } from "recoil"
 import useScroll from "./Hooks/useScroll"
 
-interface LocationProps {
-  hash: string
-  key: string
-  pathname: string
-  search: string
-  state: { id: number }
-}
+
 
 const reducer = (state: DetailState, action: DetailAction): DetailState => {
   const { type, paylad } = action
@@ -66,7 +61,6 @@ const SongListDetail = () => {
   const [tracks, requesting, requestSongs] = useScroll(reducerState.songsId)
 
   useEffect(() => {
-    /* 如果点击的歌单和之前state中的歌单相同，直接显示，不再请求 */
     request("playlist/detail", "GET", `&id=${location.state.id}`).then(
       (res: SongListsDetailType) => {
         /* 设置歌单 */

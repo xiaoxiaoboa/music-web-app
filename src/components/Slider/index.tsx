@@ -3,7 +3,7 @@ import styled from "styled-components"
 import useDrag from "./Hooks/useDrag"
 
 interface SliderProps {
-  media?: HTMLAudioElement | HTMLVideoElement
+  media?: HTMLMediaElement
   sWidth: string
   sPadding: string
   isMuted?: boolean
@@ -39,7 +39,7 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
     if (props.media) {
       props.getisInterActiveValue!(isInterActive)
     }
-    /* isInterActive为false并且类型时Media时， */
+    /* isInterActive为false并且类型是Media时， */
     if (isInterActive === false && props.media) {
       const currentTime = Math.floor(
         (sliderValue * props?.duration?.num!) / 100
@@ -103,7 +103,7 @@ const SliderContainer = styled.div<SliderContainerProps>`
   align-items: center;
   width: ${props => props.co.sWidth};
   padding: ${props => props.co.sPadding};
-  gap: 8px;
+  gap: 10px;
 
   &:hover {
     span[id="thumb"] {
@@ -124,7 +124,7 @@ const TrackWrapper = styled.span`
 const SliderTrack = styled.div`
   position: absolute;
   width: inherit;
-  height: 4px;
+  height: 6px;
   border-radius: 10px;
   background-color: #e1e1e1;
   display: flex;
@@ -138,14 +138,14 @@ interface SliderThumbProps {
 
 const SliderThumb = styled.span.attrs<SliderThumbProps>(props => ({
   style: {
-    left: `calc(${props.SliderThumbLeft}% - 6px)`
+    left: `calc(${props.SliderThumbLeft}% - 8px)`
   }
 }))<SliderThumbProps>`
-  width: 12px;
-  height: 12px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
   position: absolute;
-  top: 2px;
+  top: 0;
   transition: background-color 0.2s linear;
 `
 
@@ -159,7 +159,7 @@ const SlideColor = styled.span.attrs<SlideColorProps>(props => ({
 }))<SlideColorProps>`
   background-color: ${props => props.theme.secondary_color};
   position: absolute;
-  height: 4px;
+  height: 6px;
   border-radius: 10px;
   /* transition: all 0.2s linear; */
 `

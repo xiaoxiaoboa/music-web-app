@@ -8,10 +8,10 @@ import {
 } from "./index.styled"
 import { BsFillPlayFill } from "react-icons/bs"
 import imgSize from "../../../utils/imgSize"
-import { SongListType, MvType, ArtistType } from "../../../types"
+import { SongListType, MvType, ArtistType, OtherMv } from "../../../types"
 
 interface IProps {
-  data: SongListType | MvType | ArtistType
+  data: SongListType | MvType | ArtistType | OtherMv
   borderRadius?: string
   alignItems?: string
   w?: number
@@ -44,7 +44,9 @@ const Item: FC<IProps> = ({
       <Cover>
         <CoverImg
           src={imgSize(
-            (data as SongListType).picUrl || (data as MvType).cover,
+            (data as SongListType).picUrl ||
+              (data as MvType).cover ||
+              (data as OtherMv).imgurl,
             w,
             h
           )}

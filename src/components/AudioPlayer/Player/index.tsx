@@ -162,7 +162,7 @@ const Player: FC = (): ReactElement => {
           prev={prev}
           next={next}
         />
-        <Right mediaObject={state.audio!} />
+        <Right media={state.audio!} />
       </ControllerWrapper>
     </ControllerBarContainer>
   )

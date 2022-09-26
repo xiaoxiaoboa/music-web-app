@@ -1,17 +1,14 @@
 import React, { FC, ReactElement, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
-import { Button } from "../../../../styles/Button.style"
 import { RiPlayListFill, RiHeart2Line } from "react-icons/ri"
-// import Media from "../../../utils/Media"
 import Volume from "../../../Volume"
+import { Button } from "../../../../styles/Button.style"
 
 interface IProps {
-  mediaObject: HTMLMediaElement
-  
+  media: HTMLMediaElement
 }
 
-const Right: FC<IProps> = (props): ReactElement => {
-  const { mediaObject } = props
+const Right: FC<IProps> = ({ media }): ReactElement => {
   return (
     <RightButton>
       <Button>
@@ -21,7 +18,7 @@ const Right: FC<IProps> = (props): ReactElement => {
         <RiPlayListFill className="RiPlayListFill" />
       </Button>
       <VolumeButtonBox>
-        <Volume mediaObject={mediaObject} Button={Button}/>
+        <Volume media={media} />
       </VolumeButtonBox>
     </RightButton>
   )

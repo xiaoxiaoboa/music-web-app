@@ -1,25 +1,24 @@
 import React, { FC, useCallback, useMemo, useState } from "react"
 import Slider from "../Slider"
 import { RiVolumeUpFill, RiVolumeMuteFill } from "react-icons/ri"
-// import { Button } from "../Player/index.style"
+import { Button } from "../../styles/Button.style"
 import { DefaultTheme, StyledComponent } from "styled-components"
 
 interface IProps {
-  mediaObject: HTMLMediaElement
-  Button: StyledComponent<"button", DefaultTheme, {}, never>
+  media: HTMLMediaElement
 }
 
-const Volume: FC<IProps> = ({ mediaObject, Button }) => {
+const Volume: FC<IProps> = ({ media }) => {
   const [isMuted, setIsMuted] = useState<boolean>(false)
   /* 处理静音 */
   const handleMuted = () => {
     setIsMuted(() => !isMuted)
-    mediaObject.muted = !isMuted
+    media.muted = !isMuted
   }
 
   /* 修改音量 */
   const handleVolume = (value: number): void => {
-    mediaObject.volume = value / 100
+    media.volume = value / 100
 
     if (value === 0 && isMuted === false) {
       handleMuted()

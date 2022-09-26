@@ -1,4 +1,12 @@
-const url = import.meta.env.VITE_REACT_APP_NETEASEMUSIC_API
+const url: string = import.meta.env.VITE_REACT_APP_NETEASEMUSIC_API
+
+interface Request {
+  path: string
+  method: string
+  params?: string
+  headers?: HeadersInit
+  body?: BodyInit
+}
 
 /* fetch请求 */
 export const request = async (
@@ -8,7 +16,7 @@ export const request = async (
   headers?: HeadersInit,
   body?: BodyInit
 ) => {
-  const totalUrl = url + path + `?timerstamp=${Date.now()}` + params
+  const totalUrl = url + path + `?timerstamp=${Date.now()}` + (params ? params : '')
 
   try {
     const res = await fetch(totalUrl, {
@@ -43,6 +51,7 @@ export const getLoginStatus = async (cookie: string) => {
     console.log(err)
   }
 }
+
 
 /* 退出登录 */
 export const logout = async () => {

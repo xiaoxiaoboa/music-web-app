@@ -29,13 +29,13 @@ export const AudioState = atom<AudioStateType>({
     isPlaying: false,
     continuousWay: continuousWayEnum.SHUFFLE
   },
-  effects: [
-    ({ node, onSet }) => {
-      onSet((newValue, oldValue) => {
-        console.log(newValue)
-      })
-    }
-  ]
+  // effects: [
+  //   ({ node, onSet }) => {
+  //     onSet((newValue, oldValue) => {
+  //       console.log(newValue)
+  //     })
+  //   }
+  // ]
 })
 /* 播放状态 */
 export const isPlayingState = atom<boolean>({
@@ -56,23 +56,7 @@ export const PlayListState = atom<Track[]>({
   // ]
 })
 
-/* 主页歌单 */
-export const HomeSongListsState = atom<SongListType[]>({
-  key: "songlists",
-  default: []
-})
 
-/* 主页歌手 */
-export const HomeArtistsState = atom<ArtistType[]>({
-  key: "artists",
-  default: []
-})
-
-/* 主页mv */
-export const HomeMvsState = atom<MvType[]>({
-  key: "mvs",
-  default: []
-})
 
 /* 歌单详情页 */
 export const SongListDetailState = atom<DetailState>({
@@ -84,11 +68,11 @@ export const SongListDetailState = atom<DetailState>({
     songs: [],
     songsId: []
   },
-  effects: [
-    ({ node, onSet }) => {
-      onSet((newValue, oldValue) => {
-        console.log(newValue)
-      })
-    }
-  ]
+  // effects: [
+  //   ({ node, onSet }) => {
+  //     onSet((newValue, oldValue) => {
+  //       console.log(newValue)
+  //     })
+  //   }
+  // ]
 })

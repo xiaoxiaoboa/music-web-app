@@ -1,13 +1,13 @@
 import { FC, ReactElement, useEffect, useCallback } from "react"
 import { ListContainer } from "./index.style"
 import Item from "./Item"
-import { SongListType, MvType, ArtistType } from "../../types"
+import { SongListType, MvType, ArtistType, OtherMv } from "../../types"
 import { useLocation, useNavigate } from "react-router-dom"
 
 interface IProps {
   datas: {
     type: string
-    list: SongListType[] | MvType[] | ArtistType[]
+    list: SongListType[] | MvType[] | ArtistType[] | OtherMv[]
   }
   amount: number
   borderRadius?: string
@@ -25,9 +25,7 @@ const List: FC<IProps> = ({
   h
 }: IProps): ReactElement => {
   const navigate = useNavigate()
-  const location = useLocation()
 
-console.log(location)
   const toDetail = useCallback(
     (
       e: React.MouseEvent,
@@ -35,14 +33,14 @@ console.log(location)
       element: HTMLImageElement | HTMLSpanElement
     ) => {
       if (e.target !== element) return
-      navigate(datas.type, { state: { id } })
+      navigate(datas.type, { state: { id }})
     },
     []
   )
 
   return (
     <ListContainer amount={amount}>
-      {datas.list.map((obj: SongListType | MvType | ArtistType) => {
+      {datas.list.map((obj: SongListType | MvType | ArtistType | OtherMv) => {
         return (
           <Item
             key={obj.id}

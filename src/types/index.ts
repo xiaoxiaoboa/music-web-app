@@ -3,8 +3,6 @@
 /* audio状态 */
 export interface AudioStateType {
   audio: HTMLMediaElement
-  // duration: number
-  // currentTime: number
   playIndex: number | null
   isPlaying: boolean
   continuousWay: continuousWayEnum
@@ -13,7 +11,7 @@ export enum continuousWayEnum {
   ORDER = "order",
   SHUFFLE = "shuffle",
   LOOP = "loop",
-  LISTLOOP='listLoop'
+  LISTLOOP = "listLoop"
 }
 /* player中歌曲的播放链接和歌曲信息 */
 export interface SongUrl {
@@ -59,7 +57,6 @@ export interface TrackAndUrl {
   track: Track
   trackUrl: SongUrl
 }
-
 
 /* 二维码API返回类型 */
 export interface QRCOdeKeyType {
@@ -153,7 +150,6 @@ export interface LoginStatusType {
   }
 }
 
-
 /* 二维码state类型(reducer) */
 export interface QRCodeState {
   key: string
@@ -172,7 +168,6 @@ export interface QrCodeAction {
   type: QrCodeType
   payload: string | boolean | QRCodeState
 }
-
 
 /* 歌单返回类型(照抄API返回的数据) */
 export interface SongListType {
@@ -195,11 +190,12 @@ export interface SongListsType {
   result: SongListType[]
 }
 
-
 /* Mv返回类型(照抄API返回的数据) */
 export interface MvArtistsType {
   id: number
   name: string
+  alias: null
+  transNames: null
 }
 export interface MvType {
   artistId: number
@@ -218,8 +214,9 @@ export interface MvType {
 export interface MvsType {
   code: number
   data: MvType[]
+  count: number
+  hasMore: boolean
 }
-
 
 /* 歌手返回类型(照抄API返回的数据) */
 export interface ArtistType {
@@ -249,7 +246,6 @@ export interface ArtistsType {
   code: number
   list: ArtistsListType
 }
-
 
 /* 歌单详情 */
 export interface Track {
@@ -561,4 +557,146 @@ export interface useArtistsType extends HomeHooksType {
   list: ArtistType[]
 }
 
+/* locationP type */
+export interface LocationProps {
+  hash: string
+  key: string
+  pathname: string
+  search: string
+  state: { id: number }
+}
 
+/* MV详情页 type */
+export interface MvDataType {
+  bufferPic: string
+  bufferPicFS: string
+  code: number
+  data: Data
+  loadingPic: string
+  loadingPicFS: string
+  mp: Mp
+  subed: boolean
+}
+interface Mp {
+  cp: number
+  dl: number
+  fee: number
+  id: number
+  msg: boolean
+  mvFee: boolean
+  normal: boolean
+  payed: number
+  pl: number
+  sid: number
+  st: number
+  unauthorized: boolean
+}
+export interface Data {
+  artistId: number
+  artistName: string
+  artists: {
+    followed: boolean
+    id: number
+    img1v1Url: string
+    name: string
+  }[]
+  briefDesc: string
+  brs: {
+    br: number
+    point: number
+    size: number
+  }[]
+  commentCount: number
+  commentThreadId: string
+  cover: string
+  coverId: number
+  coverId_str: string
+  desc: string
+  duration: number
+  id: number
+  nType: number
+  name: string
+  playCount: number
+  price: null
+  publishTime: string
+  shareCount: number
+  subCount: number
+  videoGroup: []
+}
+export interface MvUrl {
+  code: number
+  data: MvUrlData
+}
+export interface MvUrlData {
+  id: number
+  url: string
+  r: number
+  size: number
+  md5: string
+  code: number
+  expi: number
+  fee: number
+  mvFee: number
+  st: number
+  promotionVo: null
+  msg: string
+}
+/* 歌手其他MV */
+export interface OtherMvs {
+  mvs: OtherMv[]
+  time: number
+  hasMore: boolean
+  code: number
+}
+export interface OtherMv {
+  id: number
+  name: string
+  status: number
+  artist: {
+    img1v1Id: number
+    topicPerson: number
+    picUrl: string
+    img1v1Url: string
+    briefDesc: string
+    albumSize: number
+    trans: string
+    musicSize: number
+    alias: string[]
+    name: string
+    id: number
+    picId: number
+    img1v1Id_str: string
+  }
+  imgurl16v9: string
+  imgurl: string
+  artistName: string
+  duration: number
+  playCount: number
+  publishTime: string
+  subed: boolean
+}
+/* 相似MVs */
+export interface SimilarMvs {
+  mvs: SimilarMv[]
+  code: number
+}
+export interface SimilarMv {
+  id: number
+  cover: string
+  name: string
+  playCount: number
+  briefDesc: string
+  desc: null
+  artistName: string
+  artistId: number
+  duration: number
+  mark: number
+  artists: SimilarMvArtist[]
+  alg: string
+}
+interface SimilarMvArtist {
+  id: number
+  name: string
+  alias: string[]
+  transNames: null
+}

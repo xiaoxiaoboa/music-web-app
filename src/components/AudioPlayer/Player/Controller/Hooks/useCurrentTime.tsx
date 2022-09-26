@@ -2,28 +2,25 @@ import React, { useEffect, useMemo, useRef, useState } from "react"
 import { useRecoilState, useRecoilValue } from "recoil"
 import { AudioState } from "../../../../../recoil/atom"
 
-interface IProps {
-  // media: Media
-  isInterActive: boolean
-}
-
 /* 获取媒体的currentTime */
-export default function useCurrentTime(): [
+export default function useCurrentTime(
+  media: HTMLMediaElement
+): [
   number,
   string,
   React.Dispatch<React.SetStateAction<number>>,
   React.Dispatch<React.SetStateAction<boolean>>
 ] {
-  const state = useRecoilValue(AudioState)
   const [currentTime, setCurrentTime] = useState<number>(0)
   const [isInterActive, setIsInterActive] = useState<boolean>(false)
 
-  state.audio.ontimeupdate = () => {
-    if (isInterActive === false) {
-      setCurrentTime(Math.floor(state.audio.currentTime))
+  if (media) {
+    media.ontimeupdate = () => {
+      if (isInterActive === false) {
+        setCurrentTime(Math.floor(media.currentTime))
+      }
     }
   }
-
 
   const toMinute = useMemo(() => {
     return (
@@ -33,5 +30,5 @@ export default function useCurrentTime(): [
     )
   }, [currentTime])
 
-  return [currentTime, toMinute, setCurrentTime,setIsInterActive]
+  return [currentTime, toMinute, setCurrentTime, setIsInterActive]
 }

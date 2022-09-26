@@ -8,8 +8,8 @@ import Loading from "../../components/Loading"
 
 const Home: FC = (): ReactElement => {
   const [loaded, setLoaded] = useState<boolean>(false)
-  const songLists = useSongLists()
-  // const artists = useArtists()
+  const songLists = useSongLists(10)
+  // const artists = useArtists() 
   const mvs = useMv(3)
 
   useEffect(() => {

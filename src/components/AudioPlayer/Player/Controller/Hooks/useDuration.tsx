@@ -2,14 +2,16 @@ import React, { useCallback, useMemo, useState } from "react"
 import { useRecoilState, useRecoilValue } from "recoil"
 import { AudioState } from "../../../../../recoil/atom"
 
-
-export default function useDuration(): [number,string] {
-  const state = useRecoilValue(AudioState)
+export default function useDuration(
+  media: HTMLMediaElement
+): [number, string] {
   const [duration, setDuration] = useState<number>(0)
 
   /* canplaythrough事件触发后，可以准确的获得到媒体的duration */
-  state.audio.oncanplay = () => {
-    setDuration(state.audio.duration)
+  if (media) {
+    media.oncanplay = () => {
+      setDuration(media.duration)
+    }
   }
 
   /* 转换格式 */
@@ -20,5 +22,5 @@ export default function useDuration(): [number,string] {
     return minute + ":" + ("0" + second).slice(-2)
   }, [duration])
 
-  return [duration,format]
+  return [duration, format]
 }
