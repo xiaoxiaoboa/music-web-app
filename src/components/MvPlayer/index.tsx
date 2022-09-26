@@ -20,7 +20,7 @@ interface IProps {
   src: string
   poster: string
 }
-const MvPlayer: FC<IProps> = ({ src,poster }): ReactElement => {
+const MvPlayer: FC<IProps> = ({ src, poster }): ReactElement => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
   const [isFullScreen, setIsFullScreen] = useState<boolean>(false)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -80,36 +80,40 @@ const MvPlayer: FC<IProps> = ({ src,poster }): ReactElement => {
   return (
     <Video ref={videoWrapRef} onClick={isPlaying ? handlPause : handlePlay}>
       <video ref={videoRef} src={src} poster={poster}></video>
-      <Controller className="controller" onClick={handleStopPropagation}>
-        <ControllerWrap>
-          <PlayerButton onClick={isPlaying ? handlPause : handlePlay}>
-            {isPlaying ? (
-              <FaPause className="FaPause" />
-            ) : (
-              <FaPlay className="FaPlay" />
-            )}
-          </PlayerButton>
-          <SliderWrap>
-            <Slider
-              media={videoRef.current!}
-              sWidth="100%"
-              sPadding="0"
-              duration={{ num: duration, str: strDuration }}
-              currentTime={{ num: currentTime, str: strCurrentTime }}
-              getSliderValue={dragging}
-              getisInterActiveValue={getisInterActiveValue}
-            />
-          </SliderWrap>
-          <VolumeWrap>
-            {videoRef.current ? <Volume media={videoRef.current} /> : <></>}
-          </VolumeWrap>
-          <FullScreen>
-            <Button onClick={handleFullScreen}>
-              <RiFullscreenFill className="RiFullscreenFill" />
-            </Button>
-          </FullScreen>
-        </ControllerWrap>
-      </Controller>
+      {videoRef.current ? (
+        <Controller className="controller" onClick={handleStopPropagation}>
+          <ControllerWrap>
+            <PlayerButton onClick={isPlaying ? handlPause : handlePlay}>
+              {isPlaying ? (
+                <FaPause className="FaPause" />
+              ) : (
+                <FaPlay className="FaPlay" />
+              )}
+            </PlayerButton>
+            <SliderWrap>
+              <Slider
+                media={videoRef.current!}
+                sWidth="100%"
+                sPadding="0"
+                duration={{ num: duration, str: strDuration }}
+                currentTime={{ num: currentTime, str: strCurrentTime }}
+                getSliderValue={dragging}
+                getisInterActiveValue={getisInterActiveValue}
+              />
+            </SliderWrap>
+            <VolumeWrap>
+              <Volume media={videoRef.current} />
+            </VolumeWrap>
+            <FullScreen>
+              <Button onClick={handleFullScreen}>
+                <RiFullscreenFill className="RiFullscreenFill" />
+              </Button>
+            </FullScreen>
+          </ControllerWrap>
+        </Controller>
+      ) : (
+        <></>
+      )}
     </Video>
   )
 }
@@ -123,11 +127,14 @@ const Video = styled.div`
   position: relative;
   border-radius: 10px;
   overflow: hidden;
+  /* background-color: #202124; */
+  background-color: black;
+  
 
   & video {
     width: inherit;
     height: inherit;
-    object-fit: fill;
+    /* object-fit: fill; */
   }
 
   &:hover {
@@ -148,6 +155,7 @@ const Controller = styled.div`
   gap: 10px;
   padding: 0 6px;
   transition: bottom 0.2s linear;
+  color: white !important;
 `
 const ControllerWrap = styled.div`
   display: flex;
@@ -163,13 +171,13 @@ const PlayerButton = styled.div`
   .FaPause {
     cursor: pointer;
     font-size: 24px;
-    color: ${props => props.theme.secondary_color};
+    color: inherit;
   }
 `
 const SliderWrap = styled.div`
   display: flex;
   flex: 5;
-  color: white;
+  /* color: white; */
 `
 const VolumeWrap = styled.div`
   flex: 1;
@@ -187,15 +195,8 @@ const FullScreen = styled.div`
   justify-content: center;
   align-items: center;
 
-  .wraper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: red;
-  }
-
-  .wraper .RiFullscreenFill {
+  .RiFullscreenFill {
     font-size: 22px;
-    color: white;
+    color: white !important;
   }
 `
