@@ -1,8 +1,8 @@
-import React, { FC, useCallback, useMemo, useState } from "react"
+import React, { FC, useState,memo } from "react"
 import Slider from "../Slider"
 import { RiVolumeUpFill, RiVolumeMuteFill } from "react-icons/ri"
-import { Button } from "../../styles/Button.style"
-import { DefaultTheme, StyledComponent } from "styled-components"
+import Button from '../Button'
+import './index.css'
 
 interface IProps {
   media: HTMLMediaElement
@@ -46,4 +46,4 @@ const Volume: FC<IProps> = ({ media }) => {
   )
 }
 
-export default Volume
+export default memo(Volume)

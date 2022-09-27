@@ -2,7 +2,7 @@ import React, { FC, ReactElement, useEffect, useRef, useState } from "react"
 import styled from "styled-components"
 import { RiPlayListFill, RiHeart2Line } from "react-icons/ri"
 import Volume from "../../../Volume"
-import { Button } from "../../../../styles/Button.style"
+import Button from '../../../Button'
 
 interface IProps {
   media: HTMLMediaElement
@@ -31,6 +31,11 @@ const RightButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: end;
+
+  .RiHeart2Line,
+  .RiPlayListFill {
+    font-size: 1.25rem;
+  }
 `
 const VolumeButtonBox = styled.div`
   display: flex;

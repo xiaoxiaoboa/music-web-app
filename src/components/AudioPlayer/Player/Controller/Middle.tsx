@@ -1,10 +1,9 @@
 import React, { FC, ReactElement, useState, useEffect } from "react"
 import styled from "styled-components"
 import { FaPlay, FaPause, FaStepForward, FaStepBackward } from "react-icons/fa"
-import { Button } from "../../../../styles/Button.style"
+import Button from "../../../Button"
 import Slider from "../../../Slider"
-import { isPlayingState } from "../../../../recoil/atom"
-import { useRecoilState, useRecoilValue } from "recoil"
+import { useRecoilValue } from "recoil"
 import { AudioState } from "../../../../recoil/atom"
 import useCurrentTime from "./Hooks/useCurrentTime"
 import useDuration from "./Hooks/useDuration"
@@ -78,4 +77,21 @@ const ButtonBox = styled.div`
   justify-content: center;
   align-items: center;
   gap: 0.9375rem;
+
+  .FaPlay,
+  .FaPause {
+    font-size: 1.75rem;
+  }
+
+  .FaStepBackward,
+  .FaStepForward {
+    font-size: 1.25rem;
+  }
+
+  .FaPlay,
+  .FaPause,
+  .FaStepBackward,
+  .FaStepForward {
+    color: ${props => props.theme.controllerButton_color};
+  }
 `

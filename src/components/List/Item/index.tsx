@@ -9,6 +9,7 @@ import {
 import { BsFillPlayFill } from "react-icons/bs"
 import imgSize from "../../../utils/imgSize"
 import { SongListType, MvType, ArtistType, OtherMv } from "../../../types"
+import { playAll } from "../../../utils/playAll"
 
 interface IProps {
   data: SongListType | MvType | ArtistType | OtherMv
@@ -31,13 +32,9 @@ const Item: FC<IProps> = ({
   h,
   toDetail
 }: IProps): ReactElement => {
-  const ItemRef = useRef<HTMLDivElement>(null)
   const CoverRef = useRef<HTMLImageElement>(null)
   const TitleRef = useRef<HTMLSpanElement>(null)
 
-  const handleClick: MouseEventHandler = e => {
-    if (e.target !== ItemRef.current) return
-  }
 
   return (
     <ItemContainer alignItems={alignItems}>
@@ -54,9 +51,9 @@ const Item: FC<IProps> = ({
           onClick={e => toDetail(e, data.id, CoverRef.current!)}
           ref={CoverRef}
         />
-        <PlayButton onClick={handleClick} ref={ItemRef}>
+        {/* <PlayButton >
           <BsFillPlayFill className="BsFillPlayFill" />
-        </PlayButton>
+        </PlayButton> */}
       </Cover>
       <Title ref={TitleRef}>
         <span

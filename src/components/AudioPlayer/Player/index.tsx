@@ -78,6 +78,7 @@ const Player: FC = (): ReactElement => {
 
   /* 下一首 */
   const next = useCallback((): void => {
+    if(playList.length <= 1) return
     setIndexCache(state.playIndex)
     selectMode()
   }, [state])

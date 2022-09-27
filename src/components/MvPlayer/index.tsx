@@ -12,7 +12,7 @@ import Slider from "../Slider"
 import { RiFullscreenFill } from "react-icons/ri"
 import { FaPlay, FaPause } from "react-icons/fa"
 import Volume from "../Volume"
-import { Button } from "../../styles/Button.style"
+import Button from '../Button'
 import useCurrentTime from "../AudioPlayer/Player/Controller/Hooks/useCurrentTime"
 import useDuration from "../AudioPlayer/Player/Controller/Hooks/useDuration"
 
@@ -83,13 +83,13 @@ const MvPlayer: FC<IProps> = ({ src, poster }): ReactElement => {
       {videoRef.current ? (
         <Controller className="controller" onClick={handleStopPropagation}>
           <ControllerWrap>
-            <PlayerButton onClick={isPlaying ? handlPause : handlePlay}>
+            <Button onClick={isPlaying ? handlPause : handlePlay}>
               {isPlaying ? (
                 <FaPause className="FaPause" />
               ) : (
                 <FaPlay className="FaPlay" />
               )}
-            </PlayerButton>
+            </Button>
             <SliderWrap>
               <Slider
                 media={videoRef.current!}
@@ -127,14 +127,12 @@ const Video = styled.div`
   position: relative;
   border-radius: 10px;
   overflow: hidden;
-  /* background-color: #202124; */
   background-color: black;
   
 
   & video {
     width: inherit;
     height: inherit;
-    /* object-fit: fill; */
   }
 
   &:hover {
@@ -160,12 +158,6 @@ const Controller = styled.div`
 const ControllerWrap = styled.div`
   display: flex;
   width: 100%;
-`
-const PlayerButton = styled.div`
-  flex: 0.25;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
   .FaPlay,
   .FaPause {

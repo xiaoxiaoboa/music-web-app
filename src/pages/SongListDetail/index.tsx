@@ -6,6 +6,7 @@ import { RiHeart2Fill, RiHeart2Line } from "react-icons/ri"
 import { BsFolderCheck, BsFolderPlus } from "react-icons/bs"
 import { useLocation } from "react-router-dom"
 import { request } from "../../utils/request"
+import { playAll } from "../../utils/playAll"
 import {
   SongListsDetailType,
   Track,
@@ -20,8 +21,6 @@ import { AudioState, PlayListState } from "../../recoil/atom"
 import Loading from "../../components/Loading"
 import { useRecoilState } from "recoil"
 import useScroll from "./Hooks/useScroll"
-
-
 
 const reducer = (state: DetailState, action: DetailAction): DetailState => {
   const { type, paylad } = action
@@ -383,13 +382,11 @@ const IntroLightFont = styled(LightFont)`
   }
 `
 
-
 const Songs = styled.div`
   flex: 2;
   display: flex;
   flex-direction: column;
   gap: 18px;
-
 `
 
 const Song = styled.div`
