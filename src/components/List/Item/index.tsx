@@ -9,7 +9,6 @@ import {
 import { BsFillPlayFill } from "react-icons/bs"
 import imgSize from "../../../utils/imgSize"
 import { SongListType, MvType, ArtistType, OtherMv } from "../../../types"
-import { playAll } from "../../../utils/playAll"
 
 interface IProps {
   data: SongListType | MvType | ArtistType | OtherMv

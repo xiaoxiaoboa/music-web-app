@@ -6,7 +6,6 @@ import { RiHeart2Fill, RiHeart2Line } from "react-icons/ri"
 import { BsFolderCheck, BsFolderPlus } from "react-icons/bs"
 import { useLocation } from "react-router-dom"
 import { request } from "../../utils/request"
-import { playAll } from "../../utils/playAll"
 import {
   SongListsDetailType,
   Track,
