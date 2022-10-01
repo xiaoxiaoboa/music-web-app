@@ -26,8 +26,11 @@ const Player: FC = (): ReactElement => {
     /* 
       canplay的作用是，audioplayer组件如果已经渲染出来了，则音乐可以播放，反之如果组件已经卸载则不允许播放 
     */
+   /* 渲染后 */
+    setState(prev => ({ ...prev, ...{ canPlay: true } }))
     return () => {
-      setState(prev => ({ ...prev, ...{ canPlay: !prev.canPlay } }))
+      /* 卸载前 */
+      setState(prev => ({ ...prev, ...{ canPlay: false } }))
       handlePause()
     }
   }, [])
@@ -107,7 +110,6 @@ const Player: FC = (): ReactElement => {
 
   /* 下一首 */
   const next = useCallback((): void => {
-    console.log(playList.length)
     if (playList.length <= 1) return
     setIndexCache(state.playIndex)
     selectMode()
@@ -125,7 +127,7 @@ const Player: FC = (): ReactElement => {
   const changeUrl = (index: number, isPlay: boolean) => {
     getTrackUrl(playList[index]).then(res => {
       state.audio.src = res.url
-      isPlay ? handlePlay() : undefined
+      if (isPlay) handlePlay()
     })
   }
 

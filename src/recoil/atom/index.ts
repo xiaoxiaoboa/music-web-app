@@ -27,7 +27,7 @@ export const AudioState = atom<AudioStateType>({
     playMode: localStorage.getItem("audiostate")
       ? JSON.parse(localStorage.getItem("audiostate") as string).playMode
       : PlayMode.LISTLOOP
-  }
+  },
   // effects: [
   //   ({ node, onSet }) => {
   //     onSet((newValue, oldValue) => {
