@@ -1,21 +1,28 @@
-import React, { FC, ReactElement, useEffect, useRef, useState } from "react"
+import React, {
+  FC,
+  ReactElement,
+  useEffect,
+  useRef,
+  useState,
+  memo
+} from "react"
 import styled from "styled-components"
+import Volume from "../Volume"
 import useDrag from "./Hooks/useDrag"
 
 interface SliderProps {
   media?: HTMLMediaElement
-  sWidth: string
-  sPadding: string
+  styles: { width: string; padding: string }
   isMuted?: boolean
-  getSliderValue?: (value: number, isInterActive?: boolean) => void
+  volume?: number
   currentTime?: { num: number; str: string }
   duration?: { num: number; str: string }
+  getSliderValue?: (value: number, isInterActive?: boolean) => void
   getisInterActiveValue?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const Slider: FC<SliderProps> = (props): ReactElement => {
   /* Slider的值 */
-
   const [sliderValue, setSliderValue] = useState<number>(0)
   const TrackRef = useRef<HTMLDivElement>(null)
 
@@ -24,6 +31,7 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
     setSliderValue
   })
 
+  /* 媒体currentTime变化时，Slider也变化 */
   useEffect(() => {
     if (isInterActive === false && props.media) {
       const temp =
@@ -55,6 +63,7 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
     }
   }, [sliderValue])
 
+  /* 处理音量相关 */
   useEffect(() => {
     /* 当静音时，音量条应该为0 */
     if (props.isMuted) {
@@ -71,8 +80,16 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
     }
   }, [props.isMuted])
 
+  /* 如果localstorage里有volume值，则在首次渲染时更新 */
+  useEffect(() => {
+    if (props.volume) {
+      setSliderValue(props.volume)
+    }
+  }, [])
+
   return (
-    <SliderContainer co={props}>
+    <SliderContainer
+      styles={{ width: props.styles.width, padding: props.styles.padding }}>
       {props?.currentTime ? (
         <StartTime>{props?.currentTime.str!}</StartTime>
       ) : (
@@ -92,17 +109,18 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
   )
 }
 
-export default Slider
+export default memo(Slider)
 
-interface SliderContainerProps {
-  co: SliderProps
+interface ContainerProps {
+  styles: { width: string; padding: string }
 }
-const SliderContainer = styled.div<SliderContainerProps>`
+
+const SliderContainer = styled.div<ContainerProps>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${props => props.co.sWidth};
-  padding: ${props => props.co.sPadding};
+  width: ${props => props.styles.width};
+  padding: ${props => props.styles.padding};
   gap: 10px;
 
   &:hover {
@@ -165,6 +183,6 @@ const SlideColor = styled.span.attrs<SlideColorProps>(props => ({
 `
 const StartTime = styled.span`
   font-size: 12px;
-  color:inherit;
+  color: inherit;
 `
 const EndTime = styled(StartTime)``

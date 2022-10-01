@@ -54,8 +54,7 @@ const Middle: FC<IProps> = (props): ReactElement => {
         media={state.audio}
         duration={{ num: duration, str: strDuration }}
         currentTime={{ num: currentTime, str: strCurrentTime }}
-        sWidth={`100%`}
-        sPadding={`4px 0`}
+        styles={{width: `100%`, padding: `4px 0`}}
         getSliderValue={dragging}
         getisInterActiveValue={getisInterActiveValue}
       />

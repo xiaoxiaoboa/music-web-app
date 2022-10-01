@@ -1,8 +1,5 @@
 const imgSize = (url: string, w?: number, h?: number): string => {
 
-  
-
-
   if (!url) {
     return ""
   } else if (w && h) {

@@ -8,7 +8,7 @@ import {
   SongTitle,
   Artist
 } from "./index.style"
-import { continuousWayEnum  } from "../../../types"
+import { PlayMode, Track } from "../../../types"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
 import { useRecoilState, useRecoilValue } from "recoil"
@@ -21,11 +21,42 @@ const Player: FC = (): ReactElement => {
   const [indexCache, setIndexCache] = useState<number | null>(null)
   const playList = useRecoilValue(PlayListState)
 
+  /* 组件卸载时，歌曲要暂停 */
   useEffect(() => {
-    if (state.playIndex !== null) {
-      changeUrl(state.playIndex)
+    /* 
+      canplay的作用是，audioplayer组件如果已经渲染出来了，则音乐可以播放，反之如果组件已经卸载则不允许播放 
+    */
+    return () => {
+      setState(prev => ({ ...prev, ...{ canPlay: !prev.canPlay } }))
+      handlePause()
+    }
+  }, [])
+
+  /* 播放索引更新，则请求链接，播放 */
+  useEffect(() => {
+    if (state.playIndex !== null && state.canPlay) {
+      changeUrl(state.playIndex, true)
     }
   }, [state.playIndex])
+
+  /* 打开页面后，播放列表内有上次的歌曲，就先请求链接，但不播放 */
+  useEffect(() => {
+    if (state.playIndex !== null && state.audio.src === "") {
+      changeUrl(state.playIndex, false)
+    }
+  }, [])
+
+  /* playlist和state更新时，存入localStorage */
+  useEffect(() => {
+    localStorage.setItem("audiolist", JSON.stringify(playList))
+  }, [playList])
+  useEffect(() => {
+    const tempData = JSON.parse(localStorage.getItem("audiostate") as string)
+    const newData = { playIndex: state.playIndex, playMode: state.playMode }
+    const result = { ...tempData, ...newData }
+
+    localStorage.setItem("audiostate", JSON.stringify(result))
+  }, [state.playIndex, state.playMode])
 
   /* 开始 */
   const handlePlay = (): void => {
@@ -54,14 +85,12 @@ const Player: FC = (): ReactElement => {
 
   /* 选择播放模式 */
   const selectMode = () => {
-    switch (state.continuousWay) {
-      case continuousWayEnum.ORDER:
-        return orderPlay()
-      case continuousWayEnum.SHUFFLE:
+    switch (state.playMode) {
+      case PlayMode.SHUFFLE:
         return shufflePlay()
-      case continuousWayEnum.LOOP:
+      case PlayMode.LOOP:
         return loop()
-      case continuousWayEnum.LISTLOOP:
+      case PlayMode.LISTLOOP:
         return listLoop()
 
       default:
@@ -78,7 +107,8 @@ const Player: FC = (): ReactElement => {
 
   /* 下一首 */
   const next = useCallback((): void => {
-    if(playList.length <= 1) return
+    console.log(playList.length)
+    if (playList.length <= 1) return
     setIndexCache(state.playIndex)
     selectMode()
   }, [state])
@@ -91,21 +121,14 @@ const Player: FC = (): ReactElement => {
     }
   }, [indexCache])
 
-  const changeUrl = (index: number) => {
-    getTrackUrl(playList[index], val => {
-      state.audio.src = val.url
-      handlePlay()
-      // setState(prev => ({ ...prev, ...{ playIndex: index } }))
+  /* 获取歌曲url，开始播放 */
+  const changeUrl = (index: number, isPlay: boolean) => {
+    getTrackUrl(playList[index]).then(res => {
+      state.audio.src = res.url
+      isPlay ? handlePlay() : undefined
     })
   }
 
-  /* 顺序播放 */
-  const orderPlay = (): void => {
-    let index: number = state.playIndex === null ? 0 : state.playIndex! + 1
-    if (index >= playList.length) return handlePause()
-    setState(prev => ({ ...prev, ...{ playIndex: index } }))
-    // changeUrl(index)
-  }
   /* 单曲循环 */
   const loop = (): void => {
     handlePause()
@@ -124,11 +147,14 @@ const Player: FC = (): ReactElement => {
   const shufflePlay = () => {
     /* 保存最后要播放的索引 */
     let index: number = 0
+    let tempArr: Track[] = []
 
     /* 除去正在播放的那首歌，其余的保存在临时数组中 */
-    const tempArr = playList.filter(
-      obj => obj.id !== playList[state.playIndex!].id
-    )
+    if (state.playIndex) {
+      tempArr = playList.filter(obj => obj.id !== playList[state.playIndex!].id)
+    } else {
+      tempArr = [...playList]
+    }
     /* 如果还有其余的歌曲，（播放列表大于1） */
     if (tempArr.length > 0) {
       /* 在临时数组中随机出一首歌 */
@@ -142,6 +168,24 @@ const Player: FC = (): ReactElement => {
     /* 更新播放索引 */
     setState(prev => ({ ...prev, ...{ playIndex: index } }))
   }
+
+  /* 改变播放模式图标 */
+  const handleClickIcon = useCallback(() => {
+    switch (state.playMode) {
+      case PlayMode.LISTLOOP:
+        return setState(prev => ({ ...prev, ...{ playMode: PlayMode.LOOP } }))
+      case PlayMode.LOOP:
+        return setState(prev => ({
+          ...prev,
+          ...{ playMode: PlayMode.SHUFFLE }
+        }))
+      case PlayMode.SHUFFLE:
+        return setState(prev => ({
+          ...prev,
+          ...{ playMode: PlayMode.LISTLOOP }
+        }))
+    }
+  }, [state.playMode])
 
   return (
     <ControllerBarContainer>
@@ -163,7 +207,12 @@ const Player: FC = (): ReactElement => {
           prev={prev}
           next={next}
         />
-        <Right media={state.audio!} />
+        <Right
+          media={state.audio!}
+          playMode={state.playMode}
+          clickIcon={handleClickIcon}
+          playListCount={playList.length}
+        />
       </ControllerWrapper>
     </ControllerBarContainer>
   )

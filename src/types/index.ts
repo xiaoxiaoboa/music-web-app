@@ -5,10 +5,10 @@ export interface AudioStateType {
   audio: HTMLMediaElement
   playIndex: number | null
   isPlaying: boolean
-  continuousWay: continuousWayEnum
+  playMode: PlayMode
+  canPlay: boolean
 }
-export enum continuousWayEnum {
-  ORDER = "order",
+export enum PlayMode {
   SHUFFLE = "shuffle",
   LOOP = "loop",
   LISTLOOP = "listLoop"

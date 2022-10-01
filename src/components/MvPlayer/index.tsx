@@ -93,8 +93,7 @@ const MvPlayer: FC<IProps> = ({ src, poster }): ReactElement => {
             <SliderWrap>
               <Slider
                 media={videoRef.current!}
-                sWidth="100%"
-                sPadding="0"
+                styles={{width: `100%`, padding: `0`}}
                 duration={{ num: duration, str: strDuration }}
                 currentTime={{ num: currentTime, str: strCurrentTime }}
                 getSliderValue={dragging}

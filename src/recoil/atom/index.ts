@@ -1,11 +1,8 @@
 import { atom } from "recoil"
 import {
-  SongListType,
-  MvType,
-  ArtistType,
   SongList,
   AudioStateType,
-  continuousWayEnum,
+  PlayMode,
   DetailState,
   Track
 } from "../../types"
@@ -16,19 +13,21 @@ export const ThemeState = atom<boolean>({
   default: true
 })
 
-
 /* ===========播放器操作相关============ */
 /* 音频播放器state */
 export const AudioState = atom<AudioStateType>({
   key: "playerState",
   default: {
     audio: new Audio(),
-    // currentTime: 0,
-    // duration: 0,
-    playIndex: null,
+    playIndex: localStorage.getItem("audiostate")
+      ? JSON.parse(localStorage.getItem("audiostate") as string).playIndex
+      : null,
     isPlaying: false,
-    continuousWay: continuousWayEnum.SHUFFLE
-  },
+    canPlay: false,
+    playMode: localStorage.getItem("audiostate")
+      ? JSON.parse(localStorage.getItem("audiostate") as string).playMode
+      : PlayMode.LISTLOOP
+  }
   // effects: [
   //   ({ node, onSet }) => {
   //     onSet((newValue, oldValue) => {
@@ -36,17 +35,14 @@ export const AudioState = atom<AudioStateType>({
   //     })
   //   }
   // ]
-})
-/* 播放状态 */
-export const isPlayingState = atom<boolean>({
-  key: "isPlaying",
-  default: false
 })
 
 /* 音频歌单 */
 export const PlayListState = atom<Track[]>({
   key: "PlayList",
-  default: [],
+  default: localStorage.getItem("audiolist")
+    ? JSON.parse(localStorage.getItem("audiolist") as string)
+    : []
   // effects: [
   //   ({ node, onSet }) => {
   //     onSet((newValue, oldValue) => {
@@ -55,8 +51,7 @@ export const PlayListState = atom<Track[]>({
   //   }
   // ]
 })
-
-
+/* =================================== */
 
 /* 歌单详情页 */
 export const SongListDetailState = atom<DetailState>({
@@ -67,12 +62,5 @@ export const SongListDetailState = atom<DetailState>({
     detail: {} as SongList,
     songs: [],
     songsId: []
-  },
-  // effects: [
-  //   ({ node, onSet }) => {
-  //     onSet((newValue, oldValue) => {
-  //       console.log(newValue)
-  //     })
-  //   }
-  // ]
+  }
 })
