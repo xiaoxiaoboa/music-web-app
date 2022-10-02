@@ -15,18 +15,22 @@ import { useRecoilState, useRecoilValue } from "recoil"
 import { AudioState, PlayListState } from "../../../recoil/atom"
 import imgSize from "../../../utils/imgSize"
 import { getTrackUrl } from "../../../utils/getTrackUrl"
+import Snackbar from "../../Snackbar"
 
 const Player: FC = (): ReactElement => {
   const [state, setState] = useRecoilState(AudioState)
   const [indexCache, setIndexCache] = useState<number | null>(null)
   const playList = useRecoilValue(PlayListState)
+  const [message, setMessage] = useState<string>("")
+
+  
 
   /* 组件卸载时，歌曲要暂停 */
   useEffect(() => {
     /* 
       canplay的作用是，audioplayer组件如果已经渲染出来了，则音乐可以播放，反之如果组件已经卸载则不允许播放 
     */
-   /* 渲染后 */
+    /* 渲染后 */
     setState(prev => ({ ...prev, ...{ canPlay: true } }))
     return () => {
       /* 卸载前 */
@@ -73,7 +77,9 @@ const Player: FC = (): ReactElement => {
       )
       .catch(err => {
         handlePause()
+        setMessage('歌曲播放失败，准备下一首...')
         console.log("播放失败", err)
+        next()
       })
   }
 
@@ -191,8 +197,9 @@ const Player: FC = (): ReactElement => {
 
   return (
     <ControllerBarContainer>
+      <Snackbar message={message} setMessage={setMessage}/>
       <ControllerWrapper>
-        <SongCover>
+        <SongCover onClick={() => setMessage('歌曲不能播放，准备下一首')}>
           <SongCoverImg
             src={imgSize(playList[state.playIndex!]?.al.picUrl, 60, 60)}
           />

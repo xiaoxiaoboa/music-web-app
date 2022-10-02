@@ -19,6 +19,7 @@ const MyButton = styled.button`
   border-radius: 8px;
   background-color: unset;
   cursor: pointer;
+  color: inherit;
 
   &:hover {
     background-color: ${props => props.theme.hover_BgColor};

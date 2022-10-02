@@ -6,6 +6,8 @@ export const LightTheme: DefaultTheme = {
   primary_bgColor: "white",
   primary_color: "black",
   secondary_color: "#937dc2",
+  reverse_primary_bgColor: "#202124",
+  reverse_primary_color: "#C6C6C6",
 
   search_bgColor: "#EAEDED",
   search_color: "black",
@@ -28,6 +30,8 @@ export const DarkTheme: DefaultTheme = {
   primary_bgColor: "#202124",
   primary_color: "#C6C6C6",
   secondary_color: "#937dc2",
+  reverse_primary_bgColor: "white",
+  reverse_primary_color: "black",
 
   search_bgColor: "#41413E",
   search_color: "#A1A1A1",

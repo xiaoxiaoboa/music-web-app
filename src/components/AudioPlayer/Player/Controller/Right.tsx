@@ -35,7 +35,7 @@ const Right: FC<IProps> = ({
   }
 
   return (
-    <RightButton>
+    <RightButton listLength={playListCount}>
       <Button onClick={clickIcon}>{changeIcon()}</Button>
       <Button>
         <RiHeart2Line className="RiHeart2Line" />
@@ -52,7 +52,11 @@ const Right: FC<IProps> = ({
 
 export default memo(Right)
 
-const RightButton = styled.div`
+interface ButtonColor {
+  listLength: number
+}
+
+const RightButton = styled.div<ButtonColor>`
   flex: 1;
   display: flex;
   align-items: center;
@@ -65,6 +69,11 @@ const RightButton = styled.div`
   .TbRepeatOnce,
   .TbRepeat {
     font-size: 1.25rem;
+  }
+
+  .RiPlayListFill {
+    color: ${props =>
+      props.listLength > 0 ? props.theme.secondary_color : "inherit"};
   }
 `
 const VolumeButtonBox = styled.div`

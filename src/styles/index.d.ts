@@ -7,6 +7,8 @@ declare module "styled-components" {
     primary_bgColor: string
     primary_color: string
     secondary_color: string
+    reverse_primary_bgColor:string
+    reverse_primary_color:string
 
     search_bgColor: string
     search_color: string
@@ -22,6 +24,6 @@ declare module "styled-components" {
     controllerButton_color: string
 
     light_color: string
-    song_hover_BgColor:string
+    song_hover_BgColor: string
   }
 }
