@@ -7,7 +7,7 @@ import Loading from "../../components/Loading"
 import MvPlayer from "../../components/MvPlayer"
 import { LocationProps, MvDataType, Data, MvUrl } from "../../types"
 import { request } from "../../utils/request"
-import useArtistMvs from "./Hooks/useArtistMvs"
+import {useArtistMvs} from "../../Hooks"
 
 
 interface StateType {

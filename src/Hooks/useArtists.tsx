@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
-import { request } from "../../../utils/request"
-import random from "../../../utils/random"
-import { ArtistsType, ArtistType } from "../../../types"
-import { useArtistsType } from "../../../types"
+import { request } from "../utils/request"
+import random from "../utils/random"
+import { ArtistsType, ArtistType } from "../types"
+import { useArtistsType } from "../types"
 
 const useArtists = (): useArtistsType => {
   const [list, setList] = useState<ArtistType[]>([])

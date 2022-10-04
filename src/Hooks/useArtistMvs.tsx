@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import { OtherMvs, OtherMv } from "../../../types"
-import random from "../../../utils/random"
-import { request } from "../../../utils/request"
+import { OtherMvs, OtherMv } from "../types"
+import random from "../utils/random"
+import { request } from "../utils/request"
 
 const useArtistMvs = (
   id: number,

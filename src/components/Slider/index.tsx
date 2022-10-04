@@ -7,8 +7,7 @@ import React, {
   memo
 } from "react"
 import styled from "styled-components"
-import Volume from "../Volume"
-import useDrag from "./Hooks/useDrag"
+import {useDrag} from '../../Hooks'
 
 interface SliderProps {
   media?: HTMLMediaElement
@@ -20,6 +19,7 @@ interface SliderProps {
   getSliderValue?: (value: number, isInterActive?: boolean) => void
   getisInterActiveValue?: React.Dispatch<React.SetStateAction<boolean>>
 }
+
 
 const Slider: FC<SliderProps> = (props): ReactElement => {
   /* Slider的值 */

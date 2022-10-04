@@ -23,8 +23,6 @@ const Player: FC = (): ReactElement => {
   const playList = useRecoilValue(PlayListState)
   const [message, setMessage] = useState<string>("")
 
-  
-
   /* 组件卸载时，歌曲要暂停 */
   useEffect(() => {
     /* 
@@ -59,7 +57,10 @@ const Player: FC = (): ReactElement => {
   }, [playList])
   useEffect(() => {
     const tempData = JSON.parse(localStorage.getItem("audiostate") as string)
-    const newData = { playIndex: state.playIndex, playMode: state.playMode }
+    const newData = {
+      playIndex: state.playIndex,
+      playMode: state.playMode
+    }
     const result = { ...tempData, ...newData }
 
     localStorage.setItem("audiostate", JSON.stringify(result))
@@ -77,7 +78,7 @@ const Player: FC = (): ReactElement => {
       )
       .catch(err => {
         handlePause()
-        setMessage('歌曲播放失败，准备下一首...')
+        setMessage("歌曲播放失败，准备下一首...")
         console.log("播放失败", err)
         next()
       })
@@ -197,9 +198,9 @@ const Player: FC = (): ReactElement => {
 
   return (
     <ControllerBarContainer>
-      <Snackbar message={message} setMessage={setMessage}/>
+      <Snackbar message={message} setMessage={setMessage} />
       <ControllerWrapper>
-        <SongCover onClick={() => setMessage('歌曲不能播放，准备下一首')}>
+        <SongCover onClick={() => setMessage("歌曲不能播放，准备下一首")}>
           <SongCoverImg
             src={imgSize(playList[state.playIndex!]?.al.picUrl, 60, 60)}
           />
@@ -217,7 +218,7 @@ const Player: FC = (): ReactElement => {
           next={next}
         />
         <Right
-          media={state.audio!}
+          audio={state.audio!}
           playMode={state.playMode}
           clickIcon={handleClickIcon}
           playListCount={playList.length}

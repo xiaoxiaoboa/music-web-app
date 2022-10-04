@@ -6,10 +6,11 @@ import "./index.css"
 
 interface IProps {
   media: HTMLMediaElement
+  volume?: number
 }
 
 
-const Volume: FC<IProps> = ({ media }) => {
+const Volume: FC<IProps> = ({ media,volume }) => {
   const [isMuted, setIsMuted] = useState<boolean>(true)
 
 
@@ -22,7 +23,6 @@ const Volume: FC<IProps> = ({ media }) => {
   /* 修改音量 */
   const handleVolume = (value: number): void => {
     media.volume = value / 100
-    savelocal(media.volume)
 
     if (value === 0 && isMuted === false) {
       handleMuted()
@@ -31,20 +31,19 @@ const Volume: FC<IProps> = ({ media }) => {
     }
   }
 
-  /* 把volume和isMuted存储到本地 */
-  const savelocal = (volume: number) => {
-    const tempData = JSON.parse(localStorage.getItem("audiostate") as string)
-    const newData = { volume }
-    const result = { ...tempData, ...newData }
-    localStorage.setItem("audiostate", JSON.stringify(result))
-  }
+  // /* 把volume和isMuted存储到本地 */
+  // const savelocal = (volume: number) => {
+  //   const tempData = JSON.parse(localStorage.getItem("audiostate") as string)
+  //   const result = { ...tempData, ...{ volume } }
+  //   localStorage.setItem("audiostate", JSON.stringify(result))
+  // }
   
-  /* 把本地存储的volume值传给Slider组件，如果没有返回undefined */
-  const getLocalVolume = useCallback((): number | undefined => {
-    return localStorage.getItem("audiostate")
-      ? JSON.parse(localStorage.getItem("audiostate") as string).volume * 100
-      : undefined
-  }, [])
+  // /* 把本地存储的volume值传给Slider组件，如果没有返回undefined */
+  // const getLocalVolume = useCallback((): number | undefined => {
+  //   return localStorage.getItem("audiostate")
+  //     ? JSON.parse(localStorage.getItem("audiostate") as string).volume * 100
+  //     : undefined
+  // }, [])
 
   return (
     <>
@@ -59,7 +58,7 @@ const Volume: FC<IProps> = ({ media }) => {
         styles={{ width: `6.25rem`, padding: `.5rem 0` }}
         getSliderValue={handleVolume}
         isMuted={isMuted}
-        volume={getLocalVolume()}
+        volume={volume}
       />
     </>
   )

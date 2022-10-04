@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
-import { request } from "../../../utils/request"
-import { MvsType, MvType } from "../../../types"
-import { useMvType } from "../../../types"
-import random from "../../../utils/random"
+import { request } from "../utils/request"
+import { MvsType, MvType } from "../types"
+import { useMvType } from "../types"
+import random from "../utils/random"
 
 const useMv = (amount: number): useMvType => {
   const [list, setList] = useState<MvType[]>([])

@@ -1,15 +1,13 @@
 import { FC, ReactElement, useEffect, useState } from "react"
 import List from "../../components/List"
 import styled from "styled-components"
-import useSongLists from "./Hooks/useSongLists"
-import useArtists from "./Hooks/useArtists"
-import useMv from "./Hooks/useMv"
+import { useArtists, useMv, useSongLists } from "../../Hooks"
 import Loading from "../../components/Loading"
 
 const Home: FC = (): ReactElement => {
   const [loaded, setLoaded] = useState<boolean>(false)
   const songLists = useSongLists(10)
-  // const artists = useArtists() 
+  // const artists = useArtists()
   const mvs = useMv(3)
 
   useEffect(() => {
@@ -17,7 +15,6 @@ const Home: FC = (): ReactElement => {
       setLoaded(() => true)
     }
   }, [songLists, mvs])
-
 
   return (
     <>

@@ -19,7 +19,7 @@ import {
 import { AudioState, PlayListState } from "../../recoil/atom"
 import Loading from "../../components/Loading"
 import { useRecoilState } from "recoil"
-import useScroll from "./Hooks/useScroll"
+import { useScroll } from "../../Hooks"
 
 const reducer = (state: DetailState, action: DetailAction): DetailState => {
   const { type, paylad } = action

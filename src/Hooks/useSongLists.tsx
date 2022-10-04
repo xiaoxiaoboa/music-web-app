@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
-import { request } from "../../../utils/request"
-import { SongListType, SongListsType } from "../../../types"
-import { useSongListsType } from "../../../types"
-import random from "../../../utils/random"
+import { request } from "../utils/request"
+import { SongListType, SongListsType } from "../types"
+import { useSongListsType } from "../types"
+import random from "../utils/random"
 
 const useSongLists = (amount: number): useSongListsType => {
   const [list, setList] = useState<SongListType[]>([])

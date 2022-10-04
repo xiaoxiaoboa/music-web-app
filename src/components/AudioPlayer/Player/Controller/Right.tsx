@@ -1,21 +1,20 @@
-import React, { FC, ReactElement, memo } from "react"
+import React, { FC, ReactElement, memo, useMemo } from "react"
 import styled from "styled-components"
 import { RiPlayListFill, RiHeart2Line } from "react-icons/ri"
-// import { TiArrowShuffle } from "react-icons/ti"
 import { TbRepeatOnce, TbRepeat, TbArrowsShuffle } from "react-icons/tb"
 import Volume from "../../../Volume"
 import Button from "../../../Button"
 import { PlayMode } from "../../../../types"
 
 interface IProps {
-  media: HTMLMediaElement
+  audio: HTMLAudioElement
   playMode: PlayMode
   clickIcon: () => void
   playListCount: number
 }
 
 const Right: FC<IProps> = ({
-  media,
+  audio,
   playMode,
   clickIcon,
   playListCount
@@ -34,6 +33,21 @@ const Right: FC<IProps> = ({
     }
   }
 
+  /* 音频音量改变时，触发本地存储 */
+  audio.onvolumechange = () => {
+    const localData = JSON.parse(localStorage.getItem("audiostate") as string)
+    const result = { ...localData, ...{ volume: audio.volume } }
+    localStorage.setItem("audiostate", JSON.stringify(result))
+  }
+
+  /* 初始化音量 */
+  const getLocalVolume = useMemo(() => {
+    return (
+      JSON.parse(localStorage.getItem("audiostate") as string)?.volume * 100 ||
+      0
+    )
+  }, [])
+
   return (
     <RightButton listLength={playListCount}>
       <Button onClick={clickIcon}>{changeIcon()}</Button>
@@ -44,7 +58,7 @@ const Right: FC<IProps> = ({
         <RiPlayListFill className="RiPlayListFill" />
       </Button>
       <VolumeButtonBox>
-        <Volume media={media} />
+        <Volume media={audio} volume={getLocalVolume} />
       </VolumeButtonBox>
     </RightButton>
   )
