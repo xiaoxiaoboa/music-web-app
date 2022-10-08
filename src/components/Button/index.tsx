@@ -1,4 +1,10 @@
-import { FC, MouseEventHandler, ReactElement, ReactNode } from "react"
+import {
+  FC,
+  MouseEventHandler,
+  ReactElement,
+  ReactNode,
+  forwardRef
+} from "react"
 import styled from "styled-components"
 
 interface IProps {
@@ -6,8 +12,12 @@ interface IProps {
   onClick?: MouseEventHandler
 }
 
-const Button: FC<IProps> = ({children, onClick}): ReactElement => {
-  return <MyButton onClick={onClick}>{children}</MyButton>
+const Button: FC<IProps> = ({ children, onClick }) => {
+  return (
+    <MyButton onClick={onClick}>
+      {children}
+    </MyButton>
+  )
 }
 export default Button
 

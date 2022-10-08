@@ -9,6 +9,7 @@ import {
 import { BsFillPlayFill } from "react-icons/bs"
 import imgSize from "../../../utils/imgSize"
 import { SongListType, MvType, ArtistType, OtherMv } from "../../../types"
+import getNewUrl from "../../../utils/getNewUrl"
 
 interface IProps {
   data: SongListType | MvType | ArtistType | OtherMv
@@ -39,12 +40,14 @@ const Item: FC<IProps> = ({
     <ItemContainer alignItems={alignItems}>
       <Cover>
         <CoverImg
-          src={imgSize(
-            (data as SongListType).picUrl ||
-              (data as MvType).cover ||
-              (data as OtherMv).imgurl,
-            w,
-            h
+          src={getNewUrl(
+            imgSize(
+              (data as SongListType).picUrl ||
+                (data as MvType).cover ||
+                (data as OtherMv).imgurl,
+              w,
+              h
+            )
           )}
           borderRadius={borderRadius}
           onClick={e => toDetail(e, data.id, CoverRef.current!)}

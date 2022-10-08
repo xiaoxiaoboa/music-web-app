@@ -5,8 +5,8 @@ import Button from "../../../Button"
 import Slider from "../../../Slider"
 import { useRecoilValue } from "recoil"
 import { AudioState } from "../../../../recoil/atom"
-import useCurrentTime from "./Hooks/useCurrentTime"
-import useDuration from "./Hooks/useDuration"
+import {useCurrentTime} from "../../../../Hooks"
+import {useDuration} from "../../../../Hooks"
 
 interface IProps {
   handlePlay: () => void

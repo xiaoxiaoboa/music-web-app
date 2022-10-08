@@ -4,6 +4,8 @@ import useDrag from "./useDrag"
 import useMv from "./useMv"
 import useScroll from "./useScroll"
 import useSongLists from "./useSongLists"
+import useCurrentTime from "./useCurrentTime"
+import useDuration from "./useDuration"
 
 export {
   useArtistMvs,
@@ -11,5 +13,7 @@ export {
   useDrag,
   useMv,
   useScroll,
-  useSongLists
+  useSongLists,
+  useCurrentTime,
+  useDuration
 }

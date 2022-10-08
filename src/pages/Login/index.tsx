@@ -20,6 +20,7 @@ import {
   AuthSuccess,
   LoginStatusType
 } from "../../types"
+import getNewUrl from "../../utils/getNewUrl"
 
 const reducer = (state: QRCodeState, action: QrCodeAction): QRCodeState => {
   const { type, payload } = action
@@ -119,7 +120,7 @@ const Login: FC = (): ReactElement => {
         <LoginContainer>
           <LoginWrapper>
             <ImgWrapper>
-              <img src={state.base64} alt="" />
+              <img src={getNewUrl(state.base64)} />
               {state.message.length > 0 ? (
                 <NoticeMask>
                   <span>{state.message}</span>

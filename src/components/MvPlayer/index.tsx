@@ -13,8 +13,8 @@ import { RiFullscreenFill } from "react-icons/ri"
 import { FaPlay, FaPause } from "react-icons/fa"
 import Volume from "../Volume"
 import Button from '../Button'
-import useCurrentTime from "../AudioPlayer/Player/Controller/Hooks/useCurrentTime"
-import useDuration from "../AudioPlayer/Player/Controller/Hooks/useDuration"
+import {useCurrentTime} from "../../Hooks"
+import {useDuration} from "../../Hooks"
 
 interface IProps {
   src: string

@@ -8,6 +8,7 @@ import MvPlayer from "../../components/MvPlayer"
 import { LocationProps, MvDataType, Data, MvUrl } from "../../types"
 import { request } from "../../utils/request"
 import {useArtistMvs} from "../../Hooks"
+import getNewUrl from "../../utils/getNewUrl"
 
 
 interface StateType {
@@ -39,11 +40,17 @@ const MvDetail = () => {
     <>
       {state?.url?.data.url && mvs.list.length > 0 ? (
         <Container>
-          <MvPlayer src={state?.url?.data.url} poster={state?.detail.cover} />
+          <MvPlayer
+            src={getNewUrl(state?.url?.data.url)}
+            poster={state?.detail.cover}
+          />
           <MvInfo>
             <Title>{state.detail?.name}</Title>
             <Artist>
-              <Avatar size={`40px`} src={state?.detail?.artists[0].img1v1Url} />
+              <Avatar
+                size={`40px`}
+                src={getNewUrl(state?.detail?.artists[0].img1v1Url)}
+              />
               <ArtiseName>{state?.detail?.artists[0].name}</ArtiseName>
             </Artist>
           </MvInfo>

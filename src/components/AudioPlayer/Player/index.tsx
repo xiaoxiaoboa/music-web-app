@@ -8,14 +8,15 @@ import {
   SongTitle,
   Artist
 } from "./index.style"
-import { PlayMode, Track } from "../../../types"
+import { PlayListUrls, PlayMode, Track } from "../../../types"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
 import { useRecoilState, useRecoilValue } from "recoil"
 import { AudioState, PlayListState } from "../../../recoil/atom"
 import imgSize from "../../../utils/imgSize"
-import { getTrackUrl } from "../../../utils/getTrackUrl"
 import Snackbar from "../../Snackbar"
+import { request } from "../../../utils/request"
+import getNewUrl from "../../../utils/getNewUrl"
 
 const Player: FC = (): ReactElement => {
   const [state, setState] = useRecoilState(AudioState)
@@ -132,8 +133,20 @@ const Player: FC = (): ReactElement => {
 
   /* 获取歌曲url，开始播放 */
   const changeUrl = (index: number, isPlay: boolean) => {
-    getTrackUrl(playList[index]).then(res => {
-      state.audio.src = res.url
+    request(
+      "song/url/v1",
+      "GET",
+      `&id=${playList[index].id}&level=exhigh`
+    ).then((res: PlayListUrls) => {
+      /* 如果返回的url是null，换一个链接播放 */
+      let url: string = ""
+      if (res.data[0].url) {
+        url = getNewUrl(res.data[0].url)
+      } else {
+        url = `//music.163.com/song/media/outer/url?id=${playList[index].id}.mp3`
+      }
+
+      state.audio.src = url
       if (isPlay) handlePlay()
     })
   }
@@ -202,7 +215,9 @@ const Player: FC = (): ReactElement => {
       <ControllerWrapper>
         <SongCover onClick={() => setMessage("歌曲不能播放，准备下一首")}>
           <SongCoverImg
-            src={imgSize(playList[state.playIndex!]?.al.picUrl, 60, 60)}
+            src={getNewUrl(
+              imgSize(playList[state.playIndex!]?.al.picUrl, 60, 60)
+            )}
           />
           <SongDetails>
             <SongTitle title={playList[state.playIndex!]?.name}>

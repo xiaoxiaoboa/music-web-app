@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { useRecoilState, useRecoilValue } from "recoil"
-import { AudioState } from "../../../../../recoil/atom"
+import { AudioState } from "../recoil/atom"
 
 /* 获取媒体的currentTime */
 export default function useCurrentTime(
@@ -13,6 +13,11 @@ export default function useCurrentTime(
 ] {
   const [currentTime, setCurrentTime] = useState<number>(0)
   const [isInterActive, setIsInterActive] = useState<boolean>(false)
+
+  useEffect(() => {
+    if(media?.src === '') setCurrentTime(0)
+  },[media])
+
 
   if (media) {
     media.ontimeupdate = () => {

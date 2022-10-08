@@ -20,6 +20,7 @@ import { AudioState, PlayListState } from "../../recoil/atom"
 import Loading from "../../components/Loading"
 import { useRecoilState } from "recoil"
 import { useScroll } from "../../Hooks"
+import getNewUrl from "../../utils/getNewUrl"
 
 const reducer = (state: DetailState, action: DetailAction): DetailState => {
   const { type, paylad } = action
@@ -118,6 +119,7 @@ const SongListDetail = () => {
   const handlePlayAll = (): void => {
     request("playlist/track/all", "GET", `&id=${location.state.id}`).then(
       (res: SongDetailType) => {
+        console.log(res)
         const index = Math.floor(Math.random() * res.songs.length)
         setPlayList(res.songs)
         setState(prev => ({ ...prev, playIndex: index }))
@@ -132,13 +134,13 @@ const SongListDetail = () => {
           <>
             <SongListInfo>
               <CoverImg>
-                <img src={reducerState.detail?.coverImgUrl} />
+                <img src={getNewUrl(reducerState.detail?.coverImgUrl)} />
               </CoverImg>
               <Desc>
                 <div className="title">{reducerState.detail?.name}</div>
                 <Creator>
                   <Avatar
-                    src={reducerState.detail?.creator.avatarUrl}
+                    src={getNewUrl(reducerState.detail?.creator.avatarUrl)}
                     size={`2rem`}
                   />
                   <LinkFont>{reducerState.detail?.creator.nickname}</LinkFont>
