@@ -4,18 +4,19 @@ import { MvsType, MvType } from "../types"
 import { useMvType } from "../types"
 import random from "../utils/random"
 
+/**
+ * Home页面的mv
+ * @param amount 数量，获取amount个 
+ * @returns type: 用作路由导航, list: 获取到的数据
+ */
+
 const useMv = (amount: number): useMvType => {
   const [list, setList] = useState<MvType[]>([])
 
   useEffect(() => {
-    if (list.length > 0) return
     /* 获取100首MV */
     request("mv/all", "GET", `&limit=100`).then((res: MvsType) => {
-      if (res.data.length <= amount) {
-        setList(() => res.data)
-      } else {
-        setList(() => random(amount, res.data))
-      }
+      setList(() => random(amount, res.data))
     })
   }, [])
 

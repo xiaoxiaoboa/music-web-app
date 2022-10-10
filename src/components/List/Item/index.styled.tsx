@@ -9,7 +9,6 @@ interface CoverProps {
 
 /* Item组件 > div */
 export const ItemContainer = styled.div<ItemProps>`
-  
   display: flex;
   flex-direction: column;
   gap: 0.625rem;

@@ -15,11 +15,7 @@ const useArtists = (): useArtistsType => {
         "GET",
         `&type=${random(1, type)[0]}`
       ).then((res: ArtistsType) => {
-        if (res.list.artists.length <= amount) {
-          setList(prev => [...prev, ...res.list.artists])
-        } else {
-          setList(prev => [...prev, ...random(amount, res.list.artists)])
-        }
+        setList(prev => [...prev, ...random(amount, res.list.artists)])
       })
     }
 

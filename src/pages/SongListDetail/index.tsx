@@ -21,6 +21,7 @@ import Loading from "../../components/Loading"
 import { useRecoilState } from "recoil"
 import { useScroll } from "../../Hooks"
 import getNewUrl from "../../utils/getNewUrl"
+import SongsList from "../../components/SongsList"
 
 const reducer = (state: DetailState, action: DetailAction): DetailState => {
   const { type, paylad } = action
@@ -119,7 +120,6 @@ const SongListDetail = () => {
   const handlePlayAll = (): void => {
     request("playlist/track/all", "GET", `&id=${location.state.id}`).then(
       (res: SongDetailType) => {
-        console.log(res)
         const index = Math.floor(Math.random() * res.songs.length)
         setPlayList(res.songs)
         setState(prev => ({ ...prev, playIndex: index }))
@@ -199,7 +199,8 @@ const SongListDetail = () => {
                       type: DetailType.ISHOWINTRO,
                       paylad: !reducerState.isShowIntro
                     })
-                  }>
+                  }
+                >
                   <IntroLightFont as="div" fontsize={`14px`}>
                     <label>简介：</label>
                     {reducerState.detail?.description}
@@ -210,42 +211,7 @@ const SongListDetail = () => {
 
             {tracks.length > 0 ? (
               <>
-                <Songs>
-                  {tracks.map(song => {
-                    return (
-                      <Song
-                        key={song.id}
-                        onDoubleClick={() => handleDbClick(song)}>
-                        <div className="sn">
-                          <SongLightFont fontsize={`20px`}>
-                            {tracks.indexOf(song) + 1}
-                          </SongLightFont>
-                        </div>
-                        <div className="like">
-                          <RiHeart2Line className="RiHeart2Line" />
-                        </div>
-                        <div className="name" title={song.name}>
-                          <div className="nameWrapper">{song.name}</div>
-                        </div>
-                        <div className="artist" title={song.ar[0].name}>
-                          <SongLightFont fontsize={`18px`}>
-                            <SongLinkFont>{song.ar[0].name}</SongLinkFont>
-                          </SongLightFont>
-                        </div>
-                        <div className="album" title={song.al.name}>
-                          <SongLightFont fontsize={`18px`}>
-                            <SongLinkFont>{song.al.name}</SongLinkFont>
-                          </SongLightFont>
-                        </div>
-                        <div className="duration">
-                          <SongLightFont fontsize={`20px`}>
-                            {getMinute(song.dt)}
-                          </SongLightFont>
-                        </div>
-                      </Song>
-                    )
-                  })}
-                </Songs>
+                <SongsList data={tracks} handleDbClick={handleDbClick} />
                 <ButtonBottom>
                   {requesting === true ? (
                     <Loading scale={0.5} />
@@ -434,15 +400,8 @@ const Song = styled.div`
     text-overflow: ellipsis;
   }
 
+  .album,
   .artist {
-    flex: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    padding: 0 4px;
-  }
-  .album {
     flex: 2;
     display: flex;
     align-items: center;

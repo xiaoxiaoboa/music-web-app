@@ -8,7 +8,7 @@ import {
   SongTitle,
   Artist
 } from "./index.style"
-import { PlayListUrls, PlayMode, Track } from "../../../types"
+import { CheckMusic, PlayListUrls, PlayMode, Track } from "../../../types"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
 import { useRecoilState, useRecoilValue } from "recoil"
@@ -41,14 +41,18 @@ const Player: FC = (): ReactElement => {
   /* 播放索引更新，则请求链接，播放 */
   useEffect(() => {
     if (state.playIndex !== null && state.canPlay) {
-      changeUrl(state.playIndex, true)
+      checkMusic(playList[state.playIndex].id).then(() => {
+        changeUrl(state.playIndex!, true)
+      })
     }
   }, [state.playIndex])
 
   /* 打开页面后，播放列表内有上次的歌曲，就先请求链接，但不播放 */
   useEffect(() => {
     if (state.playIndex !== null && state.audio.src === "") {
-      changeUrl(state.playIndex, false)
+      checkMusic(playList[state.playIndex].id).then(() => {
+        changeUrl(state.playIndex!, false)
+      })
     }
   }, [])
 
@@ -131,9 +135,13 @@ const Player: FC = (): ReactElement => {
     }
   }, [indexCache])
 
-  /* 获取歌曲url，开始播放 */
-  const changeUrl = (index: number, isPlay: boolean) => {
-    request(
+  /** 
+   * 获取歌曲url，开始播放 
+   * @param index 歌曲在播放列表中的数组下标索引
+   * @param isPlay 拿到url后是否立即播放
+   */
+  const changeUrl = async (index: number, isPlay: boolean) => {
+    await request(
       "song/url/v1",
       "GET",
       `&id=${playList[index].id}&level=exhigh`
@@ -141,8 +149,10 @@ const Player: FC = (): ReactElement => {
       /* 如果返回的url是null，换一个链接播放 */
       let url: string = ""
       if (res.data[0].url) {
+        // return selectMode()
         url = getNewUrl(res.data[0].url)
       } else {
+        console.log(playList[index].id)
         url = `//music.163.com/song/media/outer/url?id=${playList[index].id}.mp3`
       }
 
@@ -150,6 +160,24 @@ const Player: FC = (): ReactElement => {
       if (isPlay) handlePlay()
     })
   }
+  
+  /**
+   * 检测歌曲是否能播放
+   * @param id 歌曲id
+   */
+  const checkMusic = async (id: number) => {
+    return await request("check/music", "GET", `&id=${id}`).then(
+      (res: CheckMusic) => {
+        if (res.success) {
+          return res
+        } else {
+          setMessage(() => res.message)
+          selectMode()
+        }
+      }
+    )
+  }
+  
 
   /* 单曲循环 */
   const loop = (): void => {

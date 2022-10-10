@@ -8,11 +8,17 @@ import {
 } from "./index.styled"
 import { BsFillPlayFill } from "react-icons/bs"
 import imgSize from "../../../utils/imgSize"
-import { SongListType, MvType, ArtistType, OtherMv } from "../../../types"
+import {
+  SongListType,
+  MvType,
+  ArtistType,
+  OtherMv,
+  Albums
+} from "../../../types"
 import getNewUrl from "../../../utils/getNewUrl"
 
 interface IProps {
-  data: SongListType | MvType | ArtistType | OtherMv
+  data: SongListType | MvType | ArtistType | OtherMv | Albums
   borderRadius?: string
   alignItems?: string
   w?: number

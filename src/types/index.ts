@@ -33,6 +33,13 @@ import {
 } from "./SongList_page"
 import { SongUrl, PlayListUrls, TrackAndUrl } from "./SongUrl"
 import { Track, TrackIds, SongDetailType } from "./Track"
+import {
+  TopSong,
+  HotAlbum,
+  Albums,
+  useArtistAlbumType
+} from "./ArtistDetail_page"
+import { CheckMusic } from "./chekcMuisc"
 
 export type {
   ArtistType,
@@ -41,7 +48,6 @@ export type {
   AuthSuccess,
   Authorizing,
   AudioStateType,
-  
   useArtistsType,
   useMvType,
   useSongListsType,
@@ -62,7 +68,6 @@ export type {
   QRCodeImgType,
   QRCodeState,
   QrCodeAction,
-  
   Waiting,
   SongListType,
   SongListsType,
@@ -74,7 +79,12 @@ export type {
   TrackAndUrl,
   Track,
   TrackIds,
-  SongDetailType
+  SongDetailType,
+  TopSong,
+  HotAlbum,
+  Albums,
+  useArtistAlbumType,
+  CheckMusic
 }
 
 export { DetailType, QrCodeType, PlayMode }

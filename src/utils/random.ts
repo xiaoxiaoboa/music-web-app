@@ -5,17 +5,21 @@ export const random = <T>(amount: number, arr: T[]): T[] => {
   let result: T[] = []
   let numbers: number[] = []
 
-  for (let i = 0; i < amount; i++) {
-    /* 生成一个随机数 */
-    const tempIndex: number = Math.floor(Math.random() * tempArr.length)
-    /* 如果这个随机数已经存在，则i减去1，重新循环一次 */
-    if (numbers.includes(tempIndex)) {
-      i--
-      continue
-    } else {
-      /* 随机数不存在，放进随机数数组中，把和随机数相应索引的tempArr的值放进结果数组 */
-      numbers.push(tempIndex)
-      result.push(tempArr[tempIndex])
+  if (arr.length < amount) {
+    result = arr
+  } else {
+    for (let i = 0; i < amount; i++) {
+      /* 生成一个随机数 */
+      const tempIndex: number = Math.floor(Math.random() * tempArr.length)
+      /* 如果这个随机数已经存在，则i减去1，重新循环一次 */
+      if (numbers.includes(tempIndex)) {
+        i--
+        continue
+      } else {
+        /* 随机数不存在，放进随机数数组中，把和随机数相应索引的tempArr的值放进结果数组 */
+        numbers.push(tempIndex)
+        result.push(tempArr[tempIndex])
+      }
     }
   }
   return result

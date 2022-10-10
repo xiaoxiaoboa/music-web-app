@@ -1,13 +1,13 @@
 import { FC, ReactElement, useEffect, useCallback } from "react"
 import { ListContainer } from "./index.style"
 import Item from "./Item"
-import { SongListType, MvType, ArtistType, OtherMv } from "../../types"
+import { SongListType, MvType, ArtistType, OtherMv,Albums } from "../../types"
 import { useLocation, useNavigate } from "react-router-dom"
 
 interface IProps {
   datas: {
     type: string
-    list: SongListType[] | MvType[] | ArtistType[] | OtherMv[]
+    list: SongListType[] | MvType[] | ArtistType[] | OtherMv[] | Albums[]
   }
   amount: number
   borderRadius?: string
@@ -40,19 +40,22 @@ const List: FC<IProps> = ({
 
   return (
     <ListContainer amount={amount}>
-      {datas.list.map((obj: SongListType | MvType | ArtistType | OtherMv) => {
-        return (
-          <Item
-            key={obj.id}
-            borderRadius={borderRadius}
-            alignItems={alignItems}
-            data={obj}
-            w={w}
-            h={h}
-            toDetail={toDetail}
-          />
-        )
-      })}
+      {datas.list.map(
+        (obj: SongListType | MvType | ArtistType | OtherMv | Albums) => {
+          return (
+            <Item
+              key={obj.id}
+              borderRadius={borderRadius}
+              alignItems={alignItems}
+              data={obj}
+              w={w}
+              h={h}
+              toDetail={toDetail}
+            />
+          )
+        }
+      )}
+      
     </ListContainer>
   )
 }
