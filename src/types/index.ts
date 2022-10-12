@@ -37,7 +37,8 @@ import {
   TopSong,
   HotAlbum,
   Albums,
-  useArtistAlbumType
+  useArtistAlbumType,
+  ArtistDetailType
 } from "./ArtistDetail_page"
 import { CheckMusic } from "./chekcMuisc"
 
@@ -84,7 +85,8 @@ export type {
   HotAlbum,
   Albums,
   useArtistAlbumType,
-  CheckMusic
+  CheckMusic,
+  ArtistDetailType
 }
 
 export { DetailType, QrCodeType, PlayMode }

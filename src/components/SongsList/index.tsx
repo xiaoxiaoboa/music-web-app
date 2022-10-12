@@ -1,14 +1,36 @@
-import { FC, ReactElement, useMemo,memo } from "react"
+import { FC, ReactElement, useMemo, memo } from "react"
 import { RiHeart2Line } from "react-icons/ri"
+import { useNavigate } from "react-router-dom"
+import { useRecoilState } from "recoil"
 import styled from "styled-components"
+import { AudioState, PlayListState } from "../../recoil/atom"
 import { Track } from "../../types"
 
 interface IProps {
   data: Track[]
-  handleDbClick: (value: Track) => void
 }
 
-const SongsList: FC<IProps> = ({ data, handleDbClick }): ReactElement => {
+const SongsList: FC<IProps> = ({ data }): ReactElement => {
+  const [state, setState] = useRecoilState(AudioState)
+  const [playList, setPlayList] = useRecoilState(PlayListState)
+  const navigate = useNavigate()
+
+  const handleDbClick = (value: Track): void => {
+    /* 找一下是否已经播放过这个歌曲了 */
+    const sameIndex = playList.findIndex((obj: Track) => obj.id === value.id)
+    /* 如果找到了：把对应歌曲的索引更新到state */
+    if (sameIndex > -1) {
+      setState(prev => ({ ...prev, ...{ playIndex: sameIndex } }))
+    } else {
+      const tempList = [...playList]
+      tempList.splice(state.playIndex! + 1, 0, value)
+      const index = tempList.findIndex(obj => obj.id === value.id)
+
+      setPlayList(tempList)
+      setState(prev => ({ ...prev, ...{ playIndex: index } }))
+    }
+  }
+
   /* 格式化音乐时间 */
   const getMinute = useMemo(
     () =>
@@ -21,6 +43,11 @@ const SongsList: FC<IProps> = ({ data, handleDbClick }): ReactElement => {
       },
     [data]
   )
+
+  /* 路由跳转 */
+  const toDetail = (id: number) => {
+    navigate("/artistdetail", { state: { id } })
+  }
 
   return (
     <Songs>
@@ -40,7 +67,9 @@ const SongsList: FC<IProps> = ({ data, handleDbClick }): ReactElement => {
             </div>
             <div className="artist" title={song.ar[0].name}>
               <SongLightFont fontsize={`18px`}>
-                <SongLinkFont>{song.ar[0].name}</SongLinkFont>
+                <SongLinkFont onClick={() => toDetail(song.ar[0].id)}>
+                  {song.ar[0].name}
+                </SongLinkFont>
               </SongLightFont>
             </div>
             <div className="album" title={song.al.name}>

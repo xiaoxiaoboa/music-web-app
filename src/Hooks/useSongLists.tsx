@@ -4,6 +4,12 @@ import { SongListType, SongListsType } from "../types"
 import { useSongListsType } from "../types"
 import random from "../utils/random"
 
+/**
+ * 获取歌单
+ * @param amount 需要的数量 
+ * @returns type: 用户路由导航, list：歌单数组 
+ */
+
 const useSongLists = (amount: number): useSongListsType => {
   const [list, setList] = useState<SongListType[]>([])
 

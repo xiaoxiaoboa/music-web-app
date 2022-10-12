@@ -11,10 +11,10 @@ import {
 import { CheckMusic, PlayListUrls, PlayMode, Track } from "../../../types"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
-import { useRecoilState, useRecoilValue } from "recoil"
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
 import { AudioState, PlayListState } from "../../../recoil/atom"
 import imgSize from "../../../utils/imgSize"
-import Snackbar from "../../Snackbar"
+import { addMessage } from "../../Snackbar"
 import { request } from "../../../utils/request"
 import getNewUrl from "../../../utils/getNewUrl"
 
@@ -22,7 +22,6 @@ const Player: FC = (): ReactElement => {
   const [state, setState] = useRecoilState(AudioState)
   const [indexCache, setIndexCache] = useState<number | null>(null)
   const playList = useRecoilValue(PlayListState)
-  const [message, setMessage] = useState<string>("")
 
   /* 组件卸载时，歌曲要暂停 */
   useEffect(() => {
@@ -83,8 +82,8 @@ const Player: FC = (): ReactElement => {
       )
       .catch(err => {
         handlePause()
-        setMessage("歌曲播放失败，准备下一首...")
-        console.log("播放失败", err)
+        addMessage("歌曲播放失败，准备下一首...")
+        // console.log("播放失败", err)
         next()
       })
   }
@@ -152,7 +151,6 @@ const Player: FC = (): ReactElement => {
         // return selectMode()
         url = getNewUrl(res.data[0].url)
       } else {
-        console.log(playList[index].id)
         url = `//music.163.com/song/media/outer/url?id=${playList[index].id}.mp3`
       }
 
@@ -171,7 +169,7 @@ const Player: FC = (): ReactElement => {
         if (res.success) {
           return res
         } else {
-          setMessage(() => res.message)
+          addMessage(res.message + ",准备下一首...")
           selectMode()
         }
       }
@@ -239,9 +237,8 @@ const Player: FC = (): ReactElement => {
 
   return (
     <ControllerBarContainer>
-      <Snackbar message={message} setMessage={setMessage} />
       <ControllerWrapper>
-        <SongCover onClick={() => setMessage("歌曲不能播放，准备下一首")}>
+        <SongCover>
           <SongCoverImg
             src={getNewUrl(
               imgSize(playList[state.playIndex!]?.al.picUrl, 60, 60)

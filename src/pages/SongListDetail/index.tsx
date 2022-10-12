@@ -4,7 +4,7 @@ import Avatar from "../../components/Avatar"
 import { FaPlay } from "react-icons/fa"
 import { RiHeart2Fill, RiHeart2Line } from "react-icons/ri"
 import { BsFolderCheck, BsFolderPlus } from "react-icons/bs"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { request } from "../../utils/request"
 import {
   SongListsDetailType,
@@ -18,10 +18,11 @@ import {
 } from "../../types"
 import { AudioState, PlayListState } from "../../recoil/atom"
 import Loading from "../../components/Loading"
-import { useRecoilState } from "recoil"
+import { useRecoilState, useSetRecoilState } from "recoil"
 import { useScroll } from "../../Hooks"
 import getNewUrl from "../../utils/getNewUrl"
 import SongsList from "../../components/SongsList"
+import { addMessage } from "../../components/Snackbar"
 
 const reducer = (state: DetailState, action: DetailAction): DetailState => {
   const { type, paylad } = action
@@ -55,8 +56,8 @@ const initialState: DetailState = {
 
 const SongListDetail = () => {
   const location = useLocation() as LocationProps
-  const [state, setState] = useRecoilState(AudioState)
-  const [playList, setPlayList] = useRecoilState(PlayListState)
+  const setAudioState = useSetRecoilState(AudioState)
+  const setPlayList = useSetRecoilState(PlayListState)
   const [reducerState, dispatch] = useReducer(reducer, initialState)
   const [tracks, requesting, requestSongs] = useScroll(reducerState.songsId)
 
@@ -75,19 +76,6 @@ const SongListDetail = () => {
     )
   }, [location.state.id])
 
-  /* 格式化音乐时间 */
-  const getMinute = useMemo(
-    () =>
-      (value: number): string => {
-        return (
-          ("" + (Math.floor(value / 60000) % 60)).slice(-2) +
-          ":" +
-          ("0" + (Math.floor(value / 1000) % 60)).slice(-2)
-        )
-      },
-    [reducerState.detail]
-  )
-
   /* 格式化创建时间 */
   const getUpdateTime = useMemo(
     () =>
@@ -100,32 +88,19 @@ const SongListDetail = () => {
     [reducerState.detail]
   )
 
-  /* 双击单曲播放 */
-  const handleDbClick = (value: Track): void => {
-    /* 找一下是否已经播放过这个歌曲了 */
-    const sameIndex = playList.findIndex((obj: Track) => obj.id === value.id)
-    /* 如果找到了：把对应歌曲的索引更新到state */
-    if (sameIndex > -1) {
-      setState(prev => ({ ...prev, ...{ playIndex: sameIndex } }))
-    } else {
-      const tempList = [...playList]
-      tempList.splice(state.playIndex! + 1, 0, value)
-      const index = tempList.findIndex(obj => obj.id === value.id)
-
-      setPlayList(tempList)
-      setState(prev => ({ ...prev, ...{ playIndex: index } }))
-    }
-  }
   /* 播放歌单全部 */
   const handlePlayAll = (): void => {
     request("playlist/track/all", "GET", `&id=${location.state.id}`).then(
       (res: SongDetailType) => {
         const index = Math.floor(Math.random() * res.songs.length)
+        addMessage("歌单已添加，等待播放...")
         setPlayList(res.songs)
-        setState(prev => ({ ...prev, playIndex: index }))
+        setAudioState(prev => ({ ...prev, playIndex: index }))
       }
     )
   }
+
+
 
   return (
     <>
@@ -143,7 +118,9 @@ const SongListDetail = () => {
                     src={getNewUrl(reducerState.detail?.creator.avatarUrl)}
                     size={`2rem`}
                   />
-                  <LinkFont>{reducerState.detail?.creator.nickname}</LinkFont>
+                  <LinkFont>
+                    {reducerState.detail?.creator.nickname}
+                  </LinkFont>
                   <LightFont fontsize={`14px`}>
                     {getUpdateTime(reducerState.detail.createTime)} 创建
                   </LightFont>
@@ -211,7 +188,7 @@ const SongListDetail = () => {
 
             {tracks.length > 0 ? (
               <>
-                <SongsList data={tracks} handleDbClick={handleDbClick} />
+                <SongsList data={tracks} />
                 <ButtonBottom>
                   {requesting === true ? (
                     <Loading scale={0.5} />

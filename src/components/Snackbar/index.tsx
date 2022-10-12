@@ -1,60 +1,84 @@
-import { FC, ReactElement, useEffect,memo } from "react"
+import { FC, ReactElement, useEffect, memo, useState } from "react"
 import styled from "styled-components"
 import Button from "../Button"
 import { IoClose } from "react-icons/io5"
 import { BiMessageDetail } from "react-icons/bi"
 
-interface IProps {
+interface MessageType {
+  id: string
   message: string
-  setMessage: React.Dispatch<React.SetStateAction<string>>
 }
 
-const Snackbar: FC<IProps> = ({ message, setMessage }): ReactElement => {
+const initialValue = (): MessageType[] => {
+  return []
+}
+
+/* 导出的API */
+let addMessage: (value: string) => void
+
+const Snackbar: FC = (): ReactElement => {
+  const [message, setMessage] = useState<MessageType[]>(initialValue)
+
   useEffect(() => {
-    if (message.length > 0) {
-      const timer = setTimeout(() => {
-        setMessage("")
-        clearTimeout(timer)
-      }, 3000)
+    if (message.length > 8) {
+      const [firstMessage] = message
+      deleteMessage(firstMessage.id)
     }
   }, [message])
 
+
+  /* 添加消息 */
+  addMessage = (value: string) => {
+    const newMessage = { id: generateRandomStrig(), message: value }
+    setMessage(prev => [newMessage, ...prev])
+
+    const timer = setTimeout(() => {
+      deleteMessage(newMessage.id)
+      clearTimeout(timer)
+    }, 3000)
+  }
+
+
+  /* 删除消息  */
+  const deleteMessage = (value: string) => {
+   setMessage(prev => prev.filter(({ id }) => id !== value))
+  }
+
+  /* 生成随机字符串 */
+  const generateRandomStrig = (): string => {
+    return Math.random().toString(36).slice(-8) + new Date()
+  }
+
   return (
-    <>
-      {message.length > 0 ? (
-        <Container open={message.length > 0 ? true : false}>
+    <Container>
+      {message.map(({ id, message }) => (
+        <Item key={id}>
           <Icon>
             <BiMessageDetail className="BiMessageDetail" />
           </Icon>
           <Messages>{message}</Messages>
-          <Button onClick={() => setMessage('')}>
+          <Button onClick={() => deleteMessage(id)}>
             <IoClose className="IoClose" />
           </Button>
-        </Container>
-      ) : (
-        <></>
-      )}
-    </>
+        </Item>
+      ))}
+    </Container>
   )
 }
+
+export { addMessage }
 export default memo(Snackbar)
 
-interface ContainerProps {
-  open: boolean
-}
-
-const Container = styled.div<ContainerProps>`
+const Container = styled.div`
   display: flex;
+  flex-direction: column;
   position: absolute;
   top: 90px;
-  background-color: ${props => props.theme.reverse_primary_bgColor};
+  right: 30px;
   color: ${props => props.theme.reverse_primary_color};
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  height: 50px;
-  opacity: ${props => (props.open ? 1 : 0)};
-  transition: opacity 0.5s linear;
+  align-items: flex-end;
+  gap: 12px;
+  z-index: 999;
 
   .BiMessageDetail,
   .IoClose {
@@ -62,16 +86,36 @@ const Container = styled.div<ContainerProps>`
     color: inherit;
   }
 `
+
+const Item = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: ${props => props.theme.reverse_primary_bgColor};
+  border-radius: 8px;
+  gap: 0px;
+  min-width: 200px;
+  height: 50px;
+`
+
 const Icon = styled.div`
-  flex: 1;
+  flex: 0.5;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 8px;
+  /* padding: 8px; */
+  position: relative;
+  width: 36px;
+  height: 36px;
+
+  .BiMessageDetail {
+    position: absolute;
+    top: 6px;
+    margin: 4px;
+  }
 `
 const Messages = styled.div`
   flex: 2;
   white-space: nowrap;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
 `

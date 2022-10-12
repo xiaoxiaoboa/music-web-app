@@ -7,7 +7,7 @@ import random from "../utils/random"
 /**
  * Home页面的mv
  * @param amount 数量，获取amount个 
- * @returns type: 用作路由导航, list: 获取到的数据
+ * @returns type: 用作路由导航, list: mv数组
  */
 
 const useMv = (amount: number): useMvType => {

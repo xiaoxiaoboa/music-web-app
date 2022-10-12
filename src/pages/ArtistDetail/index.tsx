@@ -7,7 +7,9 @@ import Loading from "../../components/Loading"
 import SongsList from "../../components/SongsList"
 import { useArtistMvs } from "../../Hooks"
 import useArtistAlbum from "../../Hooks/useArtistAlbum"
-import { LocationProps, Track, TopSong } from "../../types"
+import { LocationProps, Track, TopSong, ArtistDetailType } from "../../types"
+import getNewUrl from "../../utils/getNewUrl"
+import imgSize from "../../utils/imgSize"
 import { request } from "../../utils/request"
 
 const ArtistDetail = () => {
@@ -15,8 +17,13 @@ const ArtistDetail = () => {
   const [tracks, setTracks] = useState<Track[]>([])
   const albums = useArtistAlbum(location.state.id)
   const mvs = useArtistMvs(location.state.id, 6)
+  const [artistDetail, setArtiseDetail] = useState<ArtistDetailType>()
 
+  /* 获取歌手热门歌曲 */
   useEffect(() => {
+    request("artist/detail", "GET", `&id=${location.state.id}`).then(
+      (res: ArtistDetailType) => setArtiseDetail(res)
+    )
     request("artist/top/song", "GET", `&id=${location.state.id}`).then(
       (res: TopSong) => setTracks(res.songs)
     )
@@ -24,50 +31,56 @@ const ArtistDetail = () => {
 
   return (
     <>
-      {tracks.length < 1 ? (
-        <Loading />
-      ) : (
+      {artistDetail ? (
         <Container>
           <ArtistIntro>
             <div title="点击关注">
               <Avatar
                 size={`200px`}
-                src={`https://p1.music.126.net/ATZ8-mOxophKXrLC0iXMZw==/109951163536269820.jpg?param=1024y1024`}
+                src={getNewUrl(imgSize(artistDetail.data.artist.cover,200,200))}
               />
             </div>
-            <Name>许嵩</Name>
+            <Name>{artistDetail.data.artist.name}</Name>
           </ArtistIntro>
           <Contents>
-            {/* 单曲 */}
             <Songs>
               <label>
                 <h1>热门单曲</h1>
               </label>
-              <SongsList data={tracks} handleDbClick={() => {}} />
+              <SongsList data={tracks} />
             </Songs>
-            {/* 专辑 */}
-            <Album>
-              <label>
-                <h1>专辑</h1>
-              </label>
-              <List datas={albums} amount={5} />
-            </Album>
-            {/* MV */}
-            <Mvs>
-              <label>
-                <h1>MV</h1>
-              </label>
-              <List
-                datas={mvs}
-                amount={3}
-                borderRadius={`1.25rem`}
-                alignItems={`center`}
-                w={464}
-                h={260}
-              />
-            </Mvs>
+            {albums.list.length > 0 ? (
+              <Album>
+                <label>
+                  <h1>专辑</h1>
+                </label>
+                <List datas={albums} amount={5} w={300} h={300} />
+              </Album>
+            ) : (
+              <></>
+            )}
+
+            {mvs.list.length > 0 ? (
+              <Mvs>
+                <label>
+                  <h1>MV</h1>
+                </label>
+                <List
+                  datas={mvs}
+                  amount={3}
+                  borderRadius={`1.25rem`}
+                  alignItems={`center`}
+                  w={464}
+                  h={260}
+                />
+              </Mvs>
+            ) : (
+              <></>
+            )}
           </Contents>
         </Container>
+      ) : (
+        <Loading />
       )}
     </>
   )

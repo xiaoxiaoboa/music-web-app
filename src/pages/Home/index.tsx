@@ -19,7 +19,7 @@ const Home: FC = (): ReactElement => {
         <HomeContainer>
           <ListWrapper>
             <h1>推荐歌单</h1>
-            <List amount={5} datas={songLists} />
+            <List amount={5} datas={songLists} w={300} h={300}/>
           </ListWrapper>
           <ListWrapper>
             <h1>推荐歌手</h1>

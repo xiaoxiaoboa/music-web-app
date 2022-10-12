@@ -7,9 +7,8 @@ import Loading from "../../components/Loading"
 import MvPlayer from "../../components/MvPlayer"
 import { LocationProps, MvDataType, Data, MvUrl } from "../../types"
 import { request } from "../../utils/request"
-import {useArtistMvs} from "../../Hooks"
+import { useArtistMvs } from "../../Hooks"
 import getNewUrl from "../../utils/getNewUrl"
-
 
 interface StateType {
   detail: Data
@@ -19,8 +18,7 @@ interface StateType {
 const MvDetail = () => {
   const location = useLocation() as LocationProps
   const [state, setState] = useState<StateType>({} as StateType)
-  const mvs = useArtistMvs(state?.detail?.artistId, location.state.id, 3)
-
+  const mvs = useArtistMvs(state?.detail?.artistId, 3, location.state.id)
 
   useEffect(() => {
     request("mv/detail", "GET", `&mvid=${location.state.id}`).then(
