@@ -14,7 +14,8 @@ import {
   DetailType,
   SongList,
   SongDetailType,
-  LocationProps
+  LocationProps,
+  FontColor
 } from "../../types"
 import { AudioState, PlayListState } from "../../recoil/atom"
 import Loading from "../../components/Loading"
@@ -23,6 +24,7 @@ import { useScroll } from "../../Hooks"
 import getNewUrl from "../../utils/getNewUrl"
 import SongsList from "../../components/SongsList"
 import { addMessage } from "../../components/Snackbar"
+import SpecialFont from "../../components/SpecialFont"
 
 const reducer = (state: DetailState, action: DetailAction): DetailState => {
   const { type, paylad } = action
@@ -100,8 +102,6 @@ const SongListDetail = () => {
     )
   }
 
-
-
   return (
     <>
       {reducerState.loaded ? (
@@ -118,45 +118,49 @@ const SongListDetail = () => {
                     src={getNewUrl(reducerState.detail?.creator.avatarUrl)}
                     size={`2rem`}
                   />
-                  <LinkFont>
+                  <SpecialFont link color={FontColor.LINKCOLOR}>
                     {reducerState.detail?.creator.nickname}
-                  </LinkFont>
-                  <LightFont fontsize={`14px`}>
-                    {getUpdateTime(reducerState.detail.createTime)} 创建
-                  </LightFont>
+                  </SpecialFont>
+                  <SpecialFont color={FontColor.LIGHTCOLOR} size={`14px`}>
+                    {getUpdateTime(reducerState.detail.createTime) + " 创建"}
+                  </SpecialFont>
                 </Creator>
                 <Tag>
                   <div>标签：</div>
                   {reducerState.detail?.tags.map(tag => (
-                    <LinkFont key={reducerState.detail.tags.indexOf(tag)}>
+                    <SpecialFont
+                      key={reducerState.detail.tags.indexOf(tag)}
+                      link
+                      color={FontColor.LINKCOLOR}
+                    >
                       {tag}
-                    </LinkFont>
+                    </SpecialFont>
                   ))}
                 </Tag>
                 <Count>
                   <CountItem>
                     <div>歌曲：</div>
-                    <LightFont fontsize={`14px`}>
+                    <SpecialFont color={FontColor.LIGHTCOLOR} size={`14px`}>
                       {reducerState.detail?.trackCount.toLocaleString()}
-                    </LightFont>
+                    </SpecialFont>
                   </CountItem>
                   <CountItem>
                     <div>播放：</div>
-                    <LightFont fontsize={`14px`}>
+                    <SpecialFont color={FontColor.LIGHTCOLOR} size={`14px`}>
                       {reducerState.detail?.playCount.toLocaleString()}
-                    </LightFont>
+                    </SpecialFont>
                   </CountItem>
                   <CountItem>
                     <div>收藏：</div>
-                    <LightFont fontsize={`14px`}>
+                    <SpecialFont color={FontColor.LIGHTCOLOR} size={`14px`}>
                       {reducerState.detail?.subscribedCount.toLocaleString()}
-                    </LightFont>
+                    </SpecialFont>
                   </CountItem>
                   <CountItem>
                     <div>分享：</div>
-                    <LightFont fontsize={`14px`}>
+                    <SpecialFont color={FontColor.LIGHTCOLOR} size={`14px`}>
                       {reducerState.detail?.shareCount.toLocaleString()}
-                    </LightFont>
+                    </SpecialFont>
                   </CountItem>
                 </Count>
                 <PlayButton>
@@ -178,10 +182,12 @@ const SongListDetail = () => {
                     })
                   }
                 >
-                  <IntroLightFont as="div" fontsize={`14px`}>
+                  <Description>
                     <label>简介：</label>
-                    {reducerState.detail?.description}
-                  </IntroLightFont>
+                    <SpecialFont size={`14px`} color={FontColor.LIGHTCOLOR}>
+                      {reducerState.detail?.description}
+                    </SpecialFont>
+                  </Description>
                 </Intro>
               </Desc>
             </SongListInfo>
@@ -214,25 +220,6 @@ const SongListDetail = () => {
 }
 
 export default SongListDetail
-
-/* 加链接的文字 */
-const LinkFont = styled.span`
-  cursor: pointer;
-  color: ${props => props.theme.secondary_color};
-
-  &:hover {
-    text-decoration: underline;
-  }
-`
-
-/* 浅颜色文字 */
-interface LightFontProps {
-  fontsize: string
-}
-const LightFont = styled.div<LightFontProps>`
-  font-size: ${props => props.fontsize};
-  color: ${props => props.theme.light_color};
-`
 
 const Container = styled.div`
   padding: 0 calc(10% - 17px) 1.25rem 10%;
@@ -317,94 +304,12 @@ const Intro = styled.div<IntroLightFontProps>`
   height: ${props => props.height};
   cursor: pointer;
 `
-const IntroLightFont = styled(LightFont)`
+const Description = styled.div`
   line-height: 24px;
 
   & label {
     font-size: 16px;
-    color: ${props => props.theme.primary_color};
   }
-`
-
-const Songs = styled.div`
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-`
-
-const Song = styled.div`
-  width: 100%;
-  display: flex;
-  padding: 14px 0;
-  border-radius: 8px;
-
-  &:hover {
-    background-color: ${props => props.theme.song_hover_BgColor};
-  }
-
-  .sn {
-    flex: 0.2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .like {
-    flex: 0.2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .RiHeart2Line {
-      width: 20px;
-      height: 20px;
-      color: ${props => props.theme.secondary_color};
-    }
-  }
-  .name {
-    flex: 2.5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    overflow: hidden;
-    padding: 0 4px;
-    font-size: 20px;
-  }
-  .nameWrapper {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  .album,
-  .artist {
-    flex: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    padding: 0 4px;
-  }
-  .duration {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-`
-const SongLinkFont = styled(LinkFont)`
-  color: inherit;
-
-  &:hover {
-    color: ${props => props.theme.primary_color};
-  }
-`
-
-const SongLightFont = styled(LightFont)`
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 `
 
 const ButtonBottom = styled.div`

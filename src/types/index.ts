@@ -41,6 +41,7 @@ import {
   ArtistDetailType
 } from "./ArtistDetail_page"
 import { CheckMusic } from "./chekcMuisc"
+import { FontColor } from "./SpecialFont"
 
 export type {
   ArtistType,
@@ -89,4 +90,4 @@ export type {
   ArtistDetailType
 }
 
-export { DetailType, QrCodeType, PlayMode }
+export { DetailType, QrCodeType, PlayMode, FontColor }

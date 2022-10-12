@@ -37,10 +37,12 @@ const ArtistDetail = () => {
             <div title="点击关注">
               <Avatar
                 size={`200px`}
-                src={getNewUrl(imgSize(artistDetail.data.artist.cover,200,200))}
+                src={getNewUrl(
+                  imgSize(artistDetail?.data?.artist?.cover, 200, 200)
+                )}
               />
             </div>
-            <Name>{artistDetail.data.artist.name}</Name>
+            <Name>{artistDetail?.data?.artist?.name}</Name>
           </ArtistIntro>
           <Contents>
             <Songs>

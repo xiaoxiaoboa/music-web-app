@@ -31,17 +31,16 @@ export const SongDetails = styled.div`
   flex-direction: column;
   gap: 0.3125rem;
   max-width: 260px;
-  overflow:hidden;
+  overflow: hidden;
 `
 export const SongTitle = styled.span`
+  display: flex;
   font-size: 1.125rem;
-  overflow:hidden;
+  overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 `
 export const Artist = styled.span`
+  display: flex;
   font-size: 0.875rem;
 `
-
-
-

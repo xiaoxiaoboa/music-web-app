@@ -9,6 +9,7 @@ import { LocationProps, MvDataType, Data, MvUrl } from "../../types"
 import { request } from "../../utils/request"
 import { useArtistMvs } from "../../Hooks"
 import getNewUrl from "../../utils/getNewUrl"
+import SpecialFont from "../../components/SpecialFont"
 
 interface StateType {
   detail: Data
@@ -49,7 +50,14 @@ const MvDetail = () => {
                 size={`40px`}
                 src={getNewUrl(state?.detail?.artists[0].img1v1Url)}
               />
-              <ArtiseName>{state?.detail?.artists[0].name}</ArtiseName>
+              <ArtiseName>
+                <SpecialFont
+                  link
+                  to={{ path: "/artistdetail", id: state?.detail?.artistId }}
+                >
+                  {state?.detail?.artists[0].name}
+                </SpecialFont>
+              </ArtiseName>
             </Artist>
           </MvInfo>
           <OtherMv>

@@ -1,7 +1,7 @@
 import { FC, ReactElement, useEffect, useCallback } from "react"
 import { ListContainer } from "./index.style"
 import Item from "./Item"
-import { SongListType, MvType, ArtistType, OtherMv,Albums } from "../../types"
+import { SongListType, MvType, ArtistType, OtherMv, Albums } from "../../types"
 import { useLocation, useNavigate } from "react-router-dom"
 
 interface IProps {
@@ -26,17 +26,9 @@ const List: FC<IProps> = ({
 }: IProps): ReactElement => {
   const navigate = useNavigate()
 
-  const toDetail = useCallback(
-    (
-      e: React.MouseEvent,
-      id: number,
-      element: HTMLImageElement | HTMLSpanElement
-    ) => {
-      if (e.target !== element) return
-      navigate(datas.type, { state: { id }})
-    },
-    []
-  )
+  const toDetail = useCallback((id: number) => {
+    navigate(datas.type, { state: { id } })
+  }, [])
 
   return (
     <ListContainer amount={amount}>
@@ -44,18 +36,18 @@ const List: FC<IProps> = ({
         (obj: SongListType | MvType | ArtistType | OtherMv | Albums) => {
           return (
             <Item
-              key={obj.id}
-              borderRadius={borderRadius}
-              alignItems={alignItems}
-              data={obj}
               w={w}
               h={h}
+              data={obj}
+              key={obj.id}
+              type={datas.type}
+              borderRadius={borderRadius}
+              alignItems={alignItems}
               toDetail={toDetail}
             />
           )
         }
       )}
-      
     </ListContainer>
   )
 }

@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom"
 import { useRecoilState } from "recoil"
 import styled from "styled-components"
 import { AudioState, PlayListState } from "../../recoil/atom"
-import { Track } from "../../types"
+import { FontColor, Track } from "../../types"
+import SpecialFont from "../SpecialFont"
 
 interface IProps {
   data: Track[]
@@ -54,34 +55,37 @@ const SongsList: FC<IProps> = ({ data }): ReactElement => {
       {data.map(song => {
         return (
           <Song key={song.id} onDoubleClick={() => handleDbClick(song)}>
-            <div className="sn">
-              <SongLightFont fontsize={`20px`}>
-                {data.indexOf(song) + 1}
-              </SongLightFont>
-            </div>
+            <SN>
+              <SpecialFont color={FontColor.LIGHTCOLOR} size={`20px`}>
+                {(data.indexOf(song) + 1).toString()}
+              </SpecialFont>
+            </SN>
             <div className="like">
               <RiHeart2Line className="RiHeart2Line" />
             </div>
-            <div className="name" title={song.name}>
-              <div className="nameWrapper">{song.name}</div>
-            </div>
-            <div className="artist" title={song.ar[0].name}>
-              <SongLightFont fontsize={`18px`}>
-                <SongLinkFont onClick={() => toDetail(song.ar[0].id)}>
-                  {song.ar[0].name}
-                </SongLinkFont>
-              </SongLightFont>
-            </div>
-            <div className="album" title={song.al.name}>
-              <SongLightFont fontsize={`18px`}>
-                <SongLinkFont>{song.al.name}</SongLinkFont>
-              </SongLightFont>
-            </div>
-            <div className="duration">
-              <SongLightFont fontsize={`20px`}>
+            <NameWrapper title={song.name}>
+              <Name>{song.name}</Name>
+            </NameWrapper>
+            <Artist title={song.ar[0].name}>
+              <SpecialFont
+                link
+                size={`18px`}
+                color={FontColor.LIGHTCOLOR}
+                to={{ path: "/artistdetail", id: song.ar[0].id }}
+              >
+                {song.ar[0].name}
+              </SpecialFont>
+            </Artist>
+            <Album title={song.al.name}>
+              <SpecialFont color={FontColor.LIGHTCOLOR} link size={`18px`}>
+                {song.al.name}
+              </SpecialFont>
+            </Album>
+            <Duration>
+              <SpecialFont color={FontColor.LIGHTCOLOR} size={`18px`}>
                 {getMinute(song.dt)}
-              </SongLightFont>
-            </div>
+              </SpecialFont>
+            </Duration>
           </Song>
         )
       })}
@@ -91,27 +95,7 @@ const SongsList: FC<IProps> = ({ data }): ReactElement => {
 
 export default memo(SongsList)
 
-/* 加链接的文字 */
-const LinkFont = styled.span`
-  cursor: pointer;
-  color: ${props => props.theme.secondary_color};
-
-  &:hover {
-    text-decoration: underline;
-  }
-`
-
-/* 浅颜色文字 */
-interface LightFontProps {
-  fontsize: string
-}
-const LightFont = styled.div<LightFontProps>`
-  font-size: ${props => props.fontsize};
-  color: ${props => props.theme.light_color};
-`
-
 const Songs = styled.div`
-  /* flex: 2; */
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -127,12 +111,6 @@ const Song = styled.div`
     background-color: ${props => props.theme.song_hover_BgColor};
   }
 
-  .sn {
-    flex: 0.2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
   .like {
     flex: 0.2;
     display: flex;
@@ -145,48 +123,42 @@ const Song = styled.div`
       color: ${props => props.theme.secondary_color};
     }
   }
-  .name {
-    flex: 2.5;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    overflow: hidden;
-    padding: 0 4px;
-    font-size: 20px;
-  }
-  .nameWrapper {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  .album,
-  .artist {
-    flex: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    padding: 0 4px;
-  }
-  .duration {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-`
-const SongLinkFont = styled(LinkFont)`
-  color: inherit;
-
-  &:hover {
-    color: ${props => props.theme.primary_color};
-  }
 `
 
-const SongLightFont = styled(LightFont)`
+const Hidden = styled.div`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+`
+const SN = styled(Hidden)`
+  flex: 0.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+const NameWrapper = styled.div`
+  flex: 2.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  padding: 0 4px;
+  font-size: 20px;
+  overflow: hidden;
+`
+const Name = styled(Hidden)``
+const Artist = styled(Hidden)`
+  flex: 1.5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0 4px;
+`
+const Album = styled(Artist)``
+const Duration = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `

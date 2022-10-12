@@ -8,7 +8,7 @@ import {
   SongTitle,
   Artist
 } from "./index.style"
-import { CheckMusic, PlayListUrls, PlayMode, Track } from "../../../types"
+import { CheckMusic, FontColor, PlayListUrls, PlayMode, Track } from "../../../types"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
@@ -17,6 +17,7 @@ import imgSize from "../../../utils/imgSize"
 import { addMessage } from "../../Snackbar"
 import { request } from "../../../utils/request"
 import getNewUrl from "../../../utils/getNewUrl"
+import SpecialFont from "../../SpecialFont"
 
 const Player: FC = (): ReactElement => {
   const [state, setState] = useRecoilState(AudioState)
@@ -134,8 +135,8 @@ const Player: FC = (): ReactElement => {
     }
   }, [indexCache])
 
-  /** 
-   * 获取歌曲url，开始播放 
+  /**
+   * 获取歌曲url，开始播放
    * @param index 歌曲在播放列表中的数组下标索引
    * @param isPlay 拿到url后是否立即播放
    */
@@ -158,7 +159,7 @@ const Player: FC = (): ReactElement => {
       if (isPlay) handlePlay()
     })
   }
-  
+
   /**
    * 检测歌曲是否能播放
    * @param id 歌曲id
@@ -175,7 +176,6 @@ const Player: FC = (): ReactElement => {
       }
     )
   }
-  
 
   /* 单曲循环 */
   const loop = (): void => {
@@ -248,7 +248,18 @@ const Player: FC = (): ReactElement => {
             <SongTitle title={playList[state.playIndex!]?.name}>
               {playList[state.playIndex!]?.name}
             </SongTitle>
-            <Artist>{playList[state.playIndex!]?.ar[0].name}</Artist>
+            <Artist>
+              <SpecialFont
+                link
+                color={FontColor.LINKCOLOR}
+                to={{
+                  path: "/artistdetail",
+                  id: playList[state.playIndex!]?.ar[0].id
+                }}
+              >
+                {playList[state.playIndex!]?.ar[0].name}
+              </SpecialFont>
+            </Artist>
           </SongDetails>
         </SongCover>
         <Middle
