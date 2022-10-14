@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { request } from "../utils/request"
-import { MvsType, MvType } from "../types"
+import { MvsType, MvType, RouterPath } from "../types"
 import { useMvType } from "../types"
 import random from "../utils/random"
 
@@ -20,7 +20,7 @@ const useMv = (amount: number): useMvType => {
     })
   }, [])
 
-  return { type: "/mvdetail", list }
+  return { type: RouterPath.MV, list }
 }
 
 export default useMv

@@ -25,6 +25,7 @@ import getNewUrl from "../../utils/getNewUrl"
 import SongsList from "../../components/SongsList"
 import { addMessage } from "../../components/Snackbar"
 import SpecialFont from "../../components/SpecialFont"
+import Button from "../../components/Button"
 
 const reducer = (state: DetailState, action: DetailAction): DetailState => {
   const { type, paylad } = action
@@ -164,11 +165,11 @@ const SongListDetail = () => {
                   </CountItem>
                 </Count>
                 <PlayButton>
-                  <Button onClick={handlePlayAll}>
+                  <Button className="playbutton" onClick={handlePlayAll}>
                     <FaPlay size={`18px`} />
                     播放全部
                   </Button>
-                  <Button>
+                  <Button className="collectbutton">
                     <BsFolderPlus size={`18px`} />
                     收藏歌单
                   </Button>
@@ -281,18 +282,16 @@ const PlayButton = styled.div`
   display: flex;
   padding: 4px 0;
   gap: 20px;
-`
-const Button = styled.button`
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  cursor: pointer;
-  gap: 8px;
-  font-size: 16px;
-  background-color: ${props => props.theme.secondary_color};
-  color: white;
+
+  .collectbutton,
+  .playbutton {
+    padding: 10px;
+    border-radius: 10px;
+    gap: 8px;
+    background-color: ${props => props.theme.secondary_color};
+    color: white;
+    font-size: 16px;
+  }
 `
 
 interface IntroLightFontProps {

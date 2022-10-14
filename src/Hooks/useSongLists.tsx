@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { request } from "../utils/request"
-import { SongListType, SongListsType } from "../types"
+import { SongListType, SongListsType, RouterPath } from "../types"
 import { useSongListsType } from "../types"
 import random from "../utils/random"
 
@@ -21,7 +21,7 @@ const useSongLists = (amount: number): useSongListsType => {
     )
   }, [])
 
-  return { type: "/songlistdetail", list }
+  return { type: RouterPath.SONGLIST, list }
 }
 
 export default useSongLists

@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react"
 import { request } from "../utils/request"
 import random from "../utils/random"
-import { ArtistsType, ArtistType } from "../types"
+import { ArtistsType, ArtistType, RouterPath } from "../types"
 import { useArtistsType } from "../types"
 
 const useArtists = (): useArtistsType => {
   const [list, setList] = useState<ArtistType[]>([])
 
   useEffect(() => {
-    if (list.length > 0) return
     const getArtists = async (type: number[], amount: number) => {
       await request(
         "toplist/artist",
@@ -22,7 +21,7 @@ const useArtists = (): useArtistsType => {
     getArtists([1], 4).then(() => getArtists([2, 3, 4], 2))
   }, [])
 
-  return { type: "/artistdetail", list }
+  return { type: RouterPath.ARTIST, list }
 }
 
 export default useArtists

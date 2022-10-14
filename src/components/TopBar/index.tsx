@@ -16,10 +16,9 @@ import {
 import ToggleTheme from "../ToggleTheme"
 import { BiSearchAlt } from "react-icons/bi"
 import { NavLink } from "react-router-dom"
-import { addMessage } from "../Snackbar"
+import { RouterPath } from "../../types"
 
 const TopBar: FC = (): ReactElement => {
-  // const setMessage = useSetRecoilState(SnackBarState)
 
   return (
     <TopBarContainer>
@@ -27,7 +26,7 @@ const TopBar: FC = (): ReactElement => {
         <TopLogo />
         <Nav>
           <Ul>
-            <NavLink to={"/"}>
+            <NavLink to={RouterPath.HOME}>
               <Li>首页</Li>
             </NavLink>
             <Li>歌单</Li>

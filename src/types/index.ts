@@ -42,6 +42,8 @@ import {
 } from "./ArtistDetail_page"
 import { CheckMusic } from "./chekcMuisc"
 import { FontColor } from "./SpecialFont"
+import { RouterPath } from "./RouterPath"
+import { Album, AlbumType, Album_Songs } from "./Album"
 
 export type {
   ArtistType,
@@ -87,7 +89,10 @@ export type {
   Albums,
   useArtistAlbumType,
   CheckMusic,
-  ArtistDetailType
+  ArtistDetailType,
+  Album,
+  AlbumType,
+  Album_Songs
 }
 
-export { DetailType, QrCodeType, PlayMode, FontColor }
+export { DetailType, QrCodeType, PlayMode, FontColor, RouterPath }

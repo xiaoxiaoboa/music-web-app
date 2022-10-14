@@ -1,10 +1,9 @@
 import { FC, ReactElement, useMemo, memo } from "react"
 import { RiHeart2Line } from "react-icons/ri"
-import { useNavigate } from "react-router-dom"
 import { useRecoilState } from "recoil"
 import styled from "styled-components"
 import { AudioState, PlayListState } from "../../recoil/atom"
-import { FontColor, Track } from "../../types"
+import { FontColor, RouterPath, Track } from "../../types"
 import SpecialFont from "../SpecialFont"
 
 interface IProps {
@@ -14,7 +13,6 @@ interface IProps {
 const SongsList: FC<IProps> = ({ data }): ReactElement => {
   const [state, setState] = useRecoilState(AudioState)
   const [playList, setPlayList] = useRecoilState(PlayListState)
-  const navigate = useNavigate()
 
   const handleDbClick = (value: Track): void => {
     /* 找一下是否已经播放过这个歌曲了 */
@@ -45,10 +43,6 @@ const SongsList: FC<IProps> = ({ data }): ReactElement => {
     [data]
   )
 
-  /* 路由跳转 */
-  const toDetail = (id: number) => {
-    navigate("/artistdetail", { state: { id } })
-  }
 
   return (
     <Songs>
@@ -71,13 +65,13 @@ const SongsList: FC<IProps> = ({ data }): ReactElement => {
                 link
                 size={`18px`}
                 color={FontColor.LIGHTCOLOR}
-                to={{ path: "/artistdetail", id: song.ar[0].id }}
+                to={{ path: `${RouterPath.ARTIST}`, id: song.ar[0].id }}
               >
                 {song.ar[0].name}
               </SpecialFont>
             </Artist>
             <Album title={song.al.name}>
-              <SpecialFont color={FontColor.LIGHTCOLOR} link size={`18px`}>
+              <SpecialFont color={FontColor.LIGHTCOLOR} link size={`18px`} to={{path: RouterPath.ALBUM, id: song.al.id}} className='album'>
                 {song.al.name}
               </SpecialFont>
             </Album>
@@ -155,7 +149,15 @@ const Artist = styled(Hidden)`
   overflow: hidden;
   padding: 0 4px;
 `
-const Album = styled(Artist)``
+const Album = styled(Artist)`
+  overflow: hidden;
+
+  .album {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+`
 const Duration = styled.div`
   flex: 1;
   display: flex;

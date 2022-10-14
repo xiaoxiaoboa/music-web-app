@@ -9,11 +9,12 @@ interface IProps {
   color?: string
   link?: boolean
   size?: string
+  className?: string
   to?: { path: string; id: number }
 }
 
 const SpecialFont: FC<IProps> = (props): ReactElement => {
-  const { children, size, link, color, to } = props
+  const { children, size, link, color, to ,className} = props
   const navigate = useNavigate()
   const location = useLocation() as LocationProps
 
@@ -32,6 +33,7 @@ const SpecialFont: FC<IProps> = (props): ReactElement => {
       link={link}
       size={size}
       color={color}
+      className={className}
       onClick={link ? handleNavigate : undefined}
     >
       {children}

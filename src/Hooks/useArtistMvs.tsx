@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { OtherMvs, OtherMv } from "../types"
+import { OtherMvs, OtherMv, RouterPath } from "../types"
 import random from "../utils/random"
 import { request } from "../utils/request"
 
@@ -27,6 +27,6 @@ const useArtistMvs = (
     }
   }, [id, mvid])
 
-  return { type: "/mvdetail", list: mvs }
+  return { type: RouterPath.MV, list: mvs }
 }
 export default useArtistMvs

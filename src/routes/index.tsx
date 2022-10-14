@@ -6,12 +6,8 @@ const Home = lazy(() => import("../pages/Home"))
 const Login = lazy(() => import("../pages/Login"))
 const MvDetail = lazy(() => import("../pages/MvDetail"))
 const SongListDetail = lazy(() => import("../pages/SongListDetail"))
+const Album = lazy(() => import("../pages/Album"))
 
-// import ArtistDetail from "../pages/ArtistDetail"
-// import Home from "../pages/Home"
-// import Login from "../pages/Login"
-// import MvDetail from "../pages/MvDetail"
-// import SongListDetail from "../pages/SongListDetail"
 
 const Routes = () => {
   const element = useRoutes([
@@ -25,16 +21,20 @@ const Routes = () => {
       element: <Login />
     },
     {
-      path: '/songlistdetail',
+      path: '/songlist',
       element: <SongListDetail />
     },
     {
-      path: '/mvdetail',
+      path: '/mv',
       element: <MvDetail />
     },
     {
-      path: '/artistdetail',
+      path: '/artist',
       element: <ArtistDetail />
+    },
+    {
+      path: '/album',
+      element: <Album />
     }
   ])
 

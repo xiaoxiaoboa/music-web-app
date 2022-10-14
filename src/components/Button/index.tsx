@@ -1,25 +1,16 @@
-import {
-  FC,
-  MouseEventHandler,
-  ReactElement,
-  ReactNode,
-  forwardRef
-} from "react"
+import { FC, MouseEventHandler, ReactNode,memo } from "react"
 import styled from "styled-components"
 
 interface IProps {
   children: ReactNode
+  className?: string
   onClick?: MouseEventHandler
 }
 
-const Button: FC<IProps> = ({ children, onClick }) => {
-  return (
-    <MyButton onClick={onClick}>
-      {children}
-    </MyButton>
-  )
+const Button: FC<IProps> = ({ children, onClick, className }) => {
+  return <MyButton onClick={onClick} className={className} >{children}</MyButton>
 }
-export default Button
+export default memo(Button)
 
 const MyButton = styled.button`
   border: none;

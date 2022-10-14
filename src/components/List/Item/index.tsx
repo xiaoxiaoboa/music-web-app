@@ -1,10 +1,5 @@
-import { FC, ReactElement, useRef, useEffect } from "react"
-import {
-  ItemContainer,
-  Cover,
-  Title,
-  CoverImg
-} from "./index.styled"
+import { FC, ReactElement, useRef, memo } from "react"
+import { ItemContainer, Cover, Title, CoverImg } from "./index.styled"
 import { BsFillPlayFill } from "react-icons/bs"
 import imgSize from "../../../utils/imgSize"
 import {
@@ -13,7 +8,8 @@ import {
   ArtistType,
   OtherMv,
   Albums,
-  FontColor
+  FontColor,
+  RouterPath
 } from "../../../types"
 import getNewUrl from "../../../utils/getNewUrl"
 import SpecialFont from "../../SpecialFont"
@@ -31,8 +27,6 @@ interface IProps {
 const Item: FC<IProps> = (props): ReactElement => {
   const { borderRadius, alignItems, data, type, w, h, toDetail } = props
   const CoverRef = useRef<HTMLImageElement>(null)
-  const TitleRef = useRef<HTMLSpanElement>(null)
-
   return (
     <ItemContainer alignItems={alignItems}>
       <Cover>
@@ -51,7 +45,7 @@ const Item: FC<IProps> = (props): ReactElement => {
           ref={CoverRef}
         />
       </Cover>
-      <Title ref={TitleRef}>
+      <Title>
         <span className="name">
           <SpecialFont link to={{ path: type, id: data.id }}>
             {data.name}
@@ -64,7 +58,10 @@ const Item: FC<IProps> = (props): ReactElement => {
               link
               size={`12px`}
               color={FontColor.LIGHTCOLOR}
-              to={{ path: "/artistdetail", id: (data as OtherMv)?.artist?.id }}
+              to={{
+                path: RouterPath.ARTIST,
+                id: (data as OtherMv)?.artist?.id || (data as MvType)?.artistId
+              }}
             >
               {(data as MvType).artistName}
             </SpecialFont>
@@ -77,4 +74,4 @@ const Item: FC<IProps> = (props): ReactElement => {
   )
 }
 
-export default Item
+export default memo(Item)

@@ -66,9 +66,8 @@ interface TrackIds {
   v: number
 }
 
-
 /* 歌曲详情API返回类型 */
- interface SongDetailType {
+interface SongDetailType {
   code: number
   privileges: {
     chargeInfoList: {
