@@ -1,13 +1,16 @@
-import { FC, ReactElement, useEffect, useCallback } from "react"
+import { FC, ReactElement, useCallback } from "react"
 import { ListContainer } from "./index.style"
 import Item from "./Item"
-import { SongListType, MvType, ArtistType, OtherMv, Albums } from "../../types"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
-interface IProps {
+interface KeyProps {
+  id: number
+}
+
+interface IProps<T extends KeyProps> {
   datas: {
     type: string
-    list: SongListType[] | MvType[] | ArtistType[] | OtherMv[] | Albums[]
+    list: T[]
   }
   amount: number
   borderRadius?: string
@@ -16,14 +19,14 @@ interface IProps {
   h?: number
 }
 
-const List: FC<IProps> = ({
+const List = <T extends KeyProps>({
   datas,
   amount,
   borderRadius = `.625rem`,
   alignItems = `stretch`,
   w,
   h
-}: IProps): ReactElement => {
+}: IProps<T>): ReactElement => {
   const navigate = useNavigate()
 
   const toDetail = useCallback((id: number) => {
@@ -32,22 +35,20 @@ const List: FC<IProps> = ({
 
   return (
     <ListContainer amount={amount}>
-      {datas.list.map(
-        (obj: SongListType | MvType | ArtistType | OtherMv | Albums) => {
-          return (
-            <Item
-              w={w}
-              h={h}
-              data={obj}
-              key={obj.id}
-              type={datas.type}
-              borderRadius={borderRadius}
-              alignItems={alignItems}
-              toDetail={toDetail}
-            />
-          )
-        }
-      )}
+      {datas.list.map((obj: T) => {
+        return (
+          <Item
+            key={obj.id + datas.list.indexOf(obj)}
+            w={w}
+            h={h}
+            data={obj}
+            type={datas.type}
+            borderRadius={borderRadius}
+            alignItems={alignItems}
+            toDetail={toDetail}
+          />
+        )
+      })}
     </ListContainer>
   )
 }

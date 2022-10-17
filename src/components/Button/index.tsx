@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, ReactNode,memo } from "react"
+import { FC, MouseEventHandler, ReactNode, memo } from "react"
 import styled from "styled-components"
 
 interface IProps {
@@ -8,7 +8,11 @@ interface IProps {
 }
 
 const Button: FC<IProps> = ({ children, onClick, className }) => {
-  return <MyButton onClick={onClick} className={className} >{children}</MyButton>
+  return (
+    <MyButton onClick={onClick} className={className}>
+      {children}
+    </MyButton>
+  )
 }
 export default memo(Button)
 
@@ -22,7 +26,17 @@ const MyButton = styled.button`
   cursor: pointer;
   color: inherit;
 
-  &:hover {
-    background-color: ${props => props.theme.hover_BgColor};
+
+  &:active {
+    scale: 0.9;
   }
 `
+const Shadow = styled.div`
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  border-radius:8px;
+`
+const Back = styled.div``

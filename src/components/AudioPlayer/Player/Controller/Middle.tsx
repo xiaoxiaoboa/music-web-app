@@ -78,7 +78,6 @@ const ButtonBox = styled.div`
   .FaPlay,
   .FaPause {
     font-size: 1.75rem;
-    color: ${props => props.theme.secondary_color}
   }
 
   .FaStepBackward,

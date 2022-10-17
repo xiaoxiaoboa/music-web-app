@@ -7,6 +7,7 @@ const Login = lazy(() => import("../pages/Login"))
 const MvDetail = lazy(() => import("../pages/MvDetail"))
 const SongListDetail = lazy(() => import("../pages/SongListDetail"))
 const Album = lazy(() => import("../pages/Album"))
+const SongLists = lazy(() => import('../pages/SongLists'))
 
 
 const Routes = () => {
@@ -35,6 +36,10 @@ const Routes = () => {
     {
       path: '/album',
       element: <Album />
+    },
+    {
+      path:'/songlists',
+      element: <SongLists />
     }
   ])
 

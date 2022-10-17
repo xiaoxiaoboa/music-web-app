@@ -19,7 +19,6 @@ import { NavLink } from "react-router-dom"
 import { RouterPath } from "../../types"
 
 const TopBar: FC = (): ReactElement => {
-
   return (
     <TopBarContainer>
       <TopbarWarpper>
@@ -29,7 +28,9 @@ const TopBar: FC = (): ReactElement => {
             <NavLink to={RouterPath.HOME}>
               <Li>首页</Li>
             </NavLink>
-            <Li>歌单</Li>
+            <NavLink to={RouterPath.SONGLISTS}>
+              <Li>歌单</Li>
+            </NavLink>
             <Li>新碟上架</Li>
             <Li>私人FM</Li>
             <Li>我的</Li>

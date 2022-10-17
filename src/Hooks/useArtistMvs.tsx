@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
-import { OtherMvs, OtherMv, RouterPath } from "../types"
+import { RouterPath } from "../types"
+import { OtherMv, OtherMvs } from "../pages/MvDetail/types"
 import random from "../utils/random"
 import { request } from "../utils/request"
-
 
 /**
  * 获取歌手的MV
@@ -15,7 +15,7 @@ import { request } from "../utils/request"
 const useArtistMvs = (
   id: number,
   amount: number,
-  mvid?: number,
+  mvid?: number
 ): { type: string; list: OtherMv[] } => {
   const [mvs, setMvs] = useState<OtherMv[]>([])
 

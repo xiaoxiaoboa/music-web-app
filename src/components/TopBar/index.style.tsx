@@ -41,7 +41,7 @@ export const Ul = styled.ul`
   justify-content: center;
 `
 export const Li = styled.li`
-  padding: 0.3125rem;
+  padding: 4px 8px;
   user-select: none;
   cursor: pointer;
   border-radius: 0.375rem;

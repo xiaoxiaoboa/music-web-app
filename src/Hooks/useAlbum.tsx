@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react"
 import { SongDetailType, Track } from "../types"
-import { AlbumType, Album_Songs } from "../types/Album"
+import { AlbumType } from "../pages/Album/types"
 import { request } from "../utils/request"
 
 interface Album {

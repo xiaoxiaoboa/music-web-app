@@ -1,4 +1,4 @@
-import { Track, TrackIds } from "./Track"
+import { Track, TrackIds } from "../../types/Track"
 
 /* 歌单详情页 */
 interface SongList {

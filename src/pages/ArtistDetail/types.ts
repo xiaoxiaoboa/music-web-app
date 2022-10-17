@@ -1,6 +1,6 @@
 /* ArtistDetail页面的类型 */
 
-import { Track } from "./Track"
+import { Track } from "../../types/Track"
 
 interface TopSong {
   code: number

@@ -1,5 +1,10 @@
 import React, { FC, ReactElement, useEffect, useState } from "react"
-import { Albums, HotAlbum, RouterPath, useArtistAlbumType } from "../types"
+import { RouterPath } from "../types"
+import {
+  Albums,
+  HotAlbum,
+  useArtistAlbumType
+} from "../pages/ArtistDetail/types"
 import random from "../utils/random"
 import { request } from "../utils/request"
 
@@ -11,7 +16,6 @@ import { request } from "../utils/request"
 
 const useArtistAlbum = (artistId: number): useArtistAlbumType => {
   const [album, setAlbum] = useState<Albums[]>([])
-
 
   useEffect(() => {
     if (!artistId) return

@@ -60,8 +60,7 @@ const Album: FC = (): ReactElement => {
 export default Album
 
 const Container = styled.div`
-  /* padding: 0 calc(10% - 17px) 1.25rem 10%; */
-  padding: 0 calc(10%) 1.25rem 10%;
+  padding: 0 calc(10% - 17px) 1.25rem 10%;
   flex: 1;
   display: flex;
   flex-direction: column;

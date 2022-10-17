@@ -2,29 +2,33 @@ import { FC, ReactElement, useRef, memo } from "react"
 import { ItemContainer, Cover, Title, CoverImg } from "./index.styled"
 import { BsFillPlayFill } from "react-icons/bs"
 import imgSize from "../../../utils/imgSize"
-import {
-  SongListType,
-  MvType,
-  ArtistType,
-  OtherMv,
-  Albums,
-  FontColor,
-  RouterPath
-} from "../../../types"
+import { FontColor, RouterPath } from "../../../types"
 import getNewUrl from "../../../utils/getNewUrl"
 import SpecialFont from "../../SpecialFont"
 
-interface IProps {
+interface Something {
+  picUrl?: string
+  cover?: string
+  imgurl?: string
+  name?: string
+  artistName?: string
+  coverImgUrl?:string
+  id?: number
+  artist?: { id: number }
+  artistId?: number
+}
+
+interface IProps<T extends Something> {
   w?: number
   h?: number
   type: string
   alignItems?: string
   borderRadius?: string
-  data: SongListType | MvType | ArtistType | OtherMv | Albums
+  data: T
   toDetail: (id: number) => void
 }
 
-const Item: FC<IProps> = (props): ReactElement => {
+const Item = <T extends Something>(props: IProps<T>): ReactElement => {
   const { borderRadius, alignItems, data, type, w, h, toDetail } = props
   const CoverRef = useRef<HTMLImageElement>(null)
   return (
@@ -33,25 +37,23 @@ const Item: FC<IProps> = (props): ReactElement => {
         <CoverImg
           src={getNewUrl(
             imgSize(
-              (data as SongListType).picUrl ||
-                (data as MvType).cover ||
-                (data as OtherMv).imgurl,
+              data.picUrl! || data.cover! || data.imgurl! || data.coverImgUrl!,
               w,
               h
             )
           )}
           borderRadius={borderRadius}
-          onClick={() => toDetail(data.id)}
+          onClick={() => toDetail(data.id!)}
           ref={CoverRef}
         />
       </Cover>
       <Title>
         <span className="name">
-          <SpecialFont link to={{ path: type, id: data.id }}>
-            {data.name}
+          <SpecialFont link to={{ path: type, id: data.id! }}>
+            {data.name!}
           </SpecialFont>
         </span>
-        {(data as MvType).artistName ? (
+        {data.artistName ? (
           <>
             <span> - </span>
             <SpecialFont
@@ -60,10 +62,10 @@ const Item: FC<IProps> = (props): ReactElement => {
               color={FontColor.LIGHTCOLOR}
               to={{
                 path: RouterPath.ARTIST,
-                id: (data as OtherMv)?.artist?.id || (data as MvType)?.artistId
+                id: data?.artist!?.id! || data?.artistId!
               }}
             >
-              {(data as MvType).artistName}
+              {data.artistName}
             </SpecialFont>
           </>
         ) : (

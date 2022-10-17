@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { request } from "../utils/request"
 import random from "../utils/random"
-import { ArtistsType, ArtistType, RouterPath } from "../types"
-import { useArtistsType } from "../types"
+import { RouterPath } from "../types"
+
+import { ArtistType, ArtistsType, useArtistsType } from "../pages/Home/types"
 
 const useArtists = (): useArtistsType => {
   const [list, setList] = useState<ArtistType[]>([])

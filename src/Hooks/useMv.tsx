@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react"
 import { request } from "../utils/request"
-import { MvsType, MvType, RouterPath } from "../types"
-import { useMvType } from "../types"
+import { RouterPath } from "../types"
+import { MvsType, MvType, useMvType } from "../pages/Home/types"
 import random from "../utils/random"
 
 /**
  * Home页面的mv
- * @param amount 数量，获取amount个 
+ * @param amount 数量，获取amount个
  * @returns type: 用作路由导航, list: mv数组
  */
 
