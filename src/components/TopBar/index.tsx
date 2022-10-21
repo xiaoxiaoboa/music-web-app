@@ -45,7 +45,7 @@ const TopBar: FC = (): ReactElement => {
     if (userInfo) {
       addMessage("账号已登录...")
     } else {
-      navigate(RouterPath.PROFILE, { replace: true })
+      navigate(RouterPath.LOGIN, { replace: true })
     }
   }
 
