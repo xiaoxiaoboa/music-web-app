@@ -47,6 +47,7 @@ const SongsList: FC<IProps> = ({ data }): ReactElement => {
     [data]
   )
 
+  /* 喜欢和取消喜欢 */
   const handleLike = (isLiked: boolean, id: number) => {
     if (isLiked) {
       /* 取消喜欢 */

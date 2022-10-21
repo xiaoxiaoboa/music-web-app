@@ -1,11 +1,4 @@
-import {
-  FC,
-  MouseEventHandler,
-  ReactElement,
-  useEffect,
-  useReducer,
-  useState
-} from "react"
+import { FC, ReactElement, useEffect, useReducer, useState } from "react"
 import styled from "styled-components"
 import Loading from "../../components/Loading"
 import { request } from "../../utils/request"
@@ -146,7 +139,6 @@ const Login: FC = (): ReactElement => {
     localStorage.setItem("user", JSON.stringify(userData))
     setUser(() => userData)
   }
-
 
   return (
     <>

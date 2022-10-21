@@ -64,7 +64,6 @@ const SongListDetail = () => {
   useEffect(() => {
     request("playlist/detail", "GET", `&id=${location.state.id}`).then(
       (res: SongListsDetailType) => {
-        console.log(res)
         /* 设置歌单 */
         dispatch({ type: DetailType.DETAIL, paylad: res.playlist })
         /* 设置歌单所有歌曲ID */
