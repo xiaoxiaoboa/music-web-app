@@ -1,5 +1,7 @@
-import {lazy} from 'react'
+import { lazy } from "react"
 import { useRoutes } from "react-router-dom"
+
+
 
 const ArtistDetail = lazy(() => import("../pages/ArtistDetail"))
 const Home = lazy(() => import("../pages/Home"))
@@ -7,8 +9,8 @@ const Login = lazy(() => import("../pages/Login"))
 const MvDetail = lazy(() => import("../pages/MvDetail"))
 const SongListDetail = lazy(() => import("../pages/SongListDetail"))
 const Album = lazy(() => import("../pages/Album"))
-const SongLists = lazy(() => import('../pages/SongLists'))
-
+const SongLists = lazy(() => import("../pages/SongLists"))
+const Profile = lazy(() => import("../pages/Profile"))
 
 const Routes = () => {
   const element = useRoutes([
@@ -18,28 +20,32 @@ const Routes = () => {
       element: <Home />
     },
     {
-      path: '/login',
+      path: "login",
       element: <Login />
     },
     {
-      path: '/songlist',
-      element: <SongListDetail />
-    },
-    {
-      path: '/mv',
+      path: "mv",
       element: <MvDetail />
     },
     {
-      path: '/artist',
+      path: "artist",
       element: <ArtistDetail />
     },
     {
-      path: '/album',
+      path: "album",
       element: <Album />
     },
     {
-      path:'/songlists',
-      element: <SongLists />
+      path: "songlists",
+      element: <SongLists />,
+    },
+    {
+      path: "songlist",
+      element: <SongListDetail />
+    },
+    {
+      path: "profile",
+      element: <Profile />
     }
   ])
 

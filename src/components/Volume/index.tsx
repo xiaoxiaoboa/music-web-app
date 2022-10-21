@@ -47,7 +47,7 @@ const Volume: FC<IProps> = ({ media,volume }) => {
 
   return (
     <>
-      <Button onClick={handleMuted}>
+      <Button onClick={handleMuted} title={isMuted ? '取消静音' : '静音'}>
         {isMuted ? (
           <RiVolumeMuteFill className="RiVolumeMute" />
         ) : (

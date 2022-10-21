@@ -7,9 +7,14 @@ import styled from "styled-components"
 const ToggleTheme: FC = (): ReactElement => {
   const [mode, setMode] = useRecoilState(ThemeState)
 
+  useEffect(() => {
+    localStorage.setItem('colorMode', JSON.stringify(mode ? 'dark' : 'light'))
+  }, [mode])
+
   const handleClick = () => {
     setMode(() => !mode)
   }
+
   return (
     <ThemeButton mode={`${mode}`} onClick={handleClick}>
       <div>{mode ? <RiMoonClearLine /> : <RiSunLine />}</div>
@@ -48,7 +53,7 @@ const ThemeButton = styled.button<BProps>`
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
       rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
 
-    transform: translate(${props => (props.mode === 'true' ? 22 : 0)}px);
+    transform: translate(${props => (props.mode === "true" ? 22 : 0)}px);
     transition: all 0.2s linear;
 
     & svg {

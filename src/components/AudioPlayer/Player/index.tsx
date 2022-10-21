@@ -1,4 +1,4 @@
-import { FC, ReactElement, useCallback, useEffect, useState } from "react"
+import { FC, ReactElement, useCallback, useEffect, useState, memo } from "react"
 import {
   ControllerBarContainer,
   ControllerWrapper,
@@ -8,10 +8,16 @@ import {
   SongTitle,
   Artist
 } from "./index.style"
-import { CheckMusic, FontColor, PlayListUrls, PlayMode, Track } from "../../../types"
+import {
+  CheckMusic,
+  FontColor,
+  PlayListUrls,
+  PlayMode,
+  Track
+} from "../../../types"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
+import { useRecoilState, useRecoilValue } from "recoil"
 import { AudioState, PlayListState } from "../../../recoil/atom"
 import imgSize from "../../../utils/imgSize"
 import { addMessage } from "../../Snackbar"
@@ -23,6 +29,7 @@ const Player: FC = (): ReactElement => {
   const [state, setState] = useRecoilState(AudioState)
   const [indexCache, setIndexCache] = useState<number | null>(null)
   const playList = useRecoilValue(PlayListState)
+  
 
   /* 组件卸载时，歌曲要暂停 */
   useEffect(() => {
@@ -165,16 +172,19 @@ const Player: FC = (): ReactElement => {
    * @param id 歌曲id
    */
   const checkMusic = async (id: number) => {
-    return await request("check/music", "GET", `&id=${id}`).then(
-      (res: CheckMusic) => {
+    return await request("check/music", "GET", `&id=${id}`)
+      .then((res: CheckMusic) => {
         if (res.success) {
           return res
         } else {
           addMessage(res.message + ",准备下一首...")
           selectMode()
         }
-      }
-    )
+      })
+      .catch(() => {
+        addMessage("歌曲检测失败，准备下一首...")
+        selectMode()
+      })
   }
 
   /* 单曲循环 */
@@ -273,9 +283,10 @@ const Player: FC = (): ReactElement => {
           playMode={state.playMode}
           clickIcon={handleClickIcon}
           playListCount={playList.length}
+          playingId={playList[state.playIndex!]?.id}
         />
       </ControllerWrapper>
     </ControllerBarContainer>
   )
 }
-export default Player
+export default memo(Player)

@@ -5,11 +5,12 @@ interface IProps {
   children: ReactNode
   className?: string
   onClick?: MouseEventHandler
+  title?: string
 }
 
-const Button: FC<IProps> = ({ children, onClick, className }) => {
+const Button: FC<IProps> = ({ children, onClick, className,title }) => {
   return (
-    <MyButton onClick={onClick} className={className}>
+    <MyButton onClick={onClick} className={className} title={title}>
       {children}
     </MyButton>
   )

@@ -5,6 +5,8 @@ import { Track, TrackIds, SongDetailType } from "./Track"
 import { CheckMusic } from "./chekcMuisc"
 import { FontColor } from "./SpecialFont"
 import { RouterPath } from "./RouterPath"
+import { User } from "./User"
+import LikedIdsType from "./LikedIdsType"
 
 export type {
   AudioStateType,
@@ -15,7 +17,9 @@ export type {
   Track,
   TrackIds,
   SongDetailType,
-  CheckMusic
+  CheckMusic,
+  User,
+  LikedIdsType
 }
 
 export { PlayMode, FontColor, RouterPath }

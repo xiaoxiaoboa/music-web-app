@@ -6,13 +6,13 @@ const AudioState = atom<AudioStateType>({
   key: "playerState",
   default: {
     audio: new Audio(),
-    playIndex: localStorage.getItem("audiostate")
-      ? JSON.parse(localStorage.getItem("audiostate") as string).playIndex
+    playIndex: JSON.parse(localStorage.getItem("audiostate")!)
+      ? JSON.parse(localStorage.getItem("audiostate")!).playIndex
       : null,
     isPlaying: false,
     canPlay: false,
-    playMode: localStorage.getItem("audiostate")
-      ? JSON.parse(localStorage.getItem("audiostate") as string).playMode
+    playMode: JSON.parse(localStorage.getItem("audiostate")!)
+      ? JSON.parse(localStorage.getItem("audiostate")!).playMode
       : PlayMode.LISTLOOP
   }
   // effects: [

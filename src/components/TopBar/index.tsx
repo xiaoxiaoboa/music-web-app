@@ -1,4 +1,4 @@
-import { FC, ReactElement } from "react"
+import { FC, ReactElement, memo, useEffect } from "react"
 import Avatar from "../Avatar"
 import {
   TopBarContainer,
@@ -15,10 +15,40 @@ import {
 } from "./index.style"
 import ToggleTheme from "../ToggleTheme"
 import { BiSearchAlt } from "react-icons/bi"
-import { NavLink } from "react-router-dom"
+import { NavLink, Router, useNavigate } from "react-router-dom"
 import { RouterPath } from "../../types"
+import { request } from "../../utils/request"
+import { useRecoilState, useResetRecoilState } from "recoil"
+import { UserLikedIds, UserPlayLists, UserState } from "../../recoil/atom"
+import { addMessage } from "../Snackbar"
 
 const TopBar: FC = (): ReactElement => {
+  const [userInfo, setUserInfo] = useRecoilState(UserState)
+  const reSetUserPlayLists = useResetRecoilState(UserPlayLists)
+  const reSetUserLikedIds = useResetRecoilState(UserLikedIds)
+  const navigate = useNavigate()
+
+  /* 退出账号 */
+  const handlelogout = () => {
+    request("logout", "GET").then(() => {
+      localStorage.removeItem("user")
+      setUserInfo(null)
+      reSetUserLikedIds()
+      reSetUserPlayLists()
+      addMessage("退出成功")
+      navigate(RouterPath.HOME, { replace: true })
+    })
+  }
+
+  /* 跳转到登录页面 */
+  const toLogin = (): void => {
+    if (userInfo) {
+      addMessage("账号已登录...")
+    } else {
+      navigate(RouterPath.PROFILE, { replace: true })
+    }
+  }
+
   return (
     <TopBarContainer>
       <TopbarWarpper>
@@ -31,9 +61,9 @@ const TopBar: FC = (): ReactElement => {
             <NavLink to={RouterPath.SONGLISTS}>
               <Li>歌单</Li>
             </NavLink>
-            <Li>新碟上架</Li>
-            <Li>私人FM</Li>
-            <Li>我的</Li>
+            <NavLink to={userInfo ? RouterPath.PROFILE : RouterPath.LOGIN}>
+              <Li>我的</Li>
+            </NavLink>
           </Ul>
         </Nav>
         <SearchBar>
@@ -45,12 +75,15 @@ const TopBar: FC = (): ReactElement => {
         <ThemeButton>
           <ToggleTheme />
         </ThemeButton>
-        <AvatarWrapper>
-          <Avatar size={`3rem`} />
+        <AvatarWrapper
+          onClick={() => (userInfo ? handlelogout() : toLogin())}
+          title={userInfo ? "点我退出登录" : "点我去登录"}
+        >
+          <Avatar size={`3rem`} src={userInfo?.avatar} />
         </AvatarWrapper>
       </TopbarWarpper>
     </TopBarContainer>
   )
 }
 
-export default TopBar
+export default memo(TopBar)

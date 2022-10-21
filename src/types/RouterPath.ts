@@ -6,7 +6,7 @@ enum RouterPath {
   PROFILE = "/profile",
   ARTIST = "/artist",
   SONGLIST = "/songlist",
-  SONGLISTS = "/songlists"
+  SONGLISTS = "/songlists",
 }
 
 export { RouterPath }

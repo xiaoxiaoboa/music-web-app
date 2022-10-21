@@ -8,7 +8,7 @@ import {
 } from "react"
 import styled from "styled-components"
 import Loading from "../../components/Loading"
-import { getLoginStatus, request } from "../../utils/request"
+import { request } from "../../utils/request"
 import {
   QRCodeState,
   QrCodeType,
@@ -18,9 +18,15 @@ import {
   Waiting,
   Authorizing,
   AuthSuccess,
-  LoginStatusType
+  UserDetail,
+  UserAccount
 } from "./types"
-import getNewUrl from "../../utils/getNewUrl"
+import { User } from "../../types"
+import { useSetRecoilState } from "recoil"
+import { UserState } from "../../recoil/atom"
+import { addMessage } from "../../components/Snackbar"
+import { useNavigate } from "react-router-dom"
+import { RouterPath } from "../../types"
 
 const reducer = (state: QRCodeState, action: QrCodeAction): QRCodeState => {
   const { type, payload } = action
@@ -52,6 +58,8 @@ const initialState: QRCodeState = {
 const Login: FC = (): ReactElement => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const [reset, setReset] = useState<boolean>(false)
+  const setUser = useSetRecoilState(UserState)
+  const navigate = useNavigate()
 
   useEffect(() => {
     /* 加载中 */
@@ -74,29 +82,40 @@ const Login: FC = (): ReactElement => {
 
         dispatch({ type: QrCodeType.BASE64, payload: res.data.qrimg })
       })
+      .catch(() =>
+        dispatch({ type: QrCodeType.MESSAGE, payload: "二维码初始化失败" })
+      )
   }, [reset])
 
   useEffect(() => {
     if (state.base64.length < 0) return
     const timer = setInterval(() => {
       request("login/qr/check", "GET", `&key=${state.key}`).then(
-        async (res: Waiting | Authorizing | AuthSuccess) => {
-          if (res.code === 800) {
-            dispatch({ type: QrCodeType.MESSAGE, payload: res.message })
-            console.log(res.message)
+        async (status: Waiting | Authorizing | AuthSuccess) => {
+          if (status.code === 800) {
+            dispatch({ type: QrCodeType.MESSAGE, payload: status.message })
             clearInterval(timer)
-          } else if (res.code === 802) {
-            dispatch({ type: QrCodeType.MESSAGE, payload: res.message })
-            console.log(res.message)
-          } else if (res.code === 803) {
+          } else if (status.code === 802) {
+            dispatch({ type: QrCodeType.MESSAGE, payload: status.message })
+          } else if (status.code === 803) {
             clearInterval(timer)
-            dispatch({ type: QrCodeType.MESSAGE, payload: res.message })
-            await getLoginStatus(res.cookie).then((res: LoginStatusType) =>
-              localStorage.setItem(
-                "user_profile",
-                JSON.stringify(res.data.profile)
-              )
-            )
+            dispatch({ type: QrCodeType.MESSAGE, payload: status.message })
+
+            /* 把用户信息存到本地 */
+            request("user/account", "GET").then((useraccount: UserAccount) => {
+              if (useraccount.profile) {
+                request(
+                  "user/detail",
+                  "GET",
+                  `&uid=${useraccount.account.id}`
+                ).then((UserDetail: UserDetail) => {
+                  saveUser(UserDetail, useraccount.account.id)
+                  navigate(RouterPath.PROFILE, { replace: true })
+                })
+              } else {
+                addMessage("未登录成功，请重试！")
+              }
+            })
           }
         }
       )
@@ -107,10 +126,27 @@ const Login: FC = (): ReactElement => {
     }
   }, [state.base64])
 
-  const handleReSet = () => {
+  /* 重置二维码 */
+  const handleReSet = (): void => {
     dispatch({ type: QrCodeType.RESET, payload: initialState })
     setReset(!reset)
   }
+
+  /* 把用户信息存入本地 */
+  const saveUser = (value: UserDetail, id: number): void => {
+    const userData: User = {
+      id: id,
+      nickName: value.profile.nickname,
+      avatar: value.profile.avatarUrl,
+      level: value.level,
+      follows: value.profile.follows,
+      followeds: value.profile.followeds,
+      createTime: value.createTime
+    }
+    localStorage.setItem("user", JSON.stringify(userData))
+    setUser(() => userData)
+  }
+
 
   return (
     <>
@@ -120,7 +156,7 @@ const Login: FC = (): ReactElement => {
         <LoginContainer>
           <LoginWrapper>
             <ImgWrapper>
-              <img src={getNewUrl(state.base64)} />
+              <img src={state.base64} />
               {state.message.length > 0 ? (
                 <NoticeMask>
                   <span>{state.message}</span>

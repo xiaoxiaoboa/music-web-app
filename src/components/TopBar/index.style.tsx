@@ -38,7 +38,7 @@ export const Ul = styled.ul`
   gap: 1.5625rem;
   font-size: 1.25rem;
   color: ${props => props.theme.primary_color};
-  justify-content: center;
+  justify-content: flex-end;
 `
 export const Li = styled.li`
   padding: 4px 8px;

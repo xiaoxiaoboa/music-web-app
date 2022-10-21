@@ -1,6 +1,6 @@
-import { FC, ReactElement, memo, useMemo, useState } from "react"
+import { FC, ReactElement, memo, useMemo, useState, useEffect } from "react"
 import styled from "styled-components"
-import { RiPlayListFill, RiHeart2Line } from "react-icons/ri"
+import { RiPlayListFill, RiHeart2Line, RiHeart2Fill } from "react-icons/ri"
 import {
   TbRepeatOnce,
   TbRepeat,
@@ -9,22 +9,45 @@ import {
 } from "react-icons/tb"
 import Volume from "../../../Volume"
 import Button from "../../../Button"
-import { PlayMode, Track } from "../../../../types"
-import { useRecoilState } from "recoil"
-import { PlayListState, AudioState } from "../../../../recoil/atom"
-import timeFormat from "../../../../utils/timeFormat"
+import { LikedIdsType, PlayMode, Track } from "../../../../types"
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
+import {
+  PlayListState,
+  AudioState,
+  UserState,
+  UserLikedIds
+} from "../../../../recoil/atom"
+import { timeFormat, request } from "../../../../utils"
+import useIsLiked from "../../../../Hooks/useIsLiked"
 
 interface IProps {
   audio: HTMLAudioElement
   playMode: PlayMode
   clickIcon: () => void
   playListCount: number
+  playingId: number
 }
 
 const Right: FC<IProps> = (props): ReactElement => {
-  const { audio, playMode, clickIcon, playListCount } = props
+  const { audio, playMode, clickIcon, playListCount, playingId } = props
 
+  /* 打开播放列表 */
   const [open, setOpen] = useState<boolean>(false)
+  /* 用户信息 */
+  const userInfo = useRecoilValue(UserState)
+  /* 用户喜欢的歌曲id */
+  const setIds = useSetRecoilState(UserLikedIds)
+  /* 某一首歌是否已经喜欢 */
+  const [isLiked, isLikedFn, setLikedId] = useIsLiked(playingId)
+
+  useEffect(() => {
+    /* 获取用户喜欢的歌曲 */
+    if (userInfo) {
+      request("likelist", "GET", `&uid=${userInfo.id}`).then(
+        (res: LikedIdsType) => setIds(() => res.ids)
+      )
+    }
+  }, [userInfo])
 
   /* 改变图标 */
   const changeIcon = (): JSX.Element => {
@@ -37,6 +60,19 @@ const Right: FC<IProps> = (props): ReactElement => {
         return <TbArrowsShuffle className="TbArrowsShuffle" />
       default:
         return <TbArrowsShuffle className="TbArrowsShuffle" />
+    }
+  }
+  /* 修改标题 */
+  const changeTitle = (): string => {
+    switch (playMode) {
+      case PlayMode.LISTLOOP:
+        return "列表循环"
+      case PlayMode.LOOP:
+        return "单曲循环"
+      case PlayMode.SHUFFLE:
+        return "随机播放"
+      default:
+        return "随机播放"
     }
   }
 
@@ -57,11 +93,17 @@ const Right: FC<IProps> = (props): ReactElement => {
 
   return (
     <RightButton listLength={playListCount}>
-      <Button onClick={clickIcon}>{changeIcon()}</Button>
-      <Button>
-        <RiHeart2Line className="RiHeart2Line" />
+      <Button title={changeTitle()} onClick={clickIcon}>
+        {changeIcon()}
       </Button>
-      <Button onClick={() => setOpen(prev => !prev)}>
+      <Button title={isLiked ? "不喜欢" : "喜欢"}>
+        {isLiked ? (
+          <RiHeart2Fill className="RiHeart2Fill" />
+        ) : (
+          <RiHeart2Line className="RiHeart2Line" />
+        )}
+      </Button>
+      <Button onClick={() => setOpen(prev => !prev)} title={"播放列表"}>
         <RiPlayListFill className="RiPlayListFill" />
       </Button>
       <VolumeButtonBox>
@@ -136,7 +178,8 @@ const PlayList: FC<PlayListProps> = ({ playListCount }): ReactElement => {
             <Song
               key={obj.id}
               playing={playListState.indexOf(obj) === audioState.playIndex}
-              onDoubleClick={() => handleDbClick(obj)}>
+              onDoubleClick={() => handleDbClick(obj)}
+            >
               <Name title={obj.name}>{obj.name}</Name>
               <Artist title={obj.ar[0].name}>{obj.ar[0].name}</Artist>
               <Alubum title={obj.al.name}>{obj.al.name}</Alubum>
@@ -163,6 +206,7 @@ const RightButton = styled.div<ButtonColor>`
   gap: 6px;
 
   .RiHeart2Line,
+  .RiHeart2Fill,
   .RiPlayListFill,
   .TbArrowsShuffle,
   .TbRepeatOnce,
@@ -173,6 +217,9 @@ const RightButton = styled.div<ButtonColor>`
   .RiPlayListFill {
     color: ${props =>
       props.listLength > 0 ? props.theme.secondary_color : "inherit"};
+  }
+  .RiHeart2Fill {
+    color: ${props => props.theme.secondary_color};
   }
 `
 const VolumeButtonBox = styled.div`

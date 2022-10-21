@@ -13,6 +13,9 @@ export default function useScroll(
   useEffect(() => {
     if (songsId.length > 0) {
       requestSongs()
+    }else {
+      setState([])
+      setRequesting("没有更多了！")
     }
   }, [songsId.length])
 
@@ -22,7 +25,7 @@ export default function useScroll(
     const ids: number[] = limitCount(songsId, minRef.current, maxRef.current)
     request("song/detail", "GET", `&ids=${ids.toString()}`).then(
       (res: SongDetailType) => {
-        setState((prev: Track[]) => [...prev, ...res.songs])
+        setState((prev) => [...prev as Track[], ...res.songs])
         setRequesting(false)
       }
     )

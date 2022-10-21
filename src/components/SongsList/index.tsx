@@ -1,9 +1,12 @@
 import { FC, ReactElement, useMemo, memo } from "react"
-import { RiHeart2Line } from "react-icons/ri"
-import { useRecoilState } from "recoil"
+import { RiHeart2Line, RiHeart2Fill } from "react-icons/ri"
+import { useRecoilState, useRecoilValue } from "recoil"
 import styled from "styled-components"
-import { AudioState, PlayListState } from "../../recoil/atom"
+import useIsLiked from "../../Hooks/useIsLiked"
+import { AudioState, PlayListState, UserLikedIds } from "../../recoil/atom"
 import { FontColor, RouterPath, Track } from "../../types"
+import { request } from "../../utils"
+import { addMessage } from "../Snackbar"
 import SpecialFont from "../SpecialFont"
 
 interface IProps {
@@ -13,6 +16,7 @@ interface IProps {
 const SongsList: FC<IProps> = ({ data }): ReactElement => {
   const [state, setState] = useRecoilState(AudioState)
   const [playList, setPlayList] = useRecoilState(PlayListState)
+  const [isLiked, isLikedFn, setLikedId] = useIsLiked()
 
   const handleDbClick = (value: Track): void => {
     /* 找一下是否已经播放过这个歌曲了 */
@@ -43,6 +47,33 @@ const SongsList: FC<IProps> = ({ data }): ReactElement => {
     [data]
   )
 
+  const handleLike = (isLiked: boolean, id: number) => {
+    if (isLiked) {
+      /* 取消喜欢 */
+      request("like", "GET", `&id=${id}&like=${!isLiked}`)
+        .then(res => {
+          if (res.code === 200) {
+            setLikedId(prev => prev.filter(obj => obj !== id))
+          }
+        })
+        .catch(err => {
+          addMessage("操作失败,请重试")
+          console.log(err)
+        })
+    } else {
+      /* 喜欢 */
+      request("like", "GET", `&id=${id}&like=${!isLiked}`)
+        .then(res => {
+          if (res.code === 200) {
+            setLikedId(prev => [...prev, id])
+          }
+        })
+        .catch(err => {
+          addMessage("操作失败,请重试")
+          console.log(err)
+        })
+    }
+  }
 
   return (
     <Songs>
@@ -54,8 +85,15 @@ const SongsList: FC<IProps> = ({ data }): ReactElement => {
                 {(data.indexOf(song) + 1).toString()}
               </SpecialFont>
             </SN>
-            <div className="like">
-              <RiHeart2Line className="RiHeart2Line" />
+            <div
+              className="like"
+              onClick={() => handleLike(isLikedFn(song.id), song.id)}
+            >
+              {isLikedFn(song.id) ? (
+                <RiHeart2Fill className="RiHeart2Fill" />
+              ) : (
+                <RiHeart2Line className="RiHeart2Line" />
+              )}
             </div>
             <NameWrapper title={song.name}>
               <Name>{song.name}</Name>
@@ -71,7 +109,13 @@ const SongsList: FC<IProps> = ({ data }): ReactElement => {
               </SpecialFont>
             </Artist>
             <Album title={song.al.name}>
-              <SpecialFont color={FontColor.LIGHTCOLOR} link size={`18px`} to={{path: RouterPath.ALBUM, id: song.al.id}} className='album'>
+              <SpecialFont
+                color={FontColor.LIGHTCOLOR}
+                link
+                size={`18px`}
+                to={{ path: RouterPath.ALBUM, id: song.al.id }}
+                className="album"
+              >
                 {song.al.name}
               </SpecialFont>
             </Album>
@@ -110,8 +154,10 @@ const Song = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 
-    .RiHeart2Line {
+    .RiHeart2Line,
+    .RiHeart2Fill {
       width: 20px;
       height: 20px;
       color: ${props => props.theme.secondary_color};

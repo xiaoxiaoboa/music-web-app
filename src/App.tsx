@@ -1,4 +1,4 @@
-import { FC, ReactElement, Suspense } from "react"
+import { FC, ReactElement, Suspense, useEffect } from "react"
 import styled from "styled-components"
 import AudioPlayer from "./components/AudioPlayer"
 import Snackbar from "./components/Snackbar"
@@ -6,8 +6,6 @@ import TopBar from "./components/TopBar"
 import Routes from "./routes"
 
 const App: FC = (): ReactElement => {
-
-
   return (
     <AppContainer>
       <Snackbar />
@@ -18,7 +16,6 @@ const App: FC = (): ReactElement => {
         </Suspense>
       </MainContainer>
       <AudioPlayer />
-      
     </AppContainer>
   )
 }
@@ -29,11 +26,11 @@ const AppContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  align-items:center;
+  align-items: center;
 `
 const MainContainer = styled.div`
   flex: 1;
-  width:100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   overflow-y: auto;

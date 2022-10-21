@@ -64,6 +64,7 @@ const SongListDetail = () => {
   useEffect(() => {
     request("playlist/detail", "GET", `&id=${location.state.id}`).then(
       (res: SongListsDetailType) => {
+        console.log(res)
         /* 设置歌单 */
         dispatch({ type: DetailType.DETAIL, paylad: res.playlist })
         /* 设置歌单所有歌曲ID */
@@ -190,24 +191,18 @@ const SongListDetail = () => {
               </Desc>
             </SongListInfo>
 
-            {tracks.length > 0 ? (
-              <>
-                <SongsList data={tracks} />
-                <ButtonBottom>
-                  {requesting === true ? (
-                    <Loading scale={0.5} />
-                  ) : typeof requesting === "string" ? (
-                    requesting
-                  ) : (
-                    <Button className="requestbutton" onClick={requestSongs}>
-                      加载更多
-                    </Button>
-                  )}
-                </ButtonBottom>
-              </>
-            ) : (
-              <Loading />
-            )}
+            <SongsList data={tracks} />
+            <ButtonBottom>
+              {requesting === true ? (
+                <Loading scale={0.5} />
+              ) : typeof requesting === "string" ? (
+                requesting
+              ) : (
+                <Button className="requestbutton" onClick={requestSongs}>
+                  加载更多
+                </Button>
+              )}
+            </ButtonBottom>
           </>
         </Container>
       ) : (
@@ -318,5 +313,4 @@ const ButtonBottom = styled.div`
     border-radius: 7px;
     background-color: ${props => props.theme.hover_BgColor};
   }
-
 `
