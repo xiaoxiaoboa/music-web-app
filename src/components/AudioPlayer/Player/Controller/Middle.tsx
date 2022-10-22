@@ -4,7 +4,7 @@ import { FaPlay, FaPause, FaStepForward, FaStepBackward } from "react-icons/fa"
 import Button from "../../../Button"
 import Slider from "../../../Slider"
 import { useRecoilValue } from "recoil"
-import { AudioState } from "../../../../recoil/atom"
+import { AudioState } from "../../../../recoil"
 import {useCurrentTime} from "../../../../Hooks"
 import {useDuration} from "../../../../Hooks"
 

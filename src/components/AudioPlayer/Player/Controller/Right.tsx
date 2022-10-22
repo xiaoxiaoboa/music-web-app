@@ -16,7 +16,7 @@ import {
   AudioState,
   UserState,
   UserLikedIds
-} from "../../../../recoil/atom"
+} from "../../../../recoil"
 import { timeFormat, request } from "../../../../utils"
 import useIsLiked from "../../../../Hooks/useIsLiked"
 

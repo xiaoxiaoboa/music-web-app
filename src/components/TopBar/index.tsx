@@ -18,15 +18,26 @@ import { BiSearchAlt } from "react-icons/bi"
 import { NavLink, Router, useNavigate } from "react-router-dom"
 import { RouterPath } from "../../types"
 import { request } from "../../utils/request"
-import { useRecoilState, useResetRecoilState } from "recoil"
-import { UserLikedIds, UserPlayLists, UserState } from "../../recoil/atom"
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil"
+import { UserLikedIds, UserState } from "../../recoil"
 import { addMessage } from "../Snackbar"
+import { userPlayList } from "../../pages/Profile"
+import { UserPlayLists } from "../../recoil"
 
 const TopBar: FC = (): ReactElement => {
   const [userInfo, setUserInfo] = useRecoilState(UserState)
-  const reSetUserPlayLists = useResetRecoilState(UserPlayLists)
   const reSetUserLikedIds = useResetRecoilState(UserLikedIds)
+  const setUserPlayLists = useSetRecoilState(UserPlayLists)
   const navigate = useNavigate()
+
+  /* 获取用户歌单 */
+  useEffect(() => {
+    if (userInfo) {
+      request("user/playlist", "GET", `&uid=${userInfo.id}`).then(
+        (res: userPlayList) => setUserPlayLists(res.playlist)
+      )
+    }
+  }, [userInfo])
 
   /* 退出账号 */
   const handlelogout = () => {
@@ -34,7 +45,6 @@ const TopBar: FC = (): ReactElement => {
       localStorage.removeItem("user")
       setUserInfo(null)
       reSetUserLikedIds()
-      reSetUserPlayLists()
       addMessage("退出成功")
       navigate(RouterPath.HOME, { replace: true })
     })

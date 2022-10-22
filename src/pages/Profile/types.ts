@@ -1,11 +1,14 @@
+import { SongList } from "../SongListDetail/types"
+
+
 interface userPlayList {
   code: number
   more: boolean
-  playlist: playList[]
+  playlist: SongList[]
   version: number
 }
 
-interface playList {
+interface playList  {
   adType: number
   anonimous: boolean
   artists: null

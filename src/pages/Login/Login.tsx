@@ -16,7 +16,7 @@ import {
 } from "./types"
 import { User } from "../../types"
 import { useSetRecoilState } from "recoil"
-import { UserState } from "../../recoil/atom"
+import { UserState } from "../../recoil"
 import { addMessage } from "../../components/Snackbar"
 import { useNavigate } from "react-router-dom"
 import { RouterPath } from "../../types"

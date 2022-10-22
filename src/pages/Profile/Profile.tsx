@@ -1,26 +1,15 @@
-import React, { FC, ReactElement, useMemo, useEffect } from "react"
-import { useRecoilState, useRecoilValue } from "recoil"
+import { FC, ReactElement, useMemo } from "react"
+import { useRecoilValue } from "recoil"
 import styled from "styled-components"
 import Avatar from "../../components/Avatar"
-import { UserPlayLists, UserState } from "../../recoil/atom"
+import { UserPlayLists, UserState } from "../../recoil"
 import getNewUrl from "../../utils/getNewUrl"
 import List from "../../components/List"
-import { request } from "../../utils"
-import { userPlayList } from "./types"
 import { RouterPath } from "../../types"
 
 const Profile: FC = (): ReactElement => {
   const userInfo = useRecoilValue(UserState)
-  const [userPlayLists, setUserPlayLists] = useRecoilState(UserPlayLists)
-
-  useEffect(() => {
-    if (userPlayLists.length < 1 && userInfo) {
-      request("user/playlist", "GET", `&uid=${userInfo?.id}`).then(
-        (res: userPlayList) =>
-          setUserPlayLists(() => res.playlist)
-      )
-    }
-  }, [userInfo])
+  const userPlayLists = useRecoilValue(UserPlayLists)
 
   /* 计算日期 */
   const getDate = useMemo(
@@ -55,10 +44,15 @@ const Profile: FC = (): ReactElement => {
         </Info>
       </UserInfo>
       <Content>
-        <List datas={{
+        <List
+          datas={{
             type: RouterPath.SONGLIST,
             list: userPlayLists
-          }} amount={5} w={300} h={300} />
+          }}
+          amount={5}
+          w={300}
+          h={300}
+        />
       </Content>
     </Container>
   )

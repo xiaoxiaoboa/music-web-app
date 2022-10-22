@@ -6,7 +6,7 @@ import React, {
   useState
 } from "react"
 import { SetterOrUpdater, useRecoilState } from "recoil"
-import { UserLikedIds } from "../recoil/atom"
+import { UserLikedIds } from "../recoil"
 
 const useIsLiked = (
   id?: number

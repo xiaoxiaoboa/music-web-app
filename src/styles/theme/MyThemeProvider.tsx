@@ -2,7 +2,7 @@ import React, { FC, ReactElement, useState } from "react"
 import { ThemeProvider } from "styled-components"
 import { LightTheme, DarkTheme, GlobalStyle } from "."
 import {RecoilState, RecoilValue, useRecoilValue} from 'recoil'
-import { ThemeState } from "../../recoil/atom"
+import { ThemeState } from "../../recoil"
 
 interface IProps {
   children: ReactElement

@@ -1,6 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from "react"
-import { useRecoilState, useRecoilValue } from "recoil"
-import { AudioState } from "../recoil/atom"
 
 /* 获取媒体的currentTime */
 export default function useCurrentTime(

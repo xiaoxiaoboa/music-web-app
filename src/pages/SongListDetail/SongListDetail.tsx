@@ -14,9 +14,9 @@ import {
   DetailAction,
   DetailType
 } from "./types"
-import { AudioState, PlayListState } from "../../recoil/atom"
+import { AudioState, PlayListState, UserPlayLists } from "../../recoil"
 import Loading from "../../components/Loading"
-import { useRecoilState, useSetRecoilState } from "recoil"
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
 import { useScroll } from "../../Hooks"
 import getNewUrl from "../../utils/getNewUrl"
 import SongsList from "../../components/SongsList"
@@ -60,6 +60,7 @@ const SongListDetail = () => {
   const setPlayList = useSetRecoilState(PlayListState)
   const [reducerState, dispatch] = useReducer(reducer, initialState)
   const [tracks, requesting, requestSongs] = useScroll(reducerState.songsId)
+  const [userPlayLists, setUserPlayLists] = useRecoilState(UserPlayLists)
 
   useEffect(() => {
     request("playlist/detail", "GET", `&id=${location.state.id}`).then(
@@ -98,6 +99,33 @@ const SongListDetail = () => {
         setAudioState(prev => ({ ...prev, playIndex: index }))
       }
     )
+  }
+
+  /* 处理歌单的收藏和取消收藏 */
+  const handleLikeSongList = (value: number) => {
+    const isLiked =
+      userPlayLists.findIndex(obj => obj.id === reducerState.detail.id) > -1
+        ? 2
+        : 1
+
+    request("playlist/subscribe", "GET", `&t=${isLiked}&id=${value}`)
+      .then(res => {
+        if (res.code === 200) {
+          if (isLiked === 2) {
+            setUserPlayLists(prev =>
+              prev.filter(obj => obj.id !== reducerState.detail.id)
+            )
+            addMessage("已取消收藏")
+          } else if (isLiked === 1) {
+            let tempValue = { ...reducerState.detail }
+            tempValue.subscribed = true
+
+            setUserPlayLists(prev => [...prev, tempValue])
+            addMessage("已收藏")
+          }
+        }
+      })
+      .catch(err => console.log(err))
   }
 
   return (
@@ -166,9 +194,17 @@ const SongListDetail = () => {
                     <FaPlay size={`18px`} />
                     播放全部
                   </Button>
-                  <Button className="collectbutton">
+                  <Button
+                    className="collectbutton"
+                    disabled={userPlayLists[0].id === reducerState.detail.id}
+                    onClick={() => handleLikeSongList(reducerState.detail?.id)}
+                  >
                     <BsFolderPlus size={`18px`} />
-                    收藏歌单
+                    {userPlayLists.findIndex(
+                      obj => obj.id === reducerState.detail.id
+                    ) > -1
+                      ? "取消收藏"
+                      : "收藏歌单"}
                   </Button>
                 </PlayButton>
                 <Intro

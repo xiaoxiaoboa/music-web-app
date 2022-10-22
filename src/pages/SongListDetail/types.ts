@@ -11,7 +11,7 @@ interface SongList {
   commentThreadId: string
   copied: boolean
   coverImgId: number
-  coverImgId_str: null
+  coverImgId_str: string
   coverImgUrl: string
   createTime: number
   creator: {
@@ -69,7 +69,7 @@ interface SongList {
   sharedUsers: null
   specialType: number
   status: number
-  subscribed: null
+  subscribed: boolean
   subscribedCount: number
   subscribers: {
     accountStatus: number

@@ -6,38 +6,40 @@ interface IProps {
   className?: string
   onClick?: MouseEventHandler
   title?: string
+  disabled?: boolean
 }
 
-const Button: FC<IProps> = ({ children, onClick, className,title }) => {
+const Button: FC<IProps> = props => {
+  const { children, onClick, className, title, disabled } = props
   return (
-    <MyButton onClick={onClick} className={className} title={title}>
+    <MyButton
+      onClick={onClick}
+      className={className}
+      title={title}
+      disabled={disabled}
+    >
       {children}
     </MyButton>
   )
 }
 export default memo(Button)
 
-const MyButton = styled.button`
+interface ButtonProps {
+  disalbed?: boolean
+}
+
+const MyButton = styled.button<ButtonProps>`
   border: none;
   padding: 8px;
   display: flex;
   align-items: center;
   border-radius: 8px;
-  background-color: unset;
-  cursor: pointer;
-  color: inherit;
-
+  background-color: ${props =>
+    props.disabled ? "#696969 !important" : "unset"};
+  cursor: ${props => (props.disabled ? "unset" : "pointer")};
+  color: ${props => (props.disabled ? "#A9A9A9 !important" : "inherit")};
 
   &:active {
-    scale: 0.9;
+    scale: ${props => (props.disabled ? "1" : "0.9")};
   }
 `
-const Shadow = styled.div`
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  border-radius:8px;
-`
-const Back = styled.div``

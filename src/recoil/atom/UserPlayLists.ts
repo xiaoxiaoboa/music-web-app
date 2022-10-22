@@ -1,7 +1,7 @@
 import { atom } from "recoil";
-import { playList } from "../../pages/Profile";
+import { SongList } from "../../pages/SongListDetail/types";
 
-const UserPlayLists = atom<playList[]>({
+const UserPlayLists = atom<SongList[]>({
   key: "UserPlayLists",
   default: [],
 })

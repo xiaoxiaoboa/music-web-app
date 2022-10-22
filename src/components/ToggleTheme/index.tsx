@@ -1,6 +1,6 @@
 import { FC, ReactElement, useEffect } from "react"
 import { useRecoilState } from "recoil"
-import { ThemeState } from "../../recoil/atom"
+import { ThemeState } from "../../recoil"
 import { RiMoonClearLine, RiSunLine } from "react-icons/ri"
 import styled from "styled-components"
 
