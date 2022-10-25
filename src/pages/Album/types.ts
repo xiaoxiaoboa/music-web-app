@@ -39,19 +39,19 @@ interface AlbumType {
 }
 
 
-interface Album {
+interface Album  {
   songs: []
   paid: boolean
   onSale: boolean
   mark: number
   awardTags: null
   companyId: number
-  alias: []
+  alias: string[]
   artists: {
     img1v1Id: number
     topicPerson: number
     trans: string
-    alias: []
+    alias: string[]
     picId: number
     followed: boolean
     picUrl: string
@@ -208,4 +208,13 @@ interface Album_Songs{
     }
   }
 
-export type { AlbumType, Album, Album_Songs }
+
+  interface LikedAlbums {
+    data: Album[]
+    count: number
+    hasMore: boolean
+    paidCount: number
+    code: number
+  }
+
+export type { AlbumType, Album, Album_Songs, LikedAlbums }

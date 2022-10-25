@@ -11,6 +11,7 @@ const SongListDetail = lazy(() => import("../pages/SongListDetail"))
 const Album = lazy(() => import("../pages/Album"))
 const SongLists = lazy(() => import("../pages/SongLists"))
 const Profile = lazy(() => import("../pages/Profile"))
+const Search = lazy(() => import("../pages/Search/Search"))
 
 const Routes = () => {
   const element = useRoutes([
@@ -46,6 +47,10 @@ const Routes = () => {
     {
       path: "profile",
       element: <Profile />
+    },
+    {
+      path: "search",
+      element: <Search />
     }
   ])
 

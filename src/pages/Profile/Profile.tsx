@@ -2,14 +2,15 @@ import { FC, ReactElement, useMemo } from "react"
 import { useRecoilValue } from "recoil"
 import styled from "styled-components"
 import Avatar from "../../components/Avatar"
-import { UserPlayLists, UserState } from "../../recoil"
+import { UserLikedAlbums, UserLikedPlayLists, UserState } from "../../recoil"
 import getNewUrl from "../../utils/getNewUrl"
 import List from "../../components/List"
 import { RouterPath } from "../../types"
 
 const Profile: FC = (): ReactElement => {
   const userInfo = useRecoilValue(UserState)
-  const userPlayLists = useRecoilValue(UserPlayLists)
+  const userPlayLists = useRecoilValue(UserLikedPlayLists)
+  const userLikedAlbums = useRecoilValue(UserLikedAlbums)
 
   /* 计算日期 */
   const getDate = useMemo(
@@ -44,15 +45,29 @@ const Profile: FC = (): ReactElement => {
         </Info>
       </UserInfo>
       <Content>
-        <List
-          datas={{
-            type: RouterPath.SONGLIST,
-            list: userPlayLists
-          }}
-          amount={5}
-          w={300}
-          h={300}
-        />
+        <SongLists>
+          {userPlayLists.length < 1 ? <></> : <h1>我收藏的歌单</h1>}
+
+          <List
+            datas={{
+              type: RouterPath.SONGLIST,
+              list: userPlayLists
+            }}
+            amount={5}
+            w={300}
+            h={300}
+          />
+        </SongLists>
+        <Albums>
+          {userLikedAlbums.length < 1 ? <></> : <h1>我收藏的专辑</h1>}
+
+          <List
+            datas={{ type: RouterPath.ALBUM, list: userLikedAlbums }}
+            amount={5}
+            w={300}
+            h={300}
+          />
+        </Albums>
       </Content>
     </Container>
   )
@@ -85,4 +100,15 @@ const Info = styled.div`
 `
 const Name = styled.h1``
 
-const Content = styled.div``
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+`
+
+const SongLists = styled(Content)`
+  gap:20px;
+`
+const Albums = styled(Content)`
+  gap:20px;
+`

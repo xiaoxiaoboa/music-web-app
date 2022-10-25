@@ -57,6 +57,7 @@ export const SearchBar = styled.div`
   display: flex;
   justify-content: center;
   color: ${props => props.theme.search_color};
+  position: relative;
 `
 export const InputBox = styled.div`
   width: 80%;
@@ -85,10 +86,53 @@ export const Input = styled.input`
   background-color: inherit;
   border: none;
   outline: none;
-  margin-left: .3125rem;
-  padding: 0.1875rem;
-  font-size: 0.875rem;
-  color: inherit;
+  margin-left: 0.3125rem;
+  /* padding: 0.1875rem; */
+  font-size: 16px;
+  color: ${props => props.theme.secondary_color};
+  font-weight: bold;
+`
+
+interface HistoryBoxType {
+  open: boolean
+}
+
+export const HistoryBox = styled.div<HistoryBoxType>`
+  width: 80%;
+  height: ${props => (props.open ? "unset" : "0")};
+  background-color: ${props => props.theme.search_bgColor};
+  border-radius: 8px;
+  box-shadow: ${props => props.theme.nav_boxShadow};
+  position: absolute;
+  top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+  padding: ${props => (props.open ? "10px" : "0")};
+  color: ${props => props.theme.primary_color};
+  /* justify-content:center; */
+`
+
+export const Words = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`
+export const BottomButton = styled.div`
+  display:flex;
+  justify-content:center;
+`
+
+export const Item = styled.div`
+  display: flex;
+  padding: 4px 8px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;
+
+  &:hover {
+    background-color: ${porps => porps.theme.hover_BgColor};
+  }
 `
 
 /* 头像 */
@@ -97,8 +141,6 @@ export const AvatarWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-
-  
 `
 
 export const ThemeButton = styled.div`

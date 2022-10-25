@@ -35,7 +35,7 @@ const ArtistDetail = () => {
       {artistDetail ? (
         <Container>
           <ArtistIntro>
-            <div title="点击关注">
+            <div>
               <Avatar
                 size={`200px`}
                 src={getNewUrl(

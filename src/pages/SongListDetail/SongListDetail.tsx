@@ -14,7 +14,7 @@ import {
   DetailAction,
   DetailType
 } from "./types"
-import { AudioState, PlayListState, UserPlayLists } from "../../recoil"
+import { AudioState, PlayListState, UserLikedPlayLists } from "../../recoil"
 import Loading from "../../components/Loading"
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
 import { useScroll } from "../../Hooks"
@@ -60,7 +60,8 @@ const SongListDetail = () => {
   const setPlayList = useSetRecoilState(PlayListState)
   const [reducerState, dispatch] = useReducer(reducer, initialState)
   const [tracks, requesting, requestSongs] = useScroll(reducerState.songsId)
-  const [userPlayLists, setUserPlayLists] = useRecoilState(UserPlayLists)
+  const [userLikedPlayLists, setUserPlayLists] =
+    useRecoilState(UserLikedPlayLists)
 
   useEffect(() => {
     request("playlist/detail", "GET", `&id=${location.state.id}`).then(
@@ -104,7 +105,7 @@ const SongListDetail = () => {
   /* 处理歌单的收藏和取消收藏 */
   const handleLikeSongList = (value: number) => {
     const isLiked =
-      userPlayLists.findIndex(obj => obj.id === reducerState.detail.id) > -1
+      userLikedPlayLists.findIndex(obj => obj.id === reducerState.detail.id) > -1
         ? 2
         : 1
 
@@ -117,10 +118,7 @@ const SongListDetail = () => {
             )
             addMessage("已取消收藏")
           } else if (isLiked === 1) {
-            let tempValue = { ...reducerState.detail }
-            tempValue.subscribed = true
-
-            setUserPlayLists(prev => [...prev, tempValue])
+            setUserPlayLists(prev => [...prev, reducerState.detail])
             addMessage("已收藏")
           }
         }
@@ -144,7 +142,7 @@ const SongListDetail = () => {
                     src={getNewUrl(reducerState.detail?.creator.avatarUrl)}
                     size={`2rem`}
                   />
-                  <SpecialFont link color={FontColor.LINKCOLOR}>
+                  <SpecialFont color={FontColor.LINKCOLOR}>
                     {reducerState.detail?.creator.nickname}
                   </SpecialFont>
                   <SpecialFont color={FontColor.LIGHTCOLOR} size={`14px`}>
@@ -156,8 +154,7 @@ const SongListDetail = () => {
                   {reducerState.detail?.tags.map(tag => (
                     <SpecialFont
                       key={reducerState.detail.tags.indexOf(tag)}
-                      link
-                      color={FontColor.LINKCOLOR}
+                      color={FontColor.LIGHTCOLOR}
                     >
                       {tag}
                     </SpecialFont>
@@ -196,11 +193,13 @@ const SongListDetail = () => {
                   </Button>
                   <Button
                     className="collectbutton"
-                    disabled={userPlayLists[0].id === reducerState.detail.id}
+                    disabled={
+                      userLikedPlayLists[0].id === reducerState.detail.id
+                    }
                     onClick={() => handleLikeSongList(reducerState.detail?.id)}
                   >
                     <BsFolderPlus size={`18px`} />
-                    {userPlayLists.findIndex(
+                    {userLikedPlayLists.findIndex(
                       obj => obj.id === reducerState.detail.id
                     ) > -1
                       ? "取消收藏"

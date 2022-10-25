@@ -1,11 +1,11 @@
 import { atom } from "recoil";
 import { SongList } from "../../pages/SongListDetail/types";
 
-const UserPlayLists = atom<SongList[]>({
+const UserLikedPlayLists = atom<SongList[]>({
   key: "UserPlayLists",
-  default: [],
+  default: []
 })
 
 
 
-export default UserPlayLists
+export default UserLikedPlayLists

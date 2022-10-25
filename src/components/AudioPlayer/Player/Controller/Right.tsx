@@ -15,10 +15,11 @@ import {
   PlayListState,
   AudioState,
   UserState,
-  UserLikedIds
+  UserLikedSongListsIds
 } from "../../../../recoil"
 import { timeFormat, request } from "../../../../utils"
 import useIsLiked from "../../../../Hooks/useIsLiked"
+import { addMessage } from "../../../Snackbar"
 
 interface IProps {
   audio: HTMLAudioElement
@@ -35,8 +36,6 @@ const Right: FC<IProps> = (props): ReactElement => {
   const [open, setOpen] = useState<boolean>(false)
   /* 用户信息 */
   const userInfo = useRecoilValue(UserState)
-  /* 用户喜欢的歌曲id */
-  const setIds = useSetRecoilState(UserLikedIds)
   /* 某一首歌是否已经喜欢 */
   const [isLiked, isLikedFn, setLikedId] = useIsLiked(playingId)
 
@@ -44,7 +43,7 @@ const Right: FC<IProps> = (props): ReactElement => {
     /* 获取用户喜欢的歌曲 */
     if (userInfo) {
       request("likelist", "GET", `&uid=${userInfo.id}`).then(
-        (res: LikedIdsType) => setIds(() => res.ids)
+        (res: LikedIdsType) => setLikedId(() => res.ids)
       )
     }
   }, [userInfo])
@@ -91,12 +90,27 @@ const Right: FC<IProps> = (props): ReactElement => {
     )
   }, [])
 
+  /* 喜欢歌曲 */
+  const handleLike = () => {
+    request("like", "GET", `&like=${!isLiked}&id=${playingId}`).then(res => {
+      if (res.code === 200) {
+        if (isLiked) {
+          addMessage("取消喜欢")
+          setLikedId(prev => prev.filter(obj => obj !== playingId))
+        } else {
+          addMessage("喜欢歌曲")
+          setLikedId(prev => [...prev, playingId])
+        }
+      }
+    })
+  }
+
   return (
     <RightButton listLength={playListCount}>
       <Button title={changeTitle()} onClick={clickIcon}>
         {changeIcon()}
       </Button>
-      <Button title={isLiked ? "不喜欢" : "喜欢"}>
+      <Button title={isLiked ? "不喜欢" : "喜欢"} onClick={handleLike}>
         {isLiked ? (
           <RiHeart2Fill className="RiHeart2Fill" />
         ) : (
@@ -136,6 +150,7 @@ const PlayList: FC<PlayListProps> = ({ playListCount }): ReactElement => {
     }))
     setPlayListState([])
   }
+
 
   return (
     <Container>

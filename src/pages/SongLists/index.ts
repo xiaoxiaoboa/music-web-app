@@ -1,5 +1,5 @@
-import  SongLists from "./SongLists"
+import SongsList from "./SongLists"
 
 
 
-export default SongLists
+export default SongsList

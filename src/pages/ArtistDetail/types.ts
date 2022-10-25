@@ -149,4 +149,11 @@ interface ArtistDetailType {
     }
   }
 }
-export type { TopSong, HotAlbum, Albums, useArtistAlbumType, ArtistDetailType }
+export type {
+  TopSong,
+  HotAlbum,
+  Albums,
+  useArtistAlbumType,
+  ArtistDetailType,
+  Artist
+}

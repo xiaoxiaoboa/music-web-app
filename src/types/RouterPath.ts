@@ -1,12 +1,13 @@
 enum RouterPath {
   HOME = "/",
   MV = "/mv",
-  LOGIN = "/login",
   ALBUM = "/album",
-  PROFILE = "/profile",
+  LOGIN = "/login",
   ARTIST = "/artist",
+  SEARCH = "/search",
+  PROFILE = "/profile",
   SONGLIST = "/songlist",
-  SONGLISTS = "/songlists",
+  SONGLISTS = "/songlists"
 }
 
 export { RouterPath }
