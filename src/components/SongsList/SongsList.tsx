@@ -3,7 +3,7 @@ import { RiHeart2Line, RiHeart2Fill } from "react-icons/ri"
 import { useRecoilState, useRecoilValue } from "recoil"
 import styled from "styled-components"
 import useIsLiked from "../../Hooks/useIsLiked"
-import { AudioState, PlayListState } from "../../recoil"
+import { AudioState, PlayListState, UserState } from "../../recoil"
 import { FontColor, RouterPath, Track } from "../../types"
 import { request } from "../../utils"
 import { addMessage } from "../Snackbar"
@@ -16,6 +16,7 @@ interface IProps {
 const SongsList: FC<IProps> = ({ data }): ReactElement => {
   const [state, setState] = useRecoilState(AudioState)
   const [playList, setPlayList] = useRecoilState(PlayListState)
+  const userInfo = useRecoilValue(UserState)
   const [isLiked, isLikedFn, setLikedId] = useIsLiked()
 
   /* 双击播放 */
@@ -25,7 +26,7 @@ const SongsList: FC<IProps> = ({ data }): ReactElement => {
     /* 如果找到了：把对应歌曲的索引更新到state */
     if (sameIndex > -1) {
       /* 如果这首歌正在播放，则提示 */
-      if(sameIndex === state.playIndex) return addMessage('这首歌正在播放...')
+      if (sameIndex === state.playIndex) return addMessage("这首歌正在播放...")
       setState(prev => ({ ...prev, ...{ playIndex: sameIndex } }))
     } else {
       const tempList = [...playList]
@@ -52,6 +53,8 @@ const SongsList: FC<IProps> = ({ data }): ReactElement => {
 
   /* 喜欢和取消喜欢 */
   const handleLike = (isLiked: boolean, id: number) => {
+    if (!userInfo) return addMessage("请先登录！")
+
     if (isLiked) {
       /* 取消喜欢 */
       request("like", "GET", `&id=${id}&like=${!isLiked}`)

@@ -26,3 +26,5 @@ dist-ssr
 *.sln
 *.sw?
 src/assets/mv.mp4
+
+vite.config.ts.timestamp-1666767227810.mjs

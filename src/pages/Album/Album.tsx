@@ -1,7 +1,7 @@
 import React, { FC, ReactElement, memo } from "react"
 import { BsFolderPlus } from "react-icons/bs"
 import { Location, useLocation } from "react-router-dom"
-import { useRecoilState } from "recoil"
+import { useRecoilState, useRecoilValue } from "recoil"
 import styled from "styled-components"
 import Button from "../../components/Button"
 import List from "../../components/List"
@@ -10,7 +10,7 @@ import { addMessage } from "../../components/Snackbar"
 import SongsList from "../../components/SongsList"
 import useAlbum from "./useAlbum"
 import useArtistAlbum from "../../Hooks/useArtistAlbum"
-import { UserLikedAlbums } from "../../recoil"
+import { UserLikedAlbums, UserState } from "../../recoil"
 import { LocationProps, SongDetailType } from "../../types"
 import { request } from "../../utils"
 import getNewUrl from "../../utils/getNewUrl"
@@ -20,12 +20,14 @@ const Album: FC = (): ReactElement => {
   const location = useLocation() as LocationProps
   const albumData = useAlbum(location.state.id)
   const albums = useArtistAlbum(albumData.album?.artist?.id)
+  const userInfo = useRecoilValue(UserState)
   const [userLikedAlbums, setUserLikedAlbums] = useRecoilState(UserLikedAlbums)
 
 
 
   /* 处理收藏和取消收藏专辑 */
   const handleLike = () => {
+    if(!userInfo) return addMessage("请先登录！！")
     const isLiked = userLikedAlbums.findIndex(
       obj => obj.id === albumData.album.id
     )

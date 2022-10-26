@@ -1,10 +1,16 @@
-import React, { useEffect, useMemo, useReducer, ReactElement,FC,memo } from "react"
+import React, {
+  useEffect,
+  useMemo,
+  useReducer,
+  ReactElement,
+  FC,
+  memo
+} from "react"
 import styled from "styled-components"
 import Avatar from "../../components/Avatar"
 import { FaPlay } from "react-icons/fa"
-import { RiHeart2Fill, RiHeart2Line } from "react-icons/ri"
-import { BsFolderCheck, BsFolderPlus } from "react-icons/bs"
-import { useLocation, useNavigate } from "react-router-dom"
+import { BsFolderPlus } from "react-icons/bs"
+import { useLocation } from "react-router-dom"
 import { request } from "../../utils/request"
 import { Track, SongDetailType, LocationProps, FontColor } from "../../types"
 import {
@@ -14,10 +20,15 @@ import {
   DetailAction,
   DetailType
 } from "./types"
-import { AudioState, PlayListState, UserLikedPlayLists } from "../../recoil"
+import {
+  AudioState,
+  PlayListState,
+  UserLikedPlayLists,
+  UserState
+} from "../../recoil"
 import Loading from "../../components/Loading"
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
-import  useScroll  from "./useScroll"
+import useScroll from "./useScroll"
 import getNewUrl from "../../utils/getNewUrl"
 import SongsList from "../../components/SongsList"
 import { addMessage } from "../../components/Snackbar"
@@ -54,12 +65,13 @@ const initialState: DetailState = {
   songsId: [] as number[]
 }
 
-const SongListDetail:FC = ():ReactElement => {
+const SongListDetail: FC = (): ReactElement => {
   const location = useLocation() as LocationProps
   const setAudioState = useSetRecoilState(AudioState)
   const setPlayList = useSetRecoilState(PlayListState)
   const [reducerState, dispatch] = useReducer(reducer, initialState)
   const [tracks, requesting, requestSongs] = useScroll(reducerState.songsId)
+  const userInfo = useRecoilValue(UserState)
   const [userLikedPlayLists, setUserPlayLists] =
     useRecoilState(UserLikedPlayLists)
 
@@ -104,8 +116,10 @@ const SongListDetail:FC = ():ReactElement => {
 
   /* 处理歌单的收藏和取消收藏 */
   const handleLikeSongList = (value: number) => {
+    if (!userInfo) return addMessage("请先登录！！")
     const isLiked =
-      userLikedPlayLists.findIndex(obj => obj.id === reducerState.detail.id) > -1
+      userLikedPlayLists.findIndex(obj => obj.id === reducerState.detail.id) >
+      -1
         ? 2
         : 1
 
@@ -146,14 +160,14 @@ const SongListDetail:FC = ():ReactElement => {
                     {reducerState.detail?.creator.nickname}
                   </SpecialFont>
                   <SpecialFont color={FontColor.LIGHTCOLOR} size={`14px`}>
-                    {getUpdateTime(reducerState.detail.createTime) + " 创建"}
+                    {getUpdateTime(reducerState.detail?.createTime) + " 创建"}
                   </SpecialFont>
                 </Creator>
                 <Tag>
                   <div>标签：</div>
                   {reducerState.detail?.tags.map(tag => (
                     <SpecialFont
-                      key={reducerState.detail.tags.indexOf(tag)}
+                      key={reducerState.detail?.tags.indexOf(tag)}
                       color={FontColor.LIGHTCOLOR}
                     >
                       {tag}
@@ -194,13 +208,13 @@ const SongListDetail:FC = ():ReactElement => {
                   <Button
                     className="collectbutton"
                     disabled={
-                      userLikedPlayLists[0].id === reducerState.detail.id
+                      userLikedPlayLists[0]?.id === reducerState.detail?.id
                     }
                     onClick={() => handleLikeSongList(reducerState.detail?.id)}
                   >
                     <BsFolderPlus size={`18px`} />
                     {userLikedPlayLists.findIndex(
-                      obj => obj.id === reducerState.detail.id
+                      obj => obj.id === reducerState.detail?.id
                     ) > -1
                       ? "取消收藏"
                       : "收藏歌单"}

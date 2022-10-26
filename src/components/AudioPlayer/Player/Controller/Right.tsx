@@ -92,6 +92,7 @@ const Right: FC<IProps> = (props): ReactElement => {
 
   /* 喜欢歌曲 */
   const handleLike = () => {
+    if(!userInfo) return addMessage("请先登录！！")
     request("like", "GET", `&like=${!isLiked}&id=${playingId}`).then(res => {
       if (res.code === 200) {
         if (isLiked) {

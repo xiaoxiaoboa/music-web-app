@@ -101,7 +101,8 @@ const TopBar: FC = (): ReactElement => {
   /* 搜索输入 */
   const handleInput: KeyboardEventHandler<HTMLInputElement> = e => {
     if (e.key !== "Enter") return
-    const words = e.target.value.trim()
+    const element = e.target as HTMLInputElement
+    const words = element.value.trim()
 
     const repeat = keyWords.filter(obj => obj.words === words)
     if (repeat.length > 0) {
@@ -163,7 +164,7 @@ const TopBar: FC = (): ReactElement => {
         <TopLogo />
         <Nav>
           <Ul>
-            <NavLink to={RouterPath.HOME}>
+            <NavLink to={RouterPath.HOME} end>
               <Li>首页</Li>
             </NavLink>
             <NavLink to={RouterPath.SONGLISTS}>
@@ -181,7 +182,7 @@ const TopBar: FC = (): ReactElement => {
               type="text"
               placeholder="搜索"
               onKeyDown={handleInput}
-              onChange={handleInput}
+              // onChange={handleInput}
               ref={inputRef}
             />
           </InputBox>
