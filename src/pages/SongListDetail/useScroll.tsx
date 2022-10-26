@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { Track, SongDetailType } from "../types"
-import { request } from "../utils/request"
+import { Track, SongDetailType } from "../../types"
+import { request } from "../../utils/request"
 
 export default function useScroll(
   songsId: number[]

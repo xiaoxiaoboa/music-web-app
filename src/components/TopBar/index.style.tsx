@@ -87,10 +87,14 @@ export const Input = styled.input`
   border: none;
   outline: none;
   margin-left: 0.3125rem;
-  /* padding: 0.1875rem; */
   font-size: 16px;
   color: ${props => props.theme.secondary_color};
   font-weight: bold;
+
+
+  &::placeholder {
+    color: ${props => props.theme.light_color}
+  }
 `
 
 interface HistoryBoxType {
@@ -107,11 +111,11 @@ export const HistoryBox = styled.div<HistoryBoxType>`
   top: 2.5rem;
   display: flex;
   flex-direction: column;
+  z-index:999;
 
   overflow: hidden;
   padding: ${props => (props.open ? "10px" : "0")};
   color: ${props => props.theme.primary_color};
-  /* justify-content:center; */
 `
 
 export const Words = styled.div`

@@ -7,7 +7,7 @@ import React, {
   memo
 } from "react"
 import styled from "styled-components"
-import {useDrag} from '../../Hooks'
+import useDrag from './useDrag'
 
 interface SliderProps {
   media?: HTMLMediaElement

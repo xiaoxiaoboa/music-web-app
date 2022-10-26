@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react"
-import { request } from "../utils/request"
-import { RouterPath } from "../types"
+import { request } from "../../utils/request"
+import { RouterPath } from "../../types"
 
 import {
   SongListType,
   SongListsType,
   useSongListsType
-} from "../pages/Home/types"
-import random from "../utils/random"
+} from "./types"
+import random from "../../utils/random"
 
 /**
  * 获取歌单

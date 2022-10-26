@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react"
+import React, { FC, useEffect, useState, ReactElement,memo } from "react"
 import { useLocation } from "react-router-dom"
 import styled from "styled-components"
 import Avatar from "../../components/Avatar"
@@ -17,7 +17,7 @@ interface StateType {
   url: MvUrl
 }
 
-const MvDetail = () => {
+const MvDetail: FC = (): ReactElement => {
   const location = useLocation() as LocationProps
   const [state, setState] = useState<StateType>({} as StateType)
   const mvs = useArtistMvs(state?.detail?.artistId, 3, location.state.id)
@@ -80,7 +80,7 @@ const MvDetail = () => {
   )
 }
 
-export default MvDetail
+export default memo(MvDetail)
 
 const Container = styled.div`
   padding: 0 calc(10% - 17px) 1.875rem 10%;

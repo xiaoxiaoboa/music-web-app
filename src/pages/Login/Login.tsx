@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect, useReducer, useState } from "react"
+import { FC, ReactElement, useEffect, useReducer, useState,memo } from "react"
 import styled from "styled-components"
 import Loading from "../../components/Loading"
 import { request } from "../../utils/request"
@@ -172,7 +172,7 @@ const Login: FC = (): ReactElement => {
   )
 }
 
-export default Login
+export default memo(Login)
 
 const LoginContainer = styled.div`
   padding: 0 10% 0 10%;

@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect, useReducer } from "react"
+import React, { FC, ReactElement, useEffect, useReducer,memo } from "react"
 import { Location, useLocation } from "react-router-dom"
 import styled from "styled-components"
 import List from "../../components/List"
@@ -121,7 +121,7 @@ const Search: FC = (): ReactElement => {
   )
 }
 
-export default Search
+export default memo(Search)
 
 const Container = styled.div`
   /* padding: 0 calc(10% - 17px) 1.25rem 10%; */

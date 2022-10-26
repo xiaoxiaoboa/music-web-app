@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
-import { request } from "../utils/request"
-import { RouterPath } from "../types"
-import { MvsType, MvType, useMvType } from "../pages/Home/types"
-import random from "../utils/random"
+import { request } from "../../utils/request"
+import { RouterPath } from "../../types"
+import { MvsType, MvType, useMvType } from "./types"
+import random from "../../utils/random"
 
 /**
  * Home页面的mv

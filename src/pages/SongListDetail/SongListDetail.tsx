@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer } from "react"
+import React, { useEffect, useMemo, useReducer, ReactElement,FC,memo } from "react"
 import styled from "styled-components"
 import Avatar from "../../components/Avatar"
 import { FaPlay } from "react-icons/fa"
@@ -17,7 +17,7 @@ import {
 import { AudioState, PlayListState, UserLikedPlayLists } from "../../recoil"
 import Loading from "../../components/Loading"
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
-import { useScroll } from "../../Hooks"
+import  useScroll  from "./useScroll"
 import getNewUrl from "../../utils/getNewUrl"
 import SongsList from "../../components/SongsList"
 import { addMessage } from "../../components/Snackbar"
@@ -54,7 +54,7 @@ const initialState: DetailState = {
   songsId: [] as number[]
 }
 
-const SongListDetail = () => {
+const SongListDetail:FC = ():ReactElement => {
   const location = useLocation() as LocationProps
   const setAudioState = useSetRecoilState(AudioState)
   const setPlayList = useSetRecoilState(PlayListState)
@@ -246,7 +246,7 @@ const SongListDetail = () => {
   )
 }
 
-export default SongListDetail
+export default memo(SongListDetail)
 
 const Container = styled.div`
   padding: 0 calc(10% - 17px) 1.25rem 10%;

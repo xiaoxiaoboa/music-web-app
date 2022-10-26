@@ -1,4 +1,4 @@
-import { FC, ReactElement, useMemo } from "react"
+import { FC, ReactElement, useMemo,memo } from "react"
 import { useRecoilValue } from "recoil"
 import styled from "styled-components"
 import Avatar from "../../components/Avatar"
@@ -73,7 +73,7 @@ const Profile: FC = (): ReactElement => {
   )
 }
 
-export default Profile
+export default memo(Profile)
 
 const Container = styled.div`
   padding: 0 calc(10% - 17px) 1.25rem 10%;

@@ -1,8 +1,6 @@
 import { lazy } from "react"
 import { useRoutes } from "react-router-dom"
 
-
-
 const ArtistDetail = lazy(() => import("../pages/ArtistDetail"))
 const Home = lazy(() => import("../pages/Home"))
 const Login = lazy(() => import("../pages/Login"))
@@ -38,7 +36,7 @@ const Routes = () => {
     },
     {
       path: "songlists",
-      element: <SongLists />,
+      element: <SongLists />
     },
     {
       path: "songlist",

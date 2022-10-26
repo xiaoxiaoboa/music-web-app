@@ -1,7 +1,9 @@
-import { FC, ReactElement, useRef } from "react"
+import { FC, ReactElement, useRef,memo } from "react"
 import List from "../../components/List"
 import styled from "styled-components"
-import { useArtists, useMv, useSongLists } from "../../Hooks"
+import { useArtists } from "../../Hooks"
+import useMv from "./useMv"
+import useSongLists from "./useSongLists"
 import Loading from "../../components/Loading"
 
 const Home: FC = (): ReactElement => {
@@ -48,7 +50,7 @@ const Home: FC = (): ReactElement => {
   )
 }
 
-export default Home
+export default memo(Home)
 
 /* style */
 const HomeContainer = styled.div`

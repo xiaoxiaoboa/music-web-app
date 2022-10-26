@@ -1,4 +1,4 @@
-import React, { FC, ReactElement, useEffect } from "react"
+import React, { FC, ReactElement, memo } from "react"
 import { BsFolderPlus } from "react-icons/bs"
 import { Location, useLocation } from "react-router-dom"
 import { useRecoilState } from "recoil"
@@ -8,14 +8,13 @@ import List from "../../components/List"
 import Loading from "../../components/Loading"
 import { addMessage } from "../../components/Snackbar"
 import SongsList from "../../components/SongsList"
-import useAlbum from "../../Hooks/useAlbum"
+import useAlbum from "./useAlbum"
 import useArtistAlbum from "../../Hooks/useArtistAlbum"
 import { UserLikedAlbums } from "../../recoil"
 import { LocationProps, SongDetailType } from "../../types"
 import { request } from "../../utils"
 import getNewUrl from "../../utils/getNewUrl"
 import imgSize from "../../utils/imgSize"
-import { LikedAlbums } from "./types"
 
 const Album: FC = (): ReactElement => {
   const location = useLocation() as LocationProps
@@ -93,7 +92,7 @@ const Album: FC = (): ReactElement => {
   )
 }
 
-export default Album
+export default memo(Album)
 
 const Container = styled.div`
   padding: 0 calc(10% - 17px) 1.25rem 10%;

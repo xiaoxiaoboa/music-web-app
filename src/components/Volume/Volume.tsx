@@ -2,7 +2,6 @@ import React, { FC, useState, memo, useEffect, useCallback } from "react"
 import Slider from "../Slider"
 import { RiVolumeUpFill, RiVolumeMuteFill } from "react-icons/ri"
 import Button from "../Button"
-import "./index.css"
 
 interface IProps {
   media: HTMLMediaElement
@@ -31,27 +30,14 @@ const Volume: FC<IProps> = ({ media,volume }) => {
     }
   }
 
-  // /* 把volume和isMuted存储到本地 */
-  // const savelocal = (volume: number) => {
-  //   const tempData = JSON.parse(localStorage.getItem("audiostate") as string)
-  //   const result = { ...tempData, ...{ volume } }
-  //   localStorage.setItem("audiostate", JSON.stringify(result))
-  // }
-  
-  // /* 把本地存储的volume值传给Slider组件，如果没有返回undefined */
-  // const getLocalVolume = useCallback((): number | undefined => {
-  //   return localStorage.getItem("audiostate")
-  //     ? JSON.parse(localStorage.getItem("audiostate") as string).volume * 100
-  //     : undefined
-  // }, [])
 
   return (
     <>
-      <Button onClick={handleMuted} title={isMuted ? '取消静音' : '静音'}>
+      <Button onClick={handleMuted} title={isMuted ? "取消静音" : "静音"}>
         {isMuted ? (
-          <RiVolumeMuteFill className="RiVolumeMute" />
+          <RiVolumeMuteFill className="RiVolumeMute" size={`1.25rem`} />
         ) : (
-          <RiVolumeUpFill className="RiVolumeMute" />
+          <RiVolumeUpFill className="RiVolumeMute" size={`1.25rem`} />
         )}
       </Button>
       <Slider

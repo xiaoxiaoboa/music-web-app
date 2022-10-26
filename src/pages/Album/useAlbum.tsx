@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react"
-import { SongDetailType, Track } from "../types"
-import { Album, AlbumType } from "../pages/Album/types"
-import { request } from "../utils/request"
+import { SongDetailType, Track } from "../../types"
+import { Album, AlbumType } from "./types"
+import { request } from "../../utils/request"
 
 
 interface StateType {
@@ -18,13 +18,6 @@ const useAlbum = (id: number): StateType => {
 
   useEffect(() => {
     request("album", "GET", `&id=${id}`).then((albumData: AlbumType) => {
-      // const albumData: Album = {
-      //   id: res.album.id,
-      //   picUrl: res.album.blurPicUrl,
-      //   name: res.album.name,
-      //   artistId: res.album.artist.id,
-      //   artistName: res.album.artist.name
-      // }
       const ids: number[] = albumData.songs.map(obj => obj.id)
       request("song/detail", "GET", `&ids=${ids.toString()}`).then(
         (res: SongDetailType) => setData({ album: albumData.album, songs: res.songs })

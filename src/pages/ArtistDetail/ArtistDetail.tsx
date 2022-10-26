@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState,FC,ReactElement,memo } from "react"
 import { useLocation } from "react-router-dom"
 import styled from "styled-components"
 import Avatar from "../../components/Avatar"
@@ -13,7 +13,7 @@ import getNewUrl from "../../utils/getNewUrl"
 import imgSize from "../../utils/imgSize"
 import { request } from "../../utils/request"
 
-const ArtistDetail = () => {
+const ArtistDetail:FC = ():ReactElement => {
   const location = useLocation() as LocationProps
   const [tracks, setTracks] = useState<Track[]>([])
   const albums = useArtistAlbum(location.state.id)
@@ -89,7 +89,7 @@ const ArtistDetail = () => {
   )
 }
 
-export default ArtistDetail
+export default memo(ArtistDetail)
 
 const Container = styled.div`
   padding: 0 calc(10% - 17px) 1.25rem 10%;

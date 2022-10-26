@@ -3,7 +3,6 @@ import styled from "styled-components"
 import useSongLists from "./useSongLists"
 import { CategoryType } from "./types"
 import List from "../../components/List"
-import { addMessage } from "../../components/Snackbar"
 import Button from "../../components/Button"
 
 const categoryArr: string[] = [
