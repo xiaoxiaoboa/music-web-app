@@ -18,11 +18,14 @@ const SongsList: FC<IProps> = ({ data }): ReactElement => {
   const [playList, setPlayList] = useRecoilState(PlayListState)
   const [isLiked, isLikedFn, setLikedId] = useIsLiked()
 
+  /* 双击播放 */
   const handleDbClick = (value: Track): void => {
     /* 找一下是否已经播放过这个歌曲了 */
     const sameIndex = playList.findIndex((obj: Track) => obj.id === value.id)
     /* 如果找到了：把对应歌曲的索引更新到state */
     if (sameIndex > -1) {
+      /* 如果这首歌正在播放，则提示 */
+      if(sameIndex === state.playIndex) return addMessage('这首歌正在播放...')
       setState(prev => ({ ...prev, ...{ playIndex: sameIndex } }))
     } else {
       const tempList = [...playList]
