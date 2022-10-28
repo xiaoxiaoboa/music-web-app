@@ -26,7 +26,7 @@ const Middle: FC<IProps> = (props): ReactElement => {
   /* 拖拽媒体进度条的时候 */
   const dragging = (value: number, isInterActive?: boolean) => {
     if (isInterActive) {
-      setCurrentTime(Math.floor((value * duration) / 100))
+      setCurrentTime(Math.floor(value * (duration / 100)))
     }
   }
 

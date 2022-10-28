@@ -36,7 +36,6 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
     if (isInterActive === false && props.media) {
       const temp =
         props.currentTime?.num! / (Math.floor(props?.duration?.num!) / 100)
-
       setSliderValue(() => parseFloat(temp.toFixed(1)))
     }
   }, [props.currentTime?.num!])

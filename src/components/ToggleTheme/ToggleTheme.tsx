@@ -4,6 +4,12 @@ import { ThemeState } from "../../recoil"
 import { RiMoonClearLine, RiSunLine } from "react-icons/ri"
 import styled from "styled-components"
 
+
+/**
+ * 控制网站颜色的开关
+ * 样式参考自：vite官网
+ * https://vitejs.dev/
+ */
 const ToggleTheme: FC = (): ReactElement => {
   const [mode, setMode] = useRecoilState(ThemeState)
 

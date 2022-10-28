@@ -37,9 +37,7 @@ export default function useDrag({
     /* 拖拽鼠标时 */
     const handleMouseDrag = (e: globalThis.MouseEvent) => {
       e.preventDefault()
-      document.onmousemove = e => {
-        setMouseX(() => e.clientX)
-      }
+      setMouseX(() => e.clientX)
     }
 
     /* 松开鼠标时 */
@@ -61,7 +59,6 @@ export default function useDrag({
     () =>
       (value: number, htmlElement: HTMLDivElement): number => {
         const rel = Math.round((value / htmlElement?.clientWidth) * 100)
-
         return rel > 100 ? 100 : rel < 0 ? 0 : rel
       },
     [mouseX]

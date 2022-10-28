@@ -17,7 +17,7 @@ import {
 } from "../../../types"
 import Middle from "./Controller/Middle"
 import Right from "./Controller/Right"
-import { useRecoilState, useRecoilValue } from "recoil"
+import { useRecoilState, useRecoilValue} from "recoil"
 import { AudioState, PlayListState } from "../../../recoil"
 import imgSize from "../../../utils/imgSize"
 import { addMessage } from "../../Snackbar"

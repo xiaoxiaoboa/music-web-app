@@ -2,10 +2,15 @@ import React, { FC, ReactElement } from "react"
 import styled, { keyframes } from "styled-components"
 
 interface CProps {
-  scale?: number;
+  scale?: number
 }
 
-const Loading:FC<CProps> = ({scale=1}):ReactElement => {
+/**
+ * 动画参考自：
+ * https://juejin.cn/post/7037036742985121800
+ *
+ */
+const Loading: FC<CProps> = ({ scale = 1 }): ReactElement => {
   return (
     <LoadingContainer>
       <LoadingBody scale={scale} />
@@ -35,8 +40,8 @@ const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
 `
 
 const LoadingBody = styled.div<CProps>`

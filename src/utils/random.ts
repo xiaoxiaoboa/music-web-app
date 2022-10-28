@@ -25,13 +25,13 @@ export const random = <T>(amount: number, arr: T[]): T[] => {
   return result
 }
 
-/* 用随机算法打乱数组顺序 */
-const arrRandom = <T>(arr: T[]): T[] => {
-  /*
-    该随机算法参考自：
+/**
+ * 用随机算法打乱数组顺序 
+ * 该随机算法参考自：
     https://oldj.net/article/2017/01/23/shuffle-an-array-in-javascript
-  */
-
+ * 
+ */
+const arrRandom = <T>(arr: T[]): T[] => {
   let i = arr.length
   while (i) {
     let j = Math.floor(Math.random() * i--)

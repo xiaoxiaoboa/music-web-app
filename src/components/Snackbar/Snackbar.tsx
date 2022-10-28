@@ -16,6 +16,10 @@ const initialValue = (): MessageType[] => {
 /* 导出的API */
 let addMessage: (value: string) => void
 
+/**
+ * 组件实现参考自：
+ * https://zhuanlan.zhihu.com/p/261782576 
+ */
 const Snackbar: FC = (): ReactElement => {
   const [message, setMessage] = useState<MessageType[]>(initialValue)
 
