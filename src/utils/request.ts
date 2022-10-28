@@ -16,8 +16,7 @@ export const request = async (
       method,
       headers,
       body,
-      // credentials: "include",
-      credentials: "same-origin",
+      credentials: "include",
       cache:'default',
       mode: "cors"
     })

@@ -1,4 +1,4 @@
-import { FC, ReactElement, useEffect, useReducer, useState,memo } from "react"
+import { FC, ReactElement, useEffect, useReducer, useState, memo } from "react"
 import styled from "styled-components"
 import Loading from "../../components/Loading"
 import { request } from "../../utils/request"
@@ -92,7 +92,6 @@ const Login: FC = (): ReactElement => {
             dispatch({ type: QrCodeType.MESSAGE, payload: status.message })
           } else if (status.code === 803) {
             clearInterval(timer)
-            dispatch({ type: QrCodeType.MESSAGE, payload: status.message })
 
             /* 把用户信息存到本地 */
             request("user/account", "GET").then((useraccount: UserAccount) => {
@@ -103,6 +102,10 @@ const Login: FC = (): ReactElement => {
                   `&uid=${useraccount.account.id}`
                 ).then((UserDetail: UserDetail) => {
                   saveUser(UserDetail, useraccount.account.id)
+                  dispatch({
+                    type: QrCodeType.MESSAGE,
+                    payload: status.message
+                  })
                   navigate(RouterPath.PROFILE, { replace: true })
                 })
               } else {
