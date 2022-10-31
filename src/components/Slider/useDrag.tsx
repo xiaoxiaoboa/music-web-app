@@ -9,7 +9,7 @@ export default function useDrag({
   trackElement,
   setSliderValue
 }: IProps): [boolean, MouseEventHandler] {
-  /* 鼠标距文档左侧X轴额距离 */
+  /* 鼠标距文档左侧X轴距离 */
   const [mouseX, setMouseX] = useState<number>(0)
   /* Slider是否在交互中 */
   const [isInterActive, setIsInterActive] = useState<boolean>(false)

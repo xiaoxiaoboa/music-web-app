@@ -160,7 +160,7 @@ const PlayList: FC<PlayListProps> = ({ playListCount }): ReactElement => {
           <h2>正在播放</h2>
         </Head>
         <Playing>
-          {audioState.playIndex !== null ? (
+          {audioState.playIndex !== null && playListState.length > 0 ? (
             <Song>
               <Name title={playListState[audioState.playIndex].name}>
                 {playListState[audioState.playIndex].name}

@@ -47,8 +47,8 @@ const Player: FC = (): ReactElement => {
 
   /* 播放索引更新，则请求链接，播放 */
   useEffect(() => {
-    if (state.playIndex !== null && state.canPlay) {
-      checkMusic(playList[state.playIndex].id).then(() => {
+    if (state.playIndex !== null && state.canPlay && playList.length > 0) {
+      checkMusic(playList[state.playIndex]?.id).then(() => {
         changeUrl(state.playIndex!, true)
       })
     }
@@ -56,7 +56,11 @@ const Player: FC = (): ReactElement => {
 
   /* 打开页面后，播放列表内有上次的歌曲，就先请求链接，但不播放 */
   useEffect(() => {
-    if (state.playIndex !== null && state.audio.src === "") {
+    if (
+      state.playIndex !== null &&
+      state.audio.src === "" &&
+      playList.length > 0
+    ) {
       checkMusic(playList[state.playIndex].id).then(() => {
         changeUrl(state.playIndex!, false)
       })
@@ -65,6 +69,7 @@ const Player: FC = (): ReactElement => {
 
   /* playlist和state更新时，存入localStorage */
   useEffect(() => {
+    selectMode()
     localStorage.setItem("audiolist", JSON.stringify(playList))
   }, [playList])
   useEffect(() => {

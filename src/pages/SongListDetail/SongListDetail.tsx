@@ -106,10 +106,9 @@ const SongListDetail: FC = (): ReactElement => {
   const handlePlayAll = (): void => {
     request("playlist/track/all", "GET", `&id=${location.state.id}`).then(
       (res: SongDetailType) => {
-        const index = Math.floor(Math.random() * res.songs.length)
         addMessage("歌单已添加，等待播放...")
         setPlayList(res.songs)
-        setAudioState(prev => ({ ...prev, playIndex: index }))
+        setAudioState(prev => ({ ...prev, playIndex: null }))
       }
     )
   }

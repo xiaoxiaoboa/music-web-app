@@ -13,6 +13,7 @@ interface SliderProps {
   media?: HTMLMediaElement
   styles: { width: string; padding: string }
   isMuted?: boolean
+  clicked?:boolean
   volume?: number
   currentTime?: { num: number; str: string }
   duration?: { num: number; str: string }
@@ -77,7 +78,7 @@ const Slider: FC<SliderProps> = (props): ReactElement => {
         setSliderValue(sliderValue)
       }
     }
-  }, [props.isMuted])
+  }, [props.clicked])
 
   /* 如果localstorage里有volume值，则在首次渲染时更新 */
   useEffect(() => {

@@ -9,9 +9,6 @@ interface MessageType {
   message: string
 }
 
-const initialValue = (): MessageType[] => {
-  return []
-}
 
 /* 导出的API */
 let addMessage: (value: string) => void
@@ -21,7 +18,7 @@ let addMessage: (value: string) => void
  * https://zhuanlan.zhihu.com/p/261782576 
  */
 const Snackbar: FC = (): ReactElement => {
-  const [message, setMessage] = useState<MessageType[]>(initialValue)
+  const [message, setMessage] = useState<MessageType[]>([])
 
   useEffect(() => {
     if (message.length > 8) {

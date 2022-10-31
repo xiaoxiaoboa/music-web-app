@@ -1,4 +1,4 @@
-import React, { FC, useState, memo, useEffect, useCallback } from "react"
+import React, { FC, useState, memo } from "react"
 import Slider from "../Slider"
 import { RiVolumeUpFill, RiVolumeMuteFill } from "react-icons/ri"
 import Button from "../Button"
@@ -8,10 +8,9 @@ interface IProps {
   volume?: number
 }
 
-
-const Volume: FC<IProps> = ({ media,volume }) => {
+const Volume: FC<IProps> = ({ media, volume }) => {
   const [isMuted, setIsMuted] = useState<boolean>(true)
-
+  const [clicked, setClicked] = useState<boolean>(false)
 
   /* 处理静音 */
   const handleMuted = () => {
@@ -30,10 +29,14 @@ const Volume: FC<IProps> = ({ media,volume }) => {
     }
   }
 
+  const handleClick = (): void => {
+    handleMuted()
+    setClicked(() => !clicked)
+  }
 
   return (
     <>
-      <Button onClick={handleMuted} title={isMuted ? "取消静音" : "静音"}>
+      <Button onClick={handleClick} title={isMuted ? "取消静音" : "静音"}>
         {isMuted ? (
           <RiVolumeMuteFill className="RiVolumeMute" size={`1.25rem`} />
         ) : (
@@ -44,6 +47,7 @@ const Volume: FC<IProps> = ({ media,volume }) => {
         styles={{ width: `6.25rem`, padding: `.5rem 0` }}
         getSliderValue={handleVolume}
         isMuted={isMuted}
+        clicked={clicked}
         volume={volume}
       />
     </>
